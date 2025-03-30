@@ -104,5 +104,4 @@ config:
 
   -
     type: custom
-
 ---
