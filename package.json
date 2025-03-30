@@ -1,0 +1,44 @@
+{
+  "name": "my-vuepress-site",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "My Vuepress Site Description",
+  "packageManager": "pnpm@9.13.0",
+  "author": "XingJi-love <3968523679@qq.com>",
+  "license": "MIT",
+  "engines": {
+    "node": "^18.20.0 || >=20.0.0"
+  },
+  "scripts": {
+    "docs:dev": "vuepress dev docs",
+    "docs:dev-clean": "vuepress dev docs --clean-cache --clean-temp",
+    "docs:build": "vuepress build docs --clean-cache --clean-temp",
+    "docs:preview": "http-server docs/.vuepress/dist",
+    "vp-update": "pnpm dlx vp-update"
+  },
+  "devDependencies": {
+    "@vuepress/bundler-vite": "2.0.0-rc.20",
+    "http-server": "^14.1.1",
+    "sass-embedded": "^1.86.0",
+    "twikoo": "^1.6.41",
+    "typescript": "^5.7.3",
+    "vue": "^3.5.13",
+    "vuepress": "2.0.0-rc.20",
+    "vuepress-theme-plume": "1.0.0-rc.137"
+  },
+  "dependencies": {
+    "@iconify/json": "^2.2.321",
+    "artplayer": "^5.2.2",
+    "chart.js": "^4.4.8",
+    "dashjs": "^5.0.0",
+    "echarts": "^5.6.0",
+    "flowchart.ts": "^3.0.1",
+    "hls.js": "^1.6.0",
+    "markmap-lib": "^0.18.11",
+    "markmap-toolbar": "^0.18.10",
+    "markmap-view": "^0.18.10",
+    "mermaid": "^11.6.0",
+    "mpegts.js": "^1.8.0",
+    "swiper": "^11.2.6"
+  }
+}
