@@ -54,7 +54,7 @@ export default defineUserConfig({
     //   archives: true, // 是否启用归档页
     //   categories: true, // 是否启用分类页
     //   postCover: 'right', // 文章封面位置
-         pagination: 5, // 每页显示文章数量
+         pagination: 6, // 每页显示文章数量
          postCover: {
           layout: 'odd-left',
           ratio: '16:9',
