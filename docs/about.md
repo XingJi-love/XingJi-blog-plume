@@ -2,10 +2,10 @@
 title: 关于我
 comment: false
 sidebar: false
-readingTime: false
 editLink: false
 lastUpdated: false
 contributors: false
+changelog: false
 permalink: /about/
 prev: false
 next: false

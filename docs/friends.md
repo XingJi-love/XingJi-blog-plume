@@ -14,14 +14,4 @@ list:
     link: https://github.com/XingJi-love
     avatar: https://i.p-i.vip/47/20241024-67192acae3bb8.png
     desc: 迄今所有人生都大写着失败，但不妨碍我继续向前✨
-  -
-    name: XINGJI
-    link: https://github.com/XingJi-love
-    avatar: https://i.p-i.vip/47/20241024-67192acae3bb8.png
-    desc: 迄今所有人生都大写着失败，但不妨碍我继续向前✨
-  -
-    name: XINGJI
-    link: https://github.com/XingJi-love
-    avatar: https://i.p-i.vip/47/20241024-67192acae3bb8.png
-    desc: 迄今所有人生都大写着失败，但不妨碍我继续向前✨
 ---
