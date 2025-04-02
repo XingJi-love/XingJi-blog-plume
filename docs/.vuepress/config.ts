@@ -56,7 +56,7 @@ export default defineUserConfig({
     //   postCover: 'right', // 文章封面位置
          pagination: 10, // 每页显示文章数量
          postCover: {
-          layout: 'odd-left',
+          layout: 'left',
           ratio: '16:9',
           width: 400,
           compact: true
