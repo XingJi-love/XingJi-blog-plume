@@ -5,6 +5,13 @@ tags:
 createTime: 2025/04/01 22:45:57
 permalink: /article/hog11dxj/
 cover: /Github.jpg
+copyright:
+  creation: reprint
+  license: CC-BY-4.0
+  source: https://yiov.top/website/pages/github.html
+  author:
+    name: yiov
+    url: https://github.com/Yiov
 ---
 
 ## 简介

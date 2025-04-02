@@ -6,6 +6,13 @@ tags:
 createTime: 2025/04/01 22:45:57
 permalink: /article/vtlaqapc/
 cover: /Git.jpg
+copyright:
+  creation: reprint
+  license: CC-BY-4.0
+  source: https://yiov.top/website/pages/git.html
+  author:
+    name: yiov
+    url: https://github.com/Yiov
 ---
 
 ![Git.webp](./Git使用及上传代码到仓库/Git.webp)

@@ -6,6 +6,13 @@ tags:
 createTime: 2025/04/01 22:45:57
 permalink: /article/u41nbll9/
 cover: /Vercel.jpg
+copyright:
+  creation: reprint
+  license: CC-BY-4.0
+  source: https://yiov.top/website/pages/vercel.html
+  author:
+    name: yiov
+    url: https://github.com/Yiov
 ---
 
 ## 前言
