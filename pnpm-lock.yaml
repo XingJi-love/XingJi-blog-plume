@@ -47,9 +47,6 @@ importers:
       swiper:
         specifier: ^11.2.6
         version: 11.2.6
-      vuepress-plugin-oh-my-live2d:
-        specifier: ^0.19.3
-        version: 0.19.3(typescript@5.8.2)(vuepress@2.0.0-rc.20(@vuepress/bundler-vite@2.0.0-rc.20(@types/node@22.13.14)(less@4.2.2)(sass-embedded@1.86.0)(sass@1.86.0)(stylus@0.64.0)(typescript@5.8.2)(yaml@2.7.1))(typescript@5.8.2)(vue@3.5.13(typescript@5.8.2)))
     devDependencies:
       '@vuepress/bundler-vite':
         specifier: 2.0.0-rc.20
@@ -2543,9 +2540,6 @@ packages:
     resolution: {integrity: sha512-W67iLl4J2EXEGTbfeHCffrjDfitvLANg0UlX3wFUUSTx92KXRFegMHUVgSqE+wvhAbi4WqjGg9czysTV2Epbew==}
     engines: {node: '>= 0.4'}
 
-  oh-my-live2d@0.19.3:
-    resolution: {integrity: sha512-EWva8OUmcExIFIhqGkeiVPQt44RvYYFg+nmpkrZgQVQ+xofVFq4SDYAg5NcdK40HxyV4vORBJEg4OHIHP96MrA==}
-
   onetime@7.0.0:
     resolution: {integrity: sha512-VXJjc87FScF88uafS3JllDgvAm+c/Slfz06lorj2uAY34rlUu0Nt+v8wreiImcrgAjjIHp1rXpTDlLOGw29WwQ==}
     engines: {node: '>=18'}
@@ -3322,11 +3316,6 @@ packages:
         optional: true
       mpegts.js:
         optional: true
-
-  vuepress-plugin-oh-my-live2d@0.19.3:
-    resolution: {integrity: sha512-ip2FnKNlJISY9G4Ek+cT5orvG0EYWevUDvQ5q9Pe47SoaWOM8p1hnkFEOs7tP0WMwJh475S2qlETOL8K7t+coA==}
-    peerDependencies:
-      vuepress: ^2.0.0-rc.8
 
   vuepress-shared@2.0.0-rc.72:
     resolution: {integrity: sha512-2MP0+/b+ne4Lpg/ryK+JmSJvrWu3TdanzukihJWUo1odDLCpZJYMAOf8fFHvW/qrAdqTRlF4Mz03jySjH+I7Rg==}
@@ -6052,8 +6041,6 @@ snapshots:
 
   object-inspect@1.13.4: {}
 
-  oh-my-live2d@0.19.3: {}
-
   onetime@7.0.0:
     dependencies:
       mimic-function: 5.0.1
@@ -6751,14 +6738,6 @@ snapshots:
       hls.js: 1.6.0
       markdown-it: 14.1.0
       mpegts.js: 1.7.3
-    transitivePeerDependencies:
-      - typescript
-
-  vuepress-plugin-oh-my-live2d@0.19.3(typescript@5.8.2)(vuepress@2.0.0-rc.20(@vuepress/bundler-vite@2.0.0-rc.20(@types/node@22.13.14)(less@4.2.2)(sass-embedded@1.86.0)(sass@1.86.0)(stylus@0.64.0)(typescript@5.8.2)(yaml@2.7.1))(typescript@5.8.2)(vue@3.5.13(typescript@5.8.2))):
-    dependencies:
-      oh-my-live2d: 0.19.3
-      vue: 3.5.13(typescript@5.8.2)
-      vuepress: 2.0.0-rc.20(@vuepress/bundler-vite@2.0.0-rc.20(@types/node@22.13.14)(less@4.2.2)(sass-embedded@1.86.0)(sass@1.86.0)(stylus@0.64.0)(typescript@5.8.2)(yaml@2.7.1))(typescript@5.8.2)(vue@3.5.13(typescript@5.8.2))
     transitivePeerDependencies:
       - typescript
 
