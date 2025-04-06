@@ -6,7 +6,7 @@ import RepoCard from 'vuepress-theme-plume/features/RepoCard.vue' // Repo 卡片
 // import NpmBadgeGroup from 'vuepress-theme-plume/features/NpmBadgeGroup.vue'
 import Swiper from 'vuepress-theme-plume/features/Swiper.vue' // 轮播图组件
 
-// import CustomComponent from './theme/components/Custom.vue'
+import Custom from './theme/components/Custom.vue' // 自定义组件
 
 import AllFriendContent from './theme/components/AllFriendContent.vue' // 友链组件
 
@@ -22,6 +22,6 @@ export default defineClientConfig({
     app.component('AllFriendContent', AllFriendContent) // 友链组件
 
     // your custom components
-    // app.component('CustomComponent', CustomComponent)
+    app.component('Custom', Custom) // 自定义组件
   },
 })
