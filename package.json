@@ -17,28 +17,28 @@
     "vp-update": "pnpm dlx vp-update"
   },
   "devDependencies": {
-    "@vuepress/bundler-vite": "2.0.0-rc.20",
+    "@vuepress/bundler-vite": "2.0.0-rc.22",
     "http-server": "^14.1.1",
-    "sass-embedded": "^1.86.0",
-    "twikoo": "^1.6.41",
-    "typescript": "^5.7.3",
+    "sass-embedded": "^1.87.0",
+    "twikoo": "^1.6.42",
+    "typescript": "^5.8.3",
     "vue": "^3.5.13",
-    "vuepress": "2.0.0-rc.20",
-    "vuepress-theme-plume": "1.0.0-rc.137"
+    "vuepress": "2.0.0-rc.22",
+    "vuepress-theme-plume": "1.0.0-rc.145"
   },
   "dependencies": {
-    "@iconify/json": "^2.2.321",
-    "artplayer": "^5.2.2",
-    "chart.js": "^4.4.8",
-    "dashjs": "^5.0.0",
+    "@iconify/json": "^2.2.334",
+    "artplayer": "^5.2.3",
+    "chart.js": "^4.4.9",
+    "dashjs": "^5.0.1",
     "echarts": "^5.6.0",
     "flowchart.ts": "^3.0.1",
-    "hls.js": "^1.6.0",
+    "hls.js": "^1.6.2",
     "markmap-lib": "^0.18.11",
     "markmap-toolbar": "^0.18.10",
     "markmap-view": "^0.18.10",
     "mermaid": "^11.6.0",
-    "mpegts.js": "^1.7.3",
+    "mpegts.js": "^1.8.0",
     "swiper": "^11.2.6"
   }
 }
