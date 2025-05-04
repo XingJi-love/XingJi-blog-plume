@@ -414,12 +414,12 @@ app.appendChild(window.document.createElement('small')).textContent = a
 
 ### 图标
 
-github: :[tdesign:logo-github-filled]:
-修改颜色：:[tdesign:logo-github-filled /#f00]:
-修改大小：:[tdesign:logo-github-filled 36px]:
-修改大小颜色：:[tdesign:logo-github-filled 36px/#f00]:
+github: ::tdesign:logo-github-filled::
+修改颜色：::tdesign:logo-github-filled /#f00::
+修改大小：::tdesign:logo-github-filled =36px::
+修改大小颜色：::tdesign:logo-github-filled =36px /#f00::
 
-彩色图标 :[skill-icons:vscode-dark 36px]:
+彩色图标 ::skill-icons:vscode-dark =36px::
 
 
 ### 马克笔

@@ -47,6 +47,9 @@ importers:
       swiper:
         specifier: ^11.2.6
         version: 11.2.6
+      vuepress-plugin-umami:
+        specifier: ^0.0.4
+        version: 0.0.4
     devDependencies:
       '@vuepress/bundler-vite':
         specifier: 2.0.0-rc.22
@@ -3209,6 +3212,10 @@ packages:
     resolution: {integrity: sha512-HhylC41ibLGBe5Db60eJybvizGVWdnLv6H41xnzYR+rHsaUrI8J+Lz6B8xmUexZHNb7YXkwX8cQlLdBxNfEp3w==}
     peerDependencies:
       vuepress: 2.0.0-rc.22
+
+  vuepress-plugin-umami@0.0.4:
+    resolution: {integrity: sha512-K4gONXBYpUZl/KtbPVS+XOgpM3VJUWVlRqua5PibV+D2yR7lbpm1DrnTuNp/O1eg2SrkmO97Id3/7+8RwJ5SjQ==}
+    engines: {node: '>=8'}
 
   vuepress-shared@2.0.0-rc.83:
     resolution: {integrity: sha512-WxD8PqxoMM2L2BlNxbAAMzvJWiBy/1gQQ5Zj+eHsEFyRw+TruwTdttY4AF29/hAQKNt302Epx3DfvQaoHT/RtA==}
@@ -6604,6 +6611,8 @@ snapshots:
       vuepress: 2.0.0-rc.22(@vuepress/bundler-vite@2.0.0-rc.22(@types/node@22.15.3)(less@4.2.2)(sass-embedded@1.87.0)(sass@1.86.0)(stylus@0.64.0)(typescript@5.8.3)(yaml@2.7.1))(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3))
     transitivePeerDependencies:
       - typescript
+
+  vuepress-plugin-umami@0.0.4: {}
 
   vuepress-shared@2.0.0-rc.83(typescript@5.8.3)(vuepress@2.0.0-rc.22(@vuepress/bundler-vite@2.0.0-rc.22(@types/node@22.15.3)(less@4.2.2)(sass-embedded@1.87.0)(sass@1.86.0)(stylus@0.64.0)(typescript@5.8.3)(yaml@2.7.1))(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3))):
     dependencies:

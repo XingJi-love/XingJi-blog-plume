@@ -10,6 +10,16 @@ export default defineUserConfig({
   head: [
     // 配置站点图标
     ['link',{ rel: 'icon', href: 'https://i.p-i.vip/47/20241024-67192acae3bb8.png'}],
+    // 配置网监控器
+    [
+      "script",
+      {
+        async: true,
+        defer: true,
+        "data-website-id": "92445f67-3d16-4d40-8122-50a4b92d6e60",
+        src: "https://umami.xingji.fun/script.js",
+      },
+    ],
   ],
 
   bundler: viteBundler(),
