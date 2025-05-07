@@ -1576,4 +1576,509 @@ public class IntTest06{
 
 ### 数据类型-浮点型
 
+#### 浮点型字面量默认被当做double
 
+1. Java中，浮点型字面量默认被当做double类型，如果要当做float类型，需要在数字后面添加 F 或 f。
+
+```java title="Java"
+float f = 3.0; // 编译报错
+
+报错原因是：3.0 默认被当做double类型，大容量无法直接赋值给小容量。如何修改：
+
+float f = 3.0F;
+```
+
+2. 另外，可以通过以下程序的输出结果看到，double精度高于float：
+
+```java title="Java"
+double d = 1.5656856894;
+System.out.println(d);
+
+输出结果：1.5656856894
+
+float f = 1.5656856894F;
+System.out.println(f);
+
+输出结果：1.5656856
+原因：float最多精度是7位，double最大精度是16位。
+```
+
+**示例代码：**
+
+```java title="Java"
+/*
+	浮点型数据：
+		1.包括两个类型：
+			float(4个字节)：单精度，可以精确到7位小数。
+			double(8个字节)：双精度，可以精确到15位小数。
+		2. double是常用的。
+		3. 浮点型的字面量默认都会被当做double类型来处理，如果想让其当做float类型来处理的话，需要在字面量后面添加F/f
+*/
+public class FloatTest01{
+	public static void main(String[] args){
+		
+		// 不存在类型转换。
+		double d = 3.14;
+
+		// 编译报错
+		// 3.14默认是double类型,8个字节。
+		// f变量是4个字节，大容量不能直接转换成小容量。
+		//float f = 3.14;
+
+		// 修改
+		// 第一种方案：不存在类型转换
+		//float f = 3.14F;
+
+		// 第二种方案：借助强制类型转换
+		float f = (float)3.14;
+
+		double x = 1.5656856894;
+		System.out.println(x);
+
+		float y = 1.5656856894F;
+		System.out.println(y);
+
+	}
+}
+```
+
+
+#### 浮点型数据两种表示形式
+
+> **第一种形式：`十进制`**
+
+```java title="Java"
+double x = 1.23;
+
+double y = 0.23;
+
+double z = .23;
+```
+
+> **第二种形式：`科学计数法`**
+
+```java title="Java"
+double x = 0.123E2; // 0.123 * 10的平方
+
+double y = 123.34E-2; // 123.34 / 10的平方
+```
+
+
+**示例代码：**
+
+```java title="Java"
+/*
+浮点型数据有两种表示方式：
+	第一种形式：十进制
+		double x = 1.23;
+		double y = 0.23;
+		double z = .23;
+	第二种形式：科学计数法
+		double x = 0.123E2; // 0.123 * 10的平方
+		double y = 123.34E-2; // 123.34 / 10的平方
+*/
+public class FloatTest02{
+	public static void main(String[] args){
+		double x = 1.23;
+		double y = 0.23;
+		double z = .23;
+
+		System.out.println(x);
+		System.out.println(y);
+		System.out.println(z);
+
+		double a = 0.123E2;
+		System.out.println(a); // 12.3
+
+		double b = 123.34E-2;
+		System.out.println(b); // 1.2334
+	}
+}
+```
+
+
+#### 浮点型数据存储原理
+
+1. 符号位：`0`表示`正数`。`1`表示`负数`。
+
+2. 指数位：比如小数0.123E30，其中`30就是指数`。表示`0.123 * 10的30次幂`。所以也有把指数位叫做`偏移量`的。`最大偏移量127`。
+
+3. 尾数位：`浮点数的小数部分`的`有效数字`。例如：0.00123，那么尾数位存储`123对应的二进制`。
+
+4. 从浮点型数据存储原理上可以看到，二进制中的指数位决定了数字呈指数级增大。因此`float虽然是4个字节`，但却可以表示`比long更大的数值`。因此`float容量比long的容量大`。float是一个近似值，因此`不精确`。
+
+![float底层存储原理](./Java基础语法/float底层存储原理.jpg)
+
+1. 符号位：`0`表示`正数`。`1`表示`负数`。
+
+2. 指数位：`8位`。表示`2的多少次方`。
+
+3. 尾数位：`23位`。表示`小数部分的有效数字`。
+
+
+#### 浮点型数据使用注意事项
+
+1. 一旦有浮点型数据参与运算得出的结果，一定不要使用“==”与其它数字进行“相等比较”
+
+2. 不要这样：
+
+```java title="Java"
+double x = 6.9;
+double y = 3.0;
+double z = x / y;
+
+if(z == 2.3){
+    System.out.println("相等");
+}
+// 输出结果：false
+出现这样的结果是因为：z的值是 2.3000000000000003，而 2.3 是double类型，在计算机底层存储的都是它的近似值。
+```
+
+3. 可以这样：
+
+```java title="Java"
+double x = 6.9;
+double y = 3.0;
+double z = x / y;
+
+if(z - 2.3 < 0.000001){
+    System.out.println("相等");
+}
+```
+
+**示例代码：**
+
+```java title="Java"
+/*
+一旦有浮点型数据参与运算得出的结果，一定不要使用“==”与其它数字进行“相等比较”
+主要原因是：任何浮点型数据，在计算机底层存储的都是它的近似值。
+*/
+public class FloatTest03{
+	public static void main(String[] args){
+
+		double a = 6.9;
+
+		double b = 3.0;
+
+		double c = a / b;
+
+		System.out.println("c = " + c); // c = 2.3000000000000003
+
+		System.out.println(c == 2.3); // false
+
+		/*
+		if(c == 2.3){
+			System.out.println("相等");
+		}
+		*/
+
+		if(c - 2.3 < 0.00000001){
+			System.out.println("相等");
+		}
+	}
+}
+```
+**输出结果：**
+
+```java title="Java"
+c = 2.3000000000000003
+false
+相等
+```
+
+
+### 数据类型-字符型
+
+#### 字符型char
+
+1. 占用`两个字节`，`0~65535`，和short容量相同，但`char可以取更大的整数`
+
+2. `单个字符`，使用`单引号`括起来，**`不能是多个字符`**
+
+3. 可以保存一个`汉字`
+
+4. `char c = ‘’;` 这是`不允许的`
+
+5. `char c = ‘\u0000’;` 这表示`一个空字符`，也是char的默认值。`\u0000`是一个`Unicode码`。
+
+6. **`空字符`与`空格字符`是`不同的`。`空字符`表示`什么也没有`。`空格字符`表示`一个空格`。**
+
+**示例代码：**
+
+```java title="Java"
+/*
+	char类型：
+		1. char类型是字符型。
+		2. char类型占用2个字节。
+		3. char类型取值范围：0-65535
+			char和short都是2个字节。
+			char可以取到更大的正整数。
+			char和short所能表示的数量是一样的。
+		4. 在java中，字符char类型的字面量必须使用单引号括起来：
+			'A' 'a' '中'
+		5. 在java中，char类型统一采用的字符编码方式：Unicode编码
+		6. 在java中，char可以存储一个汉字。
+		7. char的默认值是：\u0000
+*/
+public class CharTest01{
+	public static void main(String[] args){
+		char c1 = 'A';
+		char c2 = 'B';
+		System.out.println(c1);
+		System.out.println(c2);
+		char c3 = 'a';
+		System.out.println(c3);
+		char c4 = '中';
+		System.out.println(c4);
+		
+		// 错误：不兼容的类型: String无法转换为char
+		//char c5 = "国";
+
+		// 编译错误
+		//char c6 = 'ab';
+		
+		// 错误: 空字符文字
+		//char c7 = '';
+
+		char x = '\u0000';
+		System.out.print(x + "abc");
+
+	}
+}
+```
+
+**输出结果：**
+
+```java title="Java"
+A
+B
+a
+中
+  abc ——> abc前面有一个空格
+```
+
+**总结：**
+
+```java title="Java"
+char类型变量定义有三种方式
+第一种：char c = 'A';
+第二种：char c = '\u0041';
+第三种：char c = 65;
+```
+
+
+#### 转义字符
+
+1. `\t`: 表示`制表符`，相当于按下`Tab 键`
+
+2. `\n`: 表示`换行符`
+
+3. `\"`: 表示`双引号（"）`
+
+4. `\'`: 表示`单引号（'）`
+
+5. `\\`: 表示`反斜线（\）本身`
+
+6. `\uXXXX`: 表示`Unicode码`。`XXXX`表示`4位16进制数`。表示一个`Unicode字符`。例如：`\u0041`表示`A`。
+
+**示例代码：**
+
+```java title="Java"
+/*
+转义字符：
+\t: 表示制表符，相当于按下 Tab 键
+\n: 表示换行符
+\": 表示双引号（"）
+\': 表示单引号（'）
+\\: 表示反斜线（\）本身
+*/
+public class CharTest02{
+	public static void main(String[] args){
+		// 这是一个普通的t字符
+		char c1 = 't';
+
+		// 按说应该编译报错。因为看到的是一个字符串。不是字符。
+		// 但是编译通过了，说明这是1个字符。
+		// 这个字符叫做：制表符。tab
+		// \ 反斜杠在java语言中具有转义功能。把普通的t字符转义成了制表符tab。
+		char c2 = '\t';
+
+		System.out.println("abc" + c2 + "def");
+
+		// \n 换行符
+		System.out.print("hello\n");
+		System.out.print("world\n");
+		System.out.print("test\n\n\n\n\n\n");
+
+		// \"
+		// 需求：输出一个双引号到控制台。
+		//System.out.println("""); //编译报错
+		System.out.println("\""); 
+		System.out.println("\"\""); 
+		System.out.println('"');
+
+
+		// 需求：输出一个单引号到控制台
+		System.out.println("'");
+		// 编译错误
+		//System.out.println(''');
+		System.out.println('\'');
+
+		// 字符char只能是单个字符。
+		//System.out.println('\'\'');
+
+		// 需求：输出一个反斜杠到控制台。 \
+		//System.out.println("\"); // 编译错误
+
+		// 在java中两个 \\ ，最终转换完成之后是一个普通的 \ 字符。
+		System.out.println("\\");
+
+		System.out.println("\\\\");
+	}
+}
+```
+
+**输出结果：**
+
+```java title="Java"
+abc	def
+hello
+world
+test
+1 // 5个换行符
+2
+3
+4
+5 // 5个换行符
+"
+""
+"
+'
+'
+\
+\\
+```
+
+
+#### 字符编码
+
+1. 字符编码是人为规定的`文字`与`二进制`之间的`转换关系`。
+
+2. 在早期计算机系统中，字符编码主要采用的是 `ASCII 编码`，采用`1个字节编码`。`最多`可以表示`256个字符`。（实际上`ASCII码表只用了128个`。），程序员需要记住这几个:
+
+```java title="Java"
+a 对应ASCII码 97（b是98，以此类推）
+
+A 对应ASCII码 65（B是66，以此类推）
+
+0 对应ASCII码 48（1是49，以此类推）
+```
+
+![ASCII编码表](./Java基础语法/ASCII编码表.jpg)
+
+**编码和解码过程：**
+
+1. 编码：把`字符`转换成`二进制`。
+
+2. 解码：把`二进制`转换成`字符`。
+
+![编码和解码过程](./Java基础语法/编码和解码过程.jpg)
+
+
+#### 什么是编码？什么是解码？乱码是怎么产生的？(了解)
+
+1. 字符在计算机系统中，`解码（Decoding）`和`编码（Encoding）`是两个常用的概念，分别表示`将二进制数据转换为字符`和`将字符转换为二进制数据`。
+
+2. `编码`是`将字符转换为二进制数据的过程`。`解码`是`将二进制数据转换为字符的过程`。例如：
+
+```java title="Java"
+'a' ---------按照ASCII码表编码-----------> 01100001
+
+01100001 --------按照ASCII码表解码------------> 'a'
+```
+
+3. `乱码`是指`在字符编码和解码的过程中，由于编码和解码所采用的字符集不一致`，或者编码和解码所采用的字符集不支持某些字符，导致最终显示的字符与原始字符不一致。为了避免乱码的问题，我们需要统一使用一个字符集，并且在进行字符编码和解码时要保持一致。
+
+
+#### 常见的字符编码(了解)
+
+1. ASCII 编码（American Standard Code for Information Interchange：美国信息交换标准编码）：采用1个字节编码，包括字母、数字、符号和控制字符等。 
+
+2. Latin-1编码（ISO 8859-1），采用`1个字节编码`。该编码方式是为了表示欧洲语言（如荷兰语、西班牙语、法语、德语等）中的字符而设计的，共支持 256 个字符。
+
+3. ANSI 编码（American National Standards Institute：美国国家标准协会）：采用`1个字节编码`，支持英文、拉丁文等字符。两个ANSI码可以表示一个汉字。 
+
+4. Unicode 编码：可表示所有语言的字符。采用`了十六进制表示`，占用 2 个字节或 4 个字节，最多可表示超过一百万个字符。 （使用这种方式是有点浪费空间的，例如**`英文字符'a'`其实`采用一个字节存储`就够了**。）
+
+5. UTF-8 编码（Unicode Transformation Format，8-bit）：`基于 Unicode 编码的可变长度字符编码`，能够支持多语言和国际化的需求，使用 1~4 个字节来表示一个字符，是目前 Web 开发中最常用的字符编码方式。 （`一个英文字母1个字节，一个汉字3个字节`。）
+
+6. UTF-16 编码：`基于 Unicode 编码的可变长度字符编码`，使用 `2 或 4 个字节来表示一个字符`，应用于很多较早的系统和编程语言中。 （一个英文字母2个字节。一个汉字4个字节。）
+
+7. UTF-32编码：`基于Unicode编码的固定长度字符编码`，其特点是`每个字符占用4个字节`。
+
+
+#### 常见的字符编码(了解)
+
+1. GB2312 编码（小）：是中国国家标准的简体中文字符集，使用 `2 个字节来表示一个汉字`，是 `GBK 编码的前身`。 
+
+2. GBK 编码（Guo Biao Ku）（中）：是针对中文设计的一个汉字编码方式，使用 `2 个字节来表示一个汉字`，能够`表示中国内地的所有汉字`。 
+
+3. GB18030编码（大）：是中国国家标准GB 18030-2005《信息技术 中文编码字符集》中规定的字符集编码方案，用于取代GB2312和GBK编码。
+
+4. Big5 编码（大五码）：是`台湾地区的繁体中文字符集`，使用 `2 个字节来表示一个汉字`，适用于`使用繁体中文的应用场景`。
+
+> **每种编码方式都有其特点和适用场景。在进行软件开发、网站开发和数据存储时，需要根据实际情况选择适合的编码方式。**
+
+
+#### Unicode码表的一部分
+
+Unicode码表的一部分如下所示：
+
+网络上也有很多在线转码工具，例如：`http://www.jsons.cn/unicode/`
+
+![Unicode码表的一部分](./Java基础语法/Unicode码表的一部分.jpg)
+
+**示例代码：**
+
+```java title="Java"
+// Java采用的是：Unicode编码
+// 大总结：当整数型字面量没有超出byte short char的范围，可以直接将其赋值给byte short char类型的变量。
+// char类型变量定义有三种方式
+// 第一种：char c = 'A';
+// 第二种：char c = '\u0041';
+// 第三种：char c = 65;
+public class CharTest03{
+    public static void main(String[] args){
+
+        char c1 = 'A';
+        System.out.println(c1);
+
+        // \\u 后面是一个十六进制的数字，这个十六进制是字符对应的Unicode码
+        // 表面看是一个字符串，实际上只是一个字符。
+        char c2 = '\u0041';
+        System.out.println(c2);
+
+        // 当整数型字面量没有超出char的取值范围，可以直接将其赋值给char类型的变量。
+        // 当声明char类型变量的时候，如果值是一个整数型字面量，那么这个字面量会被当做ASCII码值来处理。
+        char c3 = 97;
+        char c4 = 65535;
+        //char c5 = 65536; // 错误的。
+        byte b = 1;
+        short s = 1;
+        System.out.println(c3); // 'a'
+
+        char x = '\u4e2d';
+        System.out.println(x);
+
+    }
+}
+```
+
+**输出结果：**
+
+```java title="Java"
+A
+A
+a
+中
+```
