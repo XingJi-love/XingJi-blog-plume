@@ -2082,3 +2082,520 @@ A
 a
 中
 ```
+
+
+#### char参与的运算
+
+1. Java中允许将一个`整数`赋值给`char类型`变量，但这个`整数会被当做ASCII码值`来处理
+
+2. **需要特别注意的是，`这个码值有要求`，`不能超出char的取值范围*`*
+
+3. 只要`没有超出byte short char的取值范围`，是可以`直接赋值给byte short char类型变量`的
+
+4. System.out.println('a' + 1);结果是什么？
+
+```java title="Java"
+System.out.println('a' + 1); // 98
+
+a表示字符'a'的ASCII码值97，1表示整数1。
+```
+
+5. char c = 'a' + 1;结果是什么？
+
+```java title="Java"
+char c = 'a' + 1; // 'b'
+
+a表示字符'a'的ASCII码值97，1表示整数1。
+97 + 1 = 98
+98对应的字符是'b'
+```
+
+6. 以下程序结果是什么？
+
+```java title="Java"
+byte b = 1;
+short s = 1;
+char c = 1;
+short num = b + s + c;
+```
+**运行结果：**
+
+```java title="Java"
+编译错误
+
+不兼容的类型: 从int转换到short可能会有损失精度
+
+第一种修改方式：
+
+int num = b + s + c;
+
+第二种修改方式：
+
+short num = (short)(b + s + c);
+```
+
+
+7. byte short char混合运算时，各自会先转换成int再做运算!!!!!
+
+**示例代码：**
+
+```java title="Java"
+
+// char参与的运算
+public class CharTest04{
+	public static void main(String[] args){
+		
+		/*
+			有一个运算规则需要记住：
+				byte short char混合运算的时候，各自先转换成int再做运算。
+		*/
+		System.out.println('a' + 1); // 98
+
+		char x = 'a' + 1;
+		System.out.println(x); // 'b'
+
+		byte b = 1;
+		short s = 1;
+		char c = 1;
+		//short num = b + s + c;
+
+		// 第一种修改方式
+		// int num = b + s + c;
+
+		// 第二种修改方式
+		short num = (short)(b + s + c);
+
+		System.out.println(num);
+
+		/*
+			多种数据类型混合运算的时候，各自先转换成最大的再做运算。
+		*/
+		int k = 100;
+		short e = 200;
+		long f = 300L;
+		double d = 3.0;
+
+		// 错误的
+		//long result = k + e + f + d;
+
+		double result = k + e + f + d;
+
+		System.out.println(result);
+
+	}
+}
+```
+
+**输出结果：**
+
+```java title="Java"
+98
+b
+3
+603.0
+```
+
+
+#### boolean类型
+
+1. boolean类型只有两个值：`true、false`。`没有其它值，没有0和1这一说`。
+
+2. 通常用于表示一些逻辑上的真假值，并在程序中进行逻辑控制，例如以下代码：
+
+```java title="Java"
+boolean gender = true;
+
+if(gender){
+    System.out.println("男");
+}else{
+    System.out.println("女");
+}
+```
+
+**示例代码：**
+
+```java title="Java"
+
+/*
+	布尔型：boolean
+		1. 在java中。boolean值只有两个true false，没有1和0这一说。
+		2. boolean类型的数据主要用在哪里呢？
+			逻辑判断，条件判断....
+*/
+public class BooleanTest01{
+	public static void main(String[] args){
+		
+		// 不兼容的类型: int无法转换为boolean
+		//boolean flag = 1;
+
+		boolean flag = true;
+
+		boolean gender = false;
+
+		if(gender){
+			System.out.println("男士");
+		}else{
+			System.out.println("女士");
+		}
+
+		int a = 1000;
+		int b = 200;
+
+		System.out.println(a > b);
+
+		if(a > b){
+			System.out.println(a + ">" + b);
+		}else{
+			System.out.println(a + "<" + b);
+		}
+
+	}
+}
+```
+
+**输出结果：**
+
+```java title="Java"
+女士
+true
+1000>200
+```
+
+
+### 数据类型-作业题
+
+1. 请定义合理的变量用来存储个人信息（姓名、年龄、性别、联系电话），并编写程序定义这些变量，给变量赋值，并打印输出。输出效果如下
+
+姓名		年龄		性别		联系电话
+张三		20		男		12545457585
+李四		30		女		15622525855
+
+**示例代码：**
+
+```java title="Java"
+public class DataTypeHomework01{
+	public static void main(String[] args){
+		Sting name = "张三";
+		int age1 = 20;
+		char gender1 = '男';
+		String tel1 = "12545457585";
+
+		Sting name = "李四";
+		int age2 = 30;
+		char gender2 = '女';
+		String tel2 = "15622525855";
+
+		System.out.println("姓名\t年龄\t性别\t联系电话");
+
+		System.out.println(name + "\t" + age1 + "\t" + gender1 + "\t" + tel1);
+
+		System.out.println(name + "\t" + age2 + "\t" + gender2 + "\t" + tel2);
+	}
+}
+```
+**输出结果：**
+
+```java title="Java"
+姓名	年龄	性别	联系电话
+张三	20	    男	  12545457585
+李四	30	    女	  15622525855
+```
+
+
+2. 有`两个变量a和b`，`a变量`中存储的`数据100`，`b变量`中存储的`数据200`，请编写程序`交换两个变量中的数据`。让`a变量存储200`，让`b变量存储100`。并且`计算两个int类型数据的和`，要求`最终输出200+100=300`的效果。
+
+![数据类型第二题作业题](./Java基础语法/数据类型第二题作业题.jpg)
+
+**示例代码：**
+
+```java title="Java"
+public class DataTypeHomework02{
+	public static void main(String[] args){
+		int a = 100;
+		int b = 200;
+	
+		// 交换两个变量中的数据
+		int temp = a;
+		a = b;
+		b = temp;
+
+		int result = a + b;
+
+		System.out.println(a + "+" + b + "=" + result);
+		// System.out.println(a+ "+需要变量动态的插入=" + result ); 
+
+		简单实现一个登录功能
+		String username = "jackson";
+        
+		// 掌握字符串的拼接技巧。（将变量拼接到一个字符串当中。）
+		System.out.println("登录成功，欢迎 " + name + " 回来");
+
+	}
+}
+```
+**输出结果：**
+
+```java title="Java"
+200+100=300
+登录成功, 欢迎jackson回来
+```
+
+3. 请分析以下程序中哪些是可以编译通过的，哪些是报错的
+
+> **总结：`基本数据类型转换规则`**
+
+1. 八种基本数据类型中除了boolean类型之外，剩下7个都是可以互相转换的。
+
+2. 小容量可以自动转换成大容量，称为自动类型转换，容量从小到大排序：
+		byte < short < int < long < float < double
+		       char  <
+3. 大容量不能自动转换成小容量，必须添加强制类型转换符，编译才能通过。但是运行时可能损失精度。
+
+4. 当整数型字面量没有超出byte short char的范围时，可以直接将其赋值给byte short char类型的变量。
+
+5. byte short char混合运算时，各自先转换成int再做运算。
+
+6. 多种数据类型混合运算时，各自先转换成最大的容量，再做运算。
+
+```java title="Java"
+/*
+总结：基本数据类型转换规则
+	1.八种基本数据类型中除了boolean类型之外，剩下7个都是可以互相转换的。
+	2.小容量可以自动转换成大容量，称为自动类型转换，容量从小到大排序：
+		byte < short < int < long < float < double
+		       char  <
+	3.大容量不能自动转换成小容量，必须添加强制类型转换符，编译才能通过。但是运行时可能损失精度。
+	4.当整数型字面量没有超出byte short char的范围时，可以直接将其赋值给byte short char类型的变量。
+	5.byte short char混合运算时，各自先转换成int再做运算。
+	6.多种数据类型混合运算时，各自先转换成最大的容量，再做运算。
+*/
+public class DataTypeHomework03{
+	public static void main(String[] args){
+		// 通过
+		short s = 100;
+		// 报错：大容量不能直接赋值给小容量
+		s = s - 99;
+		// 通过
+		byte b = 100;
+		// 报错
+		b = b + 1;
+		// 通过
+		char c = 'a';
+		// 通过
+		int i = 20;
+		// 通过
+		float f = .3F;
+		// 通过
+		double d = c + i + f;
+		// 通过
+		byte b1 = 11;
+		// 通过
+		short s1 = 22;
+		// 报错
+		short x = b1 + s1;
+	}
+}
+```
+
+## 运算符
+
+**算术运算符：+、-、*、/、%、++、-- (重点)**
+
+**关系运算符：==、!=、>、>=、<、<= (重点)**
+
+**逻辑运算符：&、|、!、&&、|| (重点)**
+
+**按位运算符：&、|、^、~、<<、>>、>>> (重点)**
+
+**赋值运算符：=、+=、-=、*=、/=、%=、&=、|=、^=、<<=、>>=、>>>= (重点)**
+
+**条件运算符：?: (重点)**
+
+instanceof运算符：instanceof (了解, Java面向对象学习)
+
+new运算符：new (了解, Java面向对象学习)
+
+.运算符：. (了解, Java方法学习)
+
+> **注意：运算符有`优先级`，关于优先级不需要记忆，不确定的`添加小括号`，添加小括号的`优先级高`，会先`执行`**
+
+
+### 算术运算符
+
+1. + ：求和、字符串拼接、正数
+
+```java title="Java"
+int a = 10;
+int b = +3;
+int c = a + b;
+System.out.println(a + "+" + b + "=" + c);
+
+输出：10+3=13
+```
+
+2. - ：相减、负数
+
+```java title="Java"
+int d = 10;
+int e = -3;
+int f = d - e;
+System.out.println(d + "-(" + e + ")=" + f); // 13
+
+输出：10-(-3)=13
+```
+
+3. * ：乘积
+
+```java title="Java"
+int x = 10;
+int y = 3;
+System.out.println(x + "*" + y + "=" + x * y); // 30
+
+输出：10*3=30
+```
+
+4. / ：商（除法）
+
+```java title="Java"
+int m = 10;
+int n = 3;
+System.out.println(m + "/" + n + "=" + m / n); // 3
+
+输出：10/3=3
+```
+
+5. % ：取模（求余数）
+
+```java title="Java"
+int x = 10;
+int y = 3;
+System.out.println(x % y); // 1
+
+输出：1
+```
+
+6. 取模公式：x - x / y * y
+
+```java title="Java"
+// x - x / y * y
+// -10 - (-10) / 3 * 3
+// -10 - (-3) * 3
+// -10 - (-9)
+// -10 + 9
+// -1
+x = -10;
+System.out.println(x % y); // -1
+
+输出：-1
+
+
+// x - x / y * y
+// 10 - 10 / (-3) * (-3)
+// 10 - (-3) * (-3)
+// 10 - 9
+// 1
+x = 10;
+y = -3;
+System.out.println(x % y); // 1
+
+输出：1
+```
+
+7. ++ ：自加1
+
+```java title="Java"
+int i = 10;
+// 一元运算符
+i++;
+System.out.println("i = " + i); // 11
+
+输出：i = 11
+```
+
+8. -- ：自减1
+
+```java title="Java"
+i = 100;
+i--;
+System.out.println("i = " + i); // 99
+
+输出：i = 99
+```
+
+**示例代码:**
+
+```java title="Java"
+/*
+	算术运算符：
+		1. 算术运算符包括哪些？
+			+ ： 求和，字符串拼接，正数
+			- ： 相减，负数
+			* ： 乘积
+			/ ： 商（除以）
+			% ： 取模（求余数）
+					取模公式：x - x / y * y
+			++ ：让变量自身加1
+			-- ：让变量自身减1
+*/
+public class OperatorTest01{
+	public static void main(String[] args){
+		
+		int a = 10;
+		int b = +3;
+		int c = a + b;
+		System.out.println(a + "+" + b + "=" + c);
+
+		int d = 10;
+		int e = -3;
+		int f = d - e;
+		System.out.println(d + "-(" + e + ")=" + f);
+
+		/*
+		int x = 10;
+		int y = 3;
+		System.out.println(x + "*" + y + "=" + x * y);
+		*/
+
+		int m = 10;
+		int n = 3;
+		System.out.println(m + "/" + n + "=" + m / n);
+		
+		int x = 10;
+		int y = 3;
+		System.out.println(x % y); // 1
+
+		// x - x / y * y
+		// -10 - (-10) / 3 * 3
+		// -10 - (-3) * 3
+		// -10 - (-9)
+		// -10 + 9
+		// -1
+		x = -10;
+		System.out.println(x % y); // -1
+
+
+		// x - x / y * y
+		// 10 - 10 / (-3) * (-3)
+		// 10 - (-3) * (-3)
+		// 10 - 9
+		// 1
+		x = 10;
+		y = -3;
+		System.out.println(x % y); // 1
+
+		int i = 10;
+		// 一元运算符
+		i++;
+		System.out.println("i = " + i); // 11
+
+		i = 100;
+		i--;
+		System.out.println("i = " + i); // 99
+
+	}
+}
+```
+
+**输出结果:**
+
+![算术运算符](./Java基础语法/算术运算符.jpg)
