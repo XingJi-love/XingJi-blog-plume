@@ -1,4 +1,9 @@
-# MySQL | DQL语句-子查询
+---
+title: MySQL | DQL语句-子查询
+tags:
+  - MySQL
+cover: /MySQL.png
+---
 
 ![MySQL安装教程](./MySQL安装教程/MySQL.png)
 
