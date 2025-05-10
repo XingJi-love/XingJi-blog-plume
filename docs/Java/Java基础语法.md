@@ -2599,3 +2599,1091 @@ public class OperatorTest01{
 **输出结果:**
 
 ![算术运算符](./Java基础语法/算术运算符.jpg)
+
+
+#### ++ 自加1 和 -- 自减1 (面试重点)
+
+1. ++ 可以出现在变量前，也可以出现在变量后。
+
+++i; 可以
+i++; 也可以
+
+像++这种运算符，只有一边有操作数，我们把这种运算符称为：一元运算符。
+
+a + b，这里的+两边有两个操作数，所以这种运算符被称为：二元运算符。
+
+2. 无论++出现在变量前，还是变量后，执行结束后，都会让变量中的值自加1.
+
+3. 当 ++ 出现在变量后？？？？
+
+先赋值后自加1
+
+4. 当 ++ 出现在变量前？？？？
+
+先自加1后赋值
+
+**示例代码:**
+
+```java title="Java"
+/*
+++ 自加1
+-- 自减1
+
+1. ++ 可以出现在变量前，也可以出现在变量后。
+		++i; 可以
+		i++; 也可以
+
+		像++这种运算符，只有一边有操作数，我们把这种运算符称为：一元运算符。
+
+		a + b，这里的+两边有两个操作数，所以这种运算符被称为：二元运算符。
+
+2. 无论++出现在变量前，还是变量后，执行结束后，都会让变量中的值自加1.
+
+3. 当 ++ 出现在变量后？？？？
+		先赋值后自加1
+
+4. 当 ++ 出现在变量前？？？？
+		先自加1后赋值。	
+*/
+public class OperatorTest02{
+	public static void main(String[] args){
+		int i = 10;
+		i++;
+		System.out.println("i = " + i); // 11
+
+		int a = 10;
+		++a;
+		System.out.println("a = " + a); // 11
+
+		int k = 10;
+		int f = k++; // 运算原理：先将k中的值赋值给f，然后k变量自己再加1
+		System.out.println("k = " + k); // 11
+		System.out.println("f = " + f); // 10
+
+		int e = 100;
+		int x = ++e;
+		System.out.println("e = " + e); // 101
+		System.out.println("x = " + x); // 101
+
+		int y = 100;
+		System.out.println(y++); // 100
+		System.out.println(y); // 101
+
+		int z = 100;
+		System.out.println(++z); //101
+		System.out.println(z); //101
+	}
+}
+
+/*
+PrintStream中的源码：
+public void println(int x) {
+        if (getClass() == PrintStream.class) {
+            writeln(String.valueOf(x));
+        } else {
+            synchronized (this) {
+                print(x);
+                newLine();
+            }
+        }
+    }
+*/
+```
+
+**输出结果:**
+
+```java title="Java"
+i = 11
+a = 11
+k = 11
+f = 10
+e = 101
+x = 101
+100
+101
+101
+101
+```
+
+#### 栈数据结构（Stack）
+
+> **栈结构特点：**
+
+1. 先进后出
+
+2. 后进先出
+
+> **相关术语：**
+
+1. 入栈、压栈、push
+
+2. 出栈、弹栈、pop
+
+3. 栈帧
+
+4. 栈顶、栈底
+
+![栈的运行原理](./Java基础语法/栈的运行原理.jpg)
+
+##### 字节码解读
+
+1. 查看字节码的命令：javap -c 字节码文件
+
+2. 查看以下程序的字节码
+
+```java title="Java"
+public class ReadClass{
+    	public static void main(String[] args){
+        	int i = 10;
+            int j = i;
+            j++;
+    }
+}
+
+字节码解读：
+/*
+Compiled from "ReadClass.java"
+public class ReadClass {
+  public ReadClass();
+    Code:
+       0: aload_0
+       1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+       4: return
+
+  public static void main(java.lang.String[]);
+    Code:
+       0: bipush        10
+       2: istore_1
+       3: iload_1
+       4: istore_2
+       5: iinc          2, 1
+       8: return
+}
+*/
+1. bipush 10：将字面量压入操作数栈
+
+2. istore_1：将操作数栈顶的10弹出，然后将其存放到局部变量表的第1个位置
+
+3. iload_1：将局部变量表的第1个位置的数据压入操作数栈
+
+4. istore_2：将操作数栈顶的11弹出，然后将其存放到局部变量表的第2个位置
+
+5. iinc 2, 1：将局部变量表的第2个位置数据加1，然后存放到局部变量表的第2个位置
+
+6. return：结束方法
+```
+
+3. 查看字节码：javap -c ReadClass.class
+
+4. **字节码指令：(重点)**
+
+> **bipush指令：将字面量压入操作数栈**
+
+> **istore_1指令：将操作数栈中顶部数据弹出，然后将该数据存放到局部变量表的第1个位置**
+
+> **iload_1指令：将局部变量表1号槽位的数据压入操作数栈**
+
+> **iinc指令：将局部变量表中第1个位置数据加1**
+
+5. 什么是局部变量表和操作数栈？
+
+![局部变量表和操作数栈](./Java基础语法/局部变量表和操作数栈.jpg)
+
+6. 字节码原理演示
+
+> **字节码指令：**
+
+1. bipush        10
+
+2. istore_1
+
+3. iload_1
+
+4. istore_2
+
+5. iinc          2, 1
+
+6. return
+
+> **字节码指令执行过程：**
+
+1. bipush 10：将字面量压入操作数栈
+
+![bipush 10](./Java基础语法/将10压入操作数栈.jpg)
+
+2. istore_1：将操作数栈顶的10弹出，然后将其存放到局部变量表的第1个位置
+
+![istore_1](./Java基础语法/将操作数栈的栈顶存放到局部变量表的第1个位置.jpg)
+
+3. iload_1：将局部变量表的第1个位置的数据压入操作数栈
+
+![iload_1](./Java基础语法/复制一份压入操作数栈中.jpg)
+
+4. istore_2：将操作数栈顶的10弹出，然后将其存放到局部变量表的第2个位置
+
+![istore_2](./Java基础语法/将操作数栈中的10弹出存放到局部变量的第2个位置.jpg)
+
+5. iinc 2, 1：将局部变量表的第2个位置数据加1，然后存放到局部变量表的第2个位置
+
+![iinc 2, 1](./Java基础语法/局部变量的2号位数加1变为11存放.jpg)
+
+6. return：结束方法
+
+**示例代码:**
+
+```java title="Java"
+例1：
+public class ReadClass01 {
+    public static void main(String[] args) {
+        int i = 10;
+
+
+    }
+}
+
+/*
+Compiled from "ReadClass01.java"
+public class ReadClass01 {
+  public ReadClass01();
+    Code:
+       0: aload_0
+       1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+       4: return
+
+  public static void main(java.lang.String[]);
+    Code:
+       0: bipush        10
+       2: istore_1
+       3: return
+}
+*/
+
+
+例2：
+public class ReadClass02 {
+    public static void main(String[] args) {
+        int i = 10;
+        int j = i;
+    }
+}
+
+/*
+Compiled from "ReadClass02.java"
+public class ReadClass02 {
+  public ReadClass02();
+    Code:
+       0: aload_0
+       1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+       4: return
+
+  public static void main(java.lang.String[]);
+    Code:
+       0: bipush        10
+       2: istore_1
+       3: iload_1
+       4: istore_2
+       5: return
+}
+*/
+
+
+例3：
+public class ReadClass03 {
+    public static void main(String[] args) {
+        int i = 10;
+        int j = i;
+        j++;
+    }
+}
+
+/*
+Compiled from "ReadClass03.java"
+public class ReadClass03 {
+  public ReadClass03();
+    Code:
+       0: aload_0
+       1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+       4: return
+
+  public static void main(java.lang.String[]);
+    Code:
+       0: bipush        10
+       2: istore_1
+       3: iload_1
+       4: istore_2
+       5: iinc          2, 1
+       8: return
+}
+*/
+
+
+例4：
+public class ReadClass04 {
+    public static void main(String[] args) {
+        int i = 10;
+        int j = i++;
+    }
+}
+
+/*
+Compiled from "ReadClass04.java"
+public class ReadClass04 {
+  public ReadClass04();
+    Code:
+       0: aload_0
+       1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+       4: return
+
+  public static void main(java.lang.String[]);
+    Code:
+       0: bipush        10
+       2: istore_1
+       3: iload_1
+       4: iinc          1, 1
+       7: istore_2
+       8: return
+}
+*/
+
+
+例5：
+public class ReadClass05 {
+    public static void main(String[] args) {
+        int i =10;
+        int j = ++i;
+    }
+}
+
+/*
+Compiled from "ReadClass05.java"
+public class ReadClass05 {
+  public ReadClass05();
+    Code:
+       0: aload_0
+       1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+       4: return
+
+  public static void main(java.lang.String[]);
+    Code:
+       0: bipush        10
+       2: istore_1
+       3: iinc          1, 1
+       6: iload_1
+       7: istore_2
+       8: return
+}
+*/
+```
+
+
+#### 算术运算符作业
+
+> **题目1：采用字节码解读的方式分析以下`代码的区别`**
+
+```java title="Java"
+int i = 10;
+int k = i++;
+
+先赋值后自加1
+
+int i = 10;
+int k = ++i;
+
+先自加1后赋值
+```
+
+> **题目2：以下程序`输出结果`是？**
+
+```java title="Java"
+int a = 5;
+int b = a++;
+b = a++;
+System.out.println("a = " + a); // 7
+System.out.println("b = " + b); // 6
+
+int c = 10;
+int d = --c;
+System.out.println("c = " + c); // 9
+System.out.println("d = " + d); // 9
+```
+
+题目3：以下程序输出结果是？
+
+```java title="Java"
+int i = 10;
+int k = i++ + ++i;
+System.out.println(k); // 22
+1. i++ 先自加1，然后赋值给k
+2. ++i 先自加1，然后赋值给k
+3. 所以k = 10 + 12 = 22
+
+
+int f = 10;
+int m = f++ +f;
+System.out.println(m); // 21
+1. f++ 先自加1，然后赋值给m
+2. f 再自加1，然后赋值给m
+3. 所以m = 10 + 11 = 21
+
+System.out.println(f); // 11
+1. f++ 先自加1，然后赋值给f
+2. 所以f = 11
+```
+
+> **题目4：以下程序输出结果是？`经典面试题`**
+
+```java title="Java"
+int i = 10;
+i = i++;
+System.out.println(i); // 10
+（底层实现原理，实际上是找了一个临时的变量，将10先存起来一份。再做  ++，然后将10再重新覆盖掉11）
+
+/*
+	int j = 10;
+	int temp = j;
+	j++;
+	j = temp;
+*/
+/*
+    0: bipush       10
+    2: istore_1
+    3: iload_1
+    4: iinc        1, 1
+    7: istore_1
+}
+*/
+
+
+int i = 10;
+i = ++i;
+System.out.println(i); // 11
+```
+
+> **题目5：从键盘上接收一个整数三位数，请分别输出它的个位、十位、百位。**
+
+```java title="Java"
+/*
+题目5：从键盘上接收一个整数三位数，请分别输出它的个位、十位、百位。
+*/
+public class OperatorHomework04 {
+    public static void main(String[] args) {
+        java.util.Scanner scanner = new java.util.Scanner(System.in);
+        System.out.println("请输入一个三位数: ");
+        int num = scanner.nextInt();
+
+        System.out.println("个位：" + num % 10); // 取余数
+        System.out.println("十位：" + num / 10 % 10); // 取商和余数
+        System.out.println("百位：" + num / 100); // 取商
+    }
+}
+```
+**输出结果:**
+![算术运算符作业-第五题-输出一个三位整数的百位十位个位](./Java基础语法/算术运算符作业-第五题-输出一个三位整数的百位十位个位.jpg)
+
+
+> **题目6：681分钟是多少个小时+多少分钟。**
+
+```java title="Java"
+/*
+题目6：681分钟是多少个小时+多少分钟。
+*/
+public class OperatorHomework05 {
+    public static void main(String[] args) {
+        int total = 681;
+
+        int h = total / 60; // 取商
+
+        int m = total % 60; // 取余数
+
+        System.out.println(total + "分钟是" + h + "小时" + m + "分钟");
+    }
+}
+```
+**输出结果:**
+
+![算术运算符作业-第六题-输出681分钟是多少个小时+多少分钟](./Java基础语法/算术运算符作业-第六题-输出681分钟是多少个小时+多少分钟.jpg)
+
+
+### 关系运算符
+
+1. 关系运算符又叫做`比较运算符`。包括：`>、 >=、 <、 <=、 ==、 !=`
+
+2. 所有关系运算符的`运算结果都是布尔类型`，`不是true，就是false`。
+
+```java title="Java"
+/*
+	关系运算符：
+		>
+		>=
+		<
+		<=
+		==
+		!=
+	
+	所有的关系运算符运算结果一定是布尔类型：true/false
+
+	= 赋值运算符
+	== 可以比较两个值是否相等
+
+	关系运算符又叫做比较运算符。
+*/
+public class OperatorTest03{
+	public static void main(String[] args){
+		int a = 10;
+		int b = 10;
+		System.out.println(a > b); // false
+		System.out.println(a >= b); // true
+		System.out.println(a < b); // false
+		System.out.println(a <= b); // true
+		System.out.println(a == b); // true
+		System.out.println(a != b); // false
+	}
+}
+```
+
+
+### 逻辑运算符
+
+1. **逻辑运算符：`&（逻辑与）`、 `|（逻辑或）`、 `!（逻辑非）`、`^（逻辑异或）`、` &&（短路与）`、 `||（短路或）`**
+
+2. **逻辑运算符特点：`逻辑运算符两边的操作数`要求`必须是布尔类型`，并且最终运算`结果也一定是布尔类型`。**
+
+3. **`逻辑与&`：`两边操作数都是true，结果才是true`。可以翻译为“并且”。**
+
+4. **`逻辑或|`：`两边操作数只要有一个是true，结果就是true`。可以翻译为“或者”。**
+
+5. **`逻辑非!`： `!false就是true，!true就是false`。**
+
+6. **`逻辑异或^`：`咱俩不一样`，`结果`就是`true`。**
+
+7. **`短路与&&`：`和逻辑与&的运算结果相同`。只是存在一种`短路现象`。`（左边操作数为false时，右边操作数不执行）`**
+
+8. **`短路或||`：`和逻辑或|的运算结果相同`。只是存在一种`短路现象`。`（左边操作数为true时，右边操作数不执行）`**
+
+9. 虽然短路与&&效率高于逻辑与&，但逻辑与&也有用武之地，具体看需求是怎样的。
+
+**示例代码:**
+```java title="Java"
+/*
+逻辑运算符
+1.逻辑运算符有哪些？ 
+	&	逻辑与（并且）   左右两边都是true，结果就是true。只要有一个是false，结果就是false。
+	|	逻辑或（或者）	  左右两边只要有一个是true，结果就是true。两边都是false，结果才是false。
+	^	逻辑异或		  咱俩不一样，结果就是true。
+	!	逻辑非			  !false结果就是true。!true结果就是false。
+
+	&&	短路与（并且）   和逻辑与运算结果是完全相同的，没有区别。只不过&&存在短路现象。（左边是false发生短路现象。）
+	||	短路或（或者）   和逻辑或运算结果是完全相同的，没有区别。只不过||存在短路现象。（左边是true发生短路现象。）
+
+	注意：开发中优先使用短路与和短路或，效率较高。
+
+2. 逻辑运算符的特点：
+	逻辑运算符两边的操作数要求是布尔类型。
+	并且最终运算结果也是一个布尔类型。
+
+*/
+public class OperatorTest04{
+	public static void main(String[] args){
+		int a = 100;
+		int b = 99;
+
+		System.out.println(a > b & a > ++b); // false
+
+		System.out.println(true & true); // true
+		System.out.println(true & false); // false
+		System.out.println(false & true); // false
+		System.out.println(false & false); // false
+
+		System.out.println(true | true); // true
+		System.out.println(true | false); // true
+		System.out.println(false | true); // true
+		System.out.println(false | false); // false
+
+		System.out.println(!false); // true
+		System.out.println(!true); // false
+
+		System.out.println(true ^ false); // true
+		System.out.println(false ^ true); // true
+		System.out.println(true ^ true); // false
+		System.out.println(false ^ false); // false
+
+		
+		/*
+		int x = 99;
+		int y = 100;
+		// 逻辑与 &
+		System.out.println(x > y & x > ++y);
+		System.out.println("y = " + y); // 101
+		*/
+
+		int x = 99;
+		int y = 100;
+		// 短路与 &&
+		System.out.println(x > y && x > ++y);
+		System.out.println("y = " + y); // 100
+	}
+}
+```
+
+
+### 按位运算符
+
+> **按位运算符用于在`二进制位`级别上`处理整数数据`。主要包括：**
+
+1. 左移 <<
+
+2. 右移 >>
+
+3. 无符号右移 >>>
+
+4. 按位与 &
+
+5. 按位或 |
+
+6. 按位异或 ^
+
+7. 按位取反 ~
+
+> **注意：按位运算符的操作数要求`必须是整数`。否则会`出现编译错误`**
+
+
+#### 左移 <<
+
+> 它能够将一个二进制数的所有位向左移动指定的位数。左移运算符的运算规则如下：
+
+1. **将二进制数左移n位，相当于将数值乘以2的n次方。**
+
+例如，将二进制数0b1011左移2位，即为0b101100，相当于将11乘以2的2次方（即4），得到44。
+
+2. **`左移运算符不会改变操作数的符号`。`左移后，右补0`。**
+
+无论操作数是正数、负数还是零，左移运算符都只进行位级移动，不会改变符号。
+
+3. **左移运算符会对溢出进行截断。**
+
+4. 应用一下：如何将2快速变成8？(经典面试题)
+
+```java title="Java"
+/*
+经典面试题：怎么让2快速变成8？
+*/
+int x = 2;
+
+//System.out.println(x * 4);
+
+System.out.println(x << 2);
+```
+
+![左移运算符](./Java基础语法/左移运算符.jpg)
+
+
+**示例代码:**
+
+```java title="Java"
+/*
+	按位运算符：
+		1. 左移运算符 <<
+
+		2. 规则：
+			左移n位，结果是乘以2的n次方。
+		
+		3. 溢出的会被截断。右侧补0.
+
+		4. 左移的时候符号位不变。
+
+		5. 注意：任何位运算符，操作的都是补码。
+*/
+public class OperatorTest05{
+	public static void main(String[] args){
+		
+		/*
+			原码：00000000 00000000 00000000 00000001
+			反码：00000000 00000000 00000000 00000001
+			补码：   00000000 00000000 00000000 00000001
+			左移3位：00000 00000000 00000000 00000001000（补码）
+		*/
+		int a = 1;
+		System.out.println(a << 3); // 8（1 * 2的3次方）
+		
+		/*
+			原码：00000000 00000000 00000000 10000000
+			反码：00000000 00000000 00000000 10000000
+			补码：   00000000 00000000 00000000 10000000
+			左移2位：000000 00000000 00000000 1000000000
+		*/
+		int b = 128;
+		System.out.println(b << 2); // 512（128 * 2的2次方）
+
+		
+		/*
+			原码：10000000 00000000 00000000 01100100
+			反码：11111111 11111111 11111111 10011011
+			补码：   11111111 11111111 11111111 10011100
+			左移2位：111111 11111111 11111111 1001110000（补码）
+			原码：   100000 00000000 00000000 0110010000
+		*/
+		int c = -100;
+		System.out.println(c << 2); // -400（-100 * 2的2次方）
+
+
+		/*
+			经典面试题：怎么让2快速变成8？
+		*/
+		int x = 2;
+
+		//System.out.println(x * 4);
+
+		System.out.println(x << 2);
+
+	}
+}
+```
+
+**输出结果:**
+
+```java title="Java"
+8
+512
+-400
+```
+
+#### 右移 >>
+
+> **它能够将一个二进制数的所有位向右移动指定的位数。右移运算符的运算规则如下：**
+
+1. 将二进制数右移n位，相当于将数值除以2的n次方。
+
+例如，将二进制数0b101100右移2位，即为0b1011，相当于将44除以2的2次方（即4），得到11。
+
+2. 右移运算符对正数、负数和零的处理方式不同。
+
+**对于正数，符号位不变，右移时左补0**
+
+**对于负数，符号位不变，右移时左补1。**
+
+**对于零，右移运算符操作后结果仍为零。**
+
+3. 右移运算符会对溢出进行截断。
+
+
+**示例代码:**
+
+```java title="Java"
+/*
+右移运算符 >>
+
+	它能够将一个二进制数的所有位向右移动指定的位数。右移运算符的运算规则如下：
+
+		1. 将二进制数右移n位，相当于将数值除以2的n次方。
+
+		2. 右移运算符对正数、负数和零的处理方式不同。
+			对于正数，符号位不变，右移时左补0
+			对于负数，符号位不变，右移时左补1。
+			对于零，右移运算符操作后结果仍为零。
+
+		3. 右移运算符会对溢出进行截断。
+
+*/
+public class OperatorTest06{
+	public static void main(String[] args){
+		/*
+			原码：00000000 00000000 00000000 00000001
+			反码：00000000 00000000 00000000 00000001
+			补码：   00000000 00000000 00000000 00000001
+			右移1位：000000000 00000000 00000000 0000000
+		*/
+		int a = 1;
+		System.out.println(a >> 1); // 0
+
+		/*
+			00000000 00000000 0000000 10000000
+			000000000000 00000000 0000000 1000
+		*/
+		int b = 128;
+		System.out.println(b >> 4); // 8
+
+		/*
+			原码：10000000 00000000 00000000 10000000
+			反码：11111111 11111111 11111111 01111111
+			补码：11111111 11111111 11111111 10000000
+			右移：111111111111 11111111 11111111 1000（补码）
+			原码：100000000000 00000000 00000000 1000
+		*/
+		int c = -128;
+		System.out.println(c >> 4); // -8
+	}
+}
+```
+
+**输出结果:**
+
+```java title="Java"
+0
+8
+-8
+```
+
+#### 无符号右移 >>>
+
+**它能够将一个二进制数的所有位向右移动指定的位数，而`不考虑符号位`。无符号右移运算符的运算规则如下：**
+
+1. 将二进制数右移n位，相当于将`数值除以2的n次方`，并将`最高位填充为0`。
+
+2. 任意一个数字经过无符号右移之后，最终结果一定是非负数（0或正整数）
+
+3. 无符号右移运算符对溢出进行截断。
+
+**示例代码:**
+
+```java title="Java"
+/*
+无符号右移：>>>
+	1. 溢出后的截断。
+	2. 无符号右移之后，最终的结果一定是0或者正整数。
+	3. 无符号右移之后，左侧补0.（不管是正数还是负数，都是补0）
+*/
+public class OperatorTest07{
+	public static void main(String[] args){
+		
+		/*
+			原码：10000000
+			反码：11111111
+				  10000000（补码）
+			      00100000（无符号右移2位）
+		*/
+		byte b = -128;
+		
+		/*
+			为什么输出结果不是32？
+				b >>> 2。
+				byte和int混合运算。会先将byte转换成int，再做运算。
+			
+			int b = -128;
+			原码：10000000 00000000 00000000 10000000
+			反码：11111111 11111111 11111111 01111111
+			补码：11111111 11111111 11111111 10000000
+			右移：0011111111 11111111 11111111 100000（补码）
+		*/
+		System.out.println(b >>> 2); // 1073741792
+
+		//System.out.println(0b00111111111111111111111111100000); // 1073741792
+
+		// 11100000（补码）
+		// 10100000（原码）
+		System.out.println((byte)(b >>> 2)); // -32
+
+		/*
+			原码：10000000 00000000 00000000 01011010
+			反码：11111111 11111111 11111111 10100101
+			补码：11111111 11111111 11111111 10100110
+			右移：00011111111 11111111 11111111 10100
+		*/
+		int x = -90;
+		System.out.println(x >>> 3);
+		System.out.println(0b00011111111111111111111111110100);
+
+		/*
+			00000000 00000000 00000000 01011010
+			00000000000 00000000 00000000 01011
+		*/
+		int y = 90;
+		System.out.println(y >>> 3); // 11
+	}
+}
+```
+
+**输出结果:**
+
+```java title="Java"
+1073741792
+-32
+536870900
+536870900
+11
+```
+
+
+#### 按位与 &
+
+**按位与运算符：&**
+```java title="Java"
+`1&1 -> 1`
+`1&0 -> 0`
+`0&1 -> 0`
+`0&0 -> 0`
+```
+
+1. 将两个整数的二进制表示`按位进行与运算`，只有当相应的`二进制位都为1`时，`结果才为1`，`否则结果为0`
+
+```java title="Java"
+int a = 32;
+int b = 25;
+System.out.println(a & b); // 0
+
+a的二进制：00100000
+b的二进制：00011001
+按位与之后：00000000
+```
+
+> **应用一下：请使用`按位与运算符判断`某个数字`是否为奇数`？**
+
+**思路：拿着这个数字和1进行按位与，如果结果是1，则表示该数字为奇数。**
+
+```java title="Java"
+/*
+怎么判断一个数字是否为奇数？
+	第一种方式：对2取模，结果不等于0，表示奇数。
+	第二种方式：让这个数字和1进行按位与操作，结果是1，表示是奇数。
+		*/
+int num = 35;
+
+if(num % 2 != 0){
+	System.out.println(num + "是奇数");
+}
+
+		/*
+			00100011
+		  & 00000001
+		  -------------
+		    00000001
+		*/
+if((num & 1) == 1){ // 注意运算符优先级问题。
+	System.out.println(num + "是奇数");
+	// 先计算num & 1，再进行判断。
+	// 1 & 1 = 1
+}
+```
+
+
+**示例代码:**
+
+```java title="Java"
+/*
+	按位运算符：
+		按位与运算符：&
+		1&1 -> 1
+		1&0 -> 0
+		0&1 -> 0
+		0&0 -> 0
+*/
+
+public class OperatorTest08{
+	public static void main(String[] args){
+		// 00100011
+		int a = 35;
+		// 00011010
+		int b = 26;
+		/*
+			00100011
+		&   00011010
+		-------------------
+		    00000010
+		*/
+		System.out.println(a & b); // 2
+
+		/*
+			怎么判断一个数字是否为奇数？
+				第一种方式：对2取模，结果不等于0，表示奇数。
+				第二种方式：让这个数字和1进行按位与操作，结果是1，表示是奇数。
+		*/
+		int num = 35;
+
+		if(num % 2 != 0){
+			System.out.println(num + "是奇数");
+		}
+
+		/*
+			00100011
+		  & 00000001
+		  -------------
+		    00000001
+		*/
+		if((num & 1) == 1){ // 注意运算符优先级问题。
+			System.out.println(num + "是奇数");
+		}
+
+
+	}
+}
+```
+**输出结果:**
+
+```java title="Java"
+2
+35是奇数
+35是奇数
+```
+
+
+#### 按位或 |
+
+1. **将两个整数的`二进制表示按位进行或运算`，只有当相应的`二进制位都为0`时，`结果才为0`，`否则结果为1`**
+
+```java title="Java"
+int a = 32;
+int b = 25;
+System.out.println(a | b); // 57
+
+a的二进制：00100000
+b的二进制：00011001
+按位或之后：00111001
+```
+
+2. 应用一下：请将0这个数字中第4位的二进制位设置为1（按位或的具体应用，将某个二进制位设置为1）
+
+```java title="Java"
+int flag = 0;
+flag = flag | (1 << 3);
+System.out.println(flag); // 8
+
+1的二进制：00000001
+左移3位：00001000
+0的二进制：00000000
+
+按位或之后：00001000
+```
+
+**示例代码:**
+
+```java title="Java"
+/*
+	按位或运算符：
+		1|0 ：1
+		0|1 ：1
+		1|1 ：1
+		0|0 ：0
+*/
+public class OperatorTest09{
+	public static void main(String[] args){
+		// 00100011
+		int a = 35;
+		// 00011011
+		int b = 27;
+		/*
+			00100011
+		|	00011011
+		----------------
+			00111011
+		*/
+		System.out.println(a | b); // 59
+
+		/*
+			具体应用：设置标志位。（按位或的具体应用。）
+			将0这个数字的二进制位低位第4个二进制位设置为1.
+		*/
+		int flag = 0;
+		flag = flag | (1 << 3);
+		System.out.println(flag); // 8
+
+	}
+}
+```
+**输出结果:**
+
+```java title="Java"
+59
+8
+```
+
+
+#### 按位异或 ^
