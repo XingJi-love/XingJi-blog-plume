@@ -2397,7 +2397,90 @@ public class DataTypeHomework03{
 }
 ```
 
-## 运算符
+## 键盘录入_Scanner
+
+```java
+1.概述:是java定义好的一个类
+2.作用:将数据通过键盘录入的形式放到代码中参与运行 
+3.位置:java.util
+4.使用:
+  a.导包:通过导包找到要使用的类 -> 导包位置:类上
+    import java.util.Scanner -> 导入的是哪个包下的哪个类
+      
+  b.创建对象
+    Scanner 变量名 = new Scanner(System.in);
+
+  c.调用方法,实现键盘录入
+    变量名.nextInt() 输入整数int型的
+    变量名.next() 输入字符串  String型的  
+```
+
+![键盘录入_Scanner](./Java基础语法/键盘录入_Scanner.jpg)
+
+**示例代码：**
+```java
+public class Demo01Scanner {
+    public static void main(String[] args) {
+        //创建对象
+        Scanner sc = new Scanner(System.in);
+        //录入int型整数
+        int data1 = sc.nextInt();
+        System.out.println("data1 = " + data1);
+
+        //录入String型字符串
+        String data2 = sc.next();
+        System.out.println("data2 = " + data2);
+    }
+}
+
+====================================================
+public class Demo02Scanner {
+    public static void main(String[] args) {
+        //创建对象
+        Scanner sc = new Scanner(System.in);
+        //录入int型整数
+        int old1 = sc.nextInt();
+        int old2 = sc.nextInt();
+        int old3 = sc.nextInt();
+
+        int temp = old1>old2?old1:old2;
+        int max = temp>old3?temp:old3;
+        System.out.println(max);
+    }
+}
+    
+```
+
+> ```java
+> 变量名.next():录入字符串 -> 遇到空格和回车就结束录入了
+> 变量名.nextLine():录入字符串 -> 遇到回车就结束录入了
+> ```
+>
+> ```java
+> public class Demo03Scanner {
+>     public static void main(String[] args) {
+>         Scanner sc = new Scanner(System.in);
+>         String data1 = sc.next();
+>         String data2 = sc.nextLine();
+>         System.out.println(data1);
+>         System.out.println(data2);
+>     }
+> }
+> ```
+>
+> ```java
+> Exception in thread "main" java.util.InputMismatchException -> 输入类型不匹配异常
+> 	at java.base/java.util.Scanner.throwFor(Scanner.java:939)
+> 	at java.base/java.util.Scanner.next(Scanner.java:1594)
+> 	at java.base/java.util.Scanner.nextInt(Scanner.java:2258)
+> 	at java.base/java.util.Scanner.nextInt(Scanner.java:2212)
+> 	at com.atguigu.a_scanner.Demo04Scanner.main(Demo04Scanner.java:8)
+>     
+> 原因:录入的数据和要求的数据类型不一致    
+> ```
+>
+
+## 运算符-概述
 
 **算术运算符：+、-、*、/、%、++、-- (重点)**
 
@@ -3687,3 +3770,811 @@ public class OperatorTest09{
 
 
 #### 按位异或 ^
+
+按位异或：^
+	1 ^ 1: 0
+	0 ^ 0: 0
+	1 ^ 0: 1
+	0 ^ 1: 1
+
+1. 将两个整数的二进制表示按位进行`异或运算`，只有当相应的`二进制位不同`，`结果才为1`，`否则结果为0`
+
+```java title="Java"
+int a = 100;
+int b = 200;
+System.out.println(a ^ b); // 172
+
+a的二进制：01100100
+b的二进制：11001000
+按位异或之后：10101100
+```
+
+2. 按位异或运算符具有自反性，所谓的`自反性`是指：`数字A`连续对`数字B`进行`两次按位异或运算`之后，可以`得到原始的数字A`。因为按位异或运算符具有这样的特征，所以在密码学方面应用广泛。通常使用它可以完成加密和解密操作。
+
+3. 应用一下：按位异或可以实现简单的加密和解密。
+
+```java title="Java"
+/*
+具体应用：加密解密
+*/
+int data = 2147483647; // 原始数据，这个数据将来要进行加密的。
+		
+// 对以上的data进行加密
+// 秘钥（私人的，只有我知道这个钥匙）
+int key = 483;
+
+// 加密
+int password = data ^ key;
+System.out.println(password); // 2147483164
+
+// 解密
+int num = password ^ key;
+System.out.println(num);
+```
+
+**示例代码:**
+
+```java title="Java"
+/*
+	按位异或：^
+		1 ^ 1: 0
+		0 ^ 0: 0
+		1 ^ 0: 1
+		0 ^ 1: 1
+	
+	按位异或运算符具有自反性：
+		a ^ b ^ b ==> a
+*/
+public class OperatorTest10{
+	public static void main(String[] args){
+		// 00001010
+		int a = 10;
+		// 00000011
+		int b = 3;
+		/*
+			00001010
+		^	00000011
+		------------------
+			00001001
+
+		*/
+		System.out.println(a ^ b); // 9
+		
+		/*
+			00001001
+		^	00000011
+		----------------
+			00001010
+
+		*/
+		System.out.println(a ^ b ^ b); // 10
+
+		/*
+			具体应用：加密解密
+		*/
+		int data = 2147483647; // 原始数据，这个数据将来要进行加密的。
+		
+		// 对以上的data进行加密
+		// 秘钥（私人的，只有我知道这个钥匙）
+		int key = 483;
+
+		// 加密
+		int password = data ^ key;
+		System.out.println(password); // 2147483164
+
+		// 解密
+		int num = password ^ key;
+		System.out.println(num);
+
+	}
+}
+```
+**输出结果:**
+
+```java title="Java"
+9
+10
+2147483164
+2147483647
+```
+
+
+#### 按位取反 ~
+
+1. 将整数的二进制表示按位进行取反运算，即0变为1，1变为0
+
+```java title="Java"
+System.out.println(~100); // -101
+
+100的二进制：01100100
+取反后：10011011（这是一个补码哦）
+将补码转为原码：11100101 （-101）
+```
+
+2. 应用一下：位清除操作（将某个二进制位中指定位清除为0），例如有这样一个二进制：0b1111111111，将第4个低位清除为0
+
+```java title="Java"
+/*
+	按位取反的具体应用：将某个二进制位清0
+*/
+int value = 0b1111111111; // 待清0的数据（将低位第4个清0）
+int flag = (1 << 3);
+
+左移3位，得到00001000
+00000000 00000000 00000000 00001000 // flag
+
+11111111 11111111 11111111 11110111 // flag取反
+&00000000 00000000 00000011 11111111 
+------------------------------------
+00000000 00000000 00000011 11110111
+
+value = value & (~flag);
+System.out.println(value); // 1015
+```
+
+**示例代码:**
+
+```java title="Java"
+/*
+	按位取反：
+		~
+		~1 : 0
+		~0 : 1
+*/
+public class OperatorTest11{
+
+	public static void main(String[] args){
+
+		// 00000000 00000000 00000000 00001010
+		int a = 10;
+		
+		/*
+			取反：
+			11111111 11111111 11111111 11110101（补码）
+			10000000 00000000 00000000 00001011（原码）
+		*/
+		System.out.println(~a); // -11
+
+		/*
+			按位取反的具体应用：将某个二进制位清0
+		*/
+		int value = 0b1111111111; // 待清0的数据（将低位第4个清0）
+		int flag = (1 << 3);
+
+		// 11111111 11111111 11111111 11110111
+		//&00000000 00000000 00000011 11111111
+		//-------------------------------------
+		// 00000000 00000000 00000011 11110111
+		value = value & (~flag);
+
+		System.out.println(value);
+		System.out.println(0b1111110111);
+
+	}
+}
+```
+
+**输出结果:**
+
+```java title="Java"
+-11
+1015
+1015
+```
+
+
+### 赋值运算符
+
+1. 基本赋值运算符：=
+
+**= 等号右边先执行，将直接结果赋值给左边的变量**
+
+2. 扩展赋值运算符
+
++=、-=、*=、/=、%=、&=、|=、^=、>>=、<<=、>>>=
+
+以 `+= `为例。`i += 3; `表示 `i = i + 3;`
+`+= 就是先+后=`，也就是`先求和`，然后`将求和的结果重新赋值`。
+
+对于扩展赋值运算符来说，有一个非常重要的运算规则需要注意：扩展赋值运算符不会改变运算结果的类型。**（即使精度损失了，也不会改变运算结果类型。）**
+
+**示例代码:**
+
+```java title="Java"
+/*
+赋值运算符：
+
+	基本的赋值运算符：
+		=
+
+	扩展的赋值运算符：
+		+=
+		-=
+		*=
+		/=
+		%=
+		
+		以下的很少用：
+			>>=
+			<<=
+			>>>=
+			&=
+			|=
+			^=
+			~=
+	
+	特别注意：对于扩展赋值运算符来说，中间不能使用空格。
+		+= 是正确的。
+		+ = 是错误的。
+	
+	对于扩展的赋值运算符来说，永远都不会改变运算结果类型。哪怕精度损失。
+*/
+public class OperatorTest12{
+	public static void main(String[] args){
+		
+		// 基本的赋值运算符
+		int i = 10;
+		
+		// 重新赋值
+		i = 20;
+		System.out.println("i = " + i);
+
+		// 可以
+		byte b = 127;
+		
+		// 报错
+		//byte b2 = 128;
+
+		// +=
+		int k = 100;
+		// 以下这个代码完成了累加，给k再累加200
+		k = k + 200;
+		System.out.println("k = " + k);
+
+		int e = 100;
+		// 累加效果
+		e += 200; // 等同于 e = e + 200;
+		System.out.println("e = " + e);
+
+		int x = 10;
+		x *= 3;
+		System.out.println("x = " + x); // 30
+
+		x = 10;
+		x /= 3;
+		System.out.println("x = " + x); // 3
+
+		x = 10;
+		x %= 3;
+		System.out.println("x = " + x); // 1
+
+		x -= 100;
+		System.out.println("x = " + x); // -99
+
+		/*
+			i += 10; 和 i = i + 10; 完全一样吗？
+				i += 10; 自带强制类型转换。
+				i = i + 10; 没有强制类型转换。
+		*/
+		byte m = 10;
+		// 错误: 不兼容的类型: 从int转换到byte可能会有损失
+		//m = m + 20;
+
+		m += 20; // 底层实际上对应的是：m = (byte)(m + 20);
+		System.out.println("m = " + m);
+
+		m += 100000; // 底层实际上对应的是：m = (byte)(m + 100000);
+		System.out.println("m = " + m);
+	} 
+}
+```
+**输出结果:**
+
+```java title="Java"
+i = 20
+k = 300
+e = 300
+x = 30
+x = 3
+x = 1
+x = -99
+m = 30
+m = -66
+```
+
+
+### 条件运算符(三元运算符)
+
+1. 格式：`条件表达式 ? 表达式1 : 表达式2;`
+
+2. 执行流程：首先计算条件表达式的值，如果条件表达式的值为true，则执行表达式1，并返回表达式1的结果；如果条件表达式的值为false，则执行表达式2，并返回表达式2的结果。
+
+
+3. 下面是一个条件运算符的简单示例：
+```java title="Java"
+int a = 5, b = 7;
+int max = (a > b) ? a : b;
+System.out.println("最大值为：" + max);
+
+在上述代码中，首先定义了两个变量 a 和 b，然后使用条件运算符比较这两个变量的大小，取其中较大值作为变量 max 的值，最后输出结果。
+
+当 a > b 的结果为 false 时，条件运算符的结果为表达式2，即 b 的值为变量 max 的值。
+
+当 a > b 的结果为 true 时，条件运算符的结果为表达式1，即 a 的值为变量 max 的值。
+```
+
+4. 总的来说，条件运算符在 Java 中的使用相对简单，能够减少代码重复和代码量，常用于简单的条件处理和表达式值的判断。
+
+**示例代码:**
+```java title="Java"
+/*
+	条件运算符：三元运算符：三目运算符：
+
+		1. 语法格式：
+			布尔表达式 ? 表达式1 : 表达式2
+
+		2. 运算原理？
+			当布尔表达式结果是true的时候，将表达式1的执行结果作为整个表达式的执行结果。
+			当布尔表达式结果是false的时候，将表达式2的执行结果作为整个表达式的执行结果。
+*/
+public class OperatorTest13{
+	public static void main(String[] args){
+		
+		// 不是一个java语句。
+		//10;
+
+		// 不是一个java语句。
+		//'男';
+
+		boolean sex = false;
+
+		// 不是一个java语句。
+		//sex ? '男' : '女';
+
+		System.out.println(sex ? '男' : '女');
+
+		char c = sex ? '男' : '女';
+		System.out.println(c);
+		
+		// 错误: 不兼容的类型: 条件表达式中的类型错误
+		//char cc = sex ? '男' : "女";
+
+		System.out.println(sex ? '男' : "女");
+
+		String s = sex ? "男" : "女";
+		System.out.println(s);
+
+		/*
+			请使用三目运算符完成两个数字中较大数字的筛选。
+		*/
+		int a = 300;
+		int b = 200;
+		
+		System.out.println(a > b ? a : b);
+	}
+}
+```
+**输出结果:**
+
+```java title="Java"
+女
+女
+女
+女
+300
+```
+
+### 运算符-作业题
+
+1. 编写 Java 代码，输入一个半径值，计算圆的面积和周长，并输出结果。注意：圆的面积公式为 π * r * r，周长公式为 2 * π * r，其中 π 取 3.14
+
+```java title="Java"
+/*
+编写 Java 代码，输入一个半径值，计算圆的面积和周长，并输出结果。注意：圆的面积公式为 π * r * r，周长公式为 2 * π * r，其中 π 取 3.14
+*/
+import java.util.Scanner;
+
+public class OperHomework01{
+    public static void main(String[] args){
+        // 1.接收用户的输入，可以让用户输入一个double数据
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("请输入圆的半径：");
+        double r = scanner.nextDouble();
+
+        // 2.计算圆的面积
+        // 2.1 定义1个变量：π
+        double π = 3.14;
+
+        // 2.2 带入公式计算圆的面积
+        double area = π * r * r;
+
+        // 3.计算圆的周长
+        // 3.1 带入公式计算圆的周长
+        double perimeter = 2 * π * r;
+
+        System.out.println("半径值是" + r + "的圆面积是" + area);
+        System.out.println("半径值是" + r + "的圆周长是" + perimeter);
+    }
+}
+```
+
+2. 假设变量 a、b、c 分别为 6、9、10，请编写 Java 代码输出它们的最大值
+```java title="Java"
+/*
+假设变量 a、b、c 分别为 6、9、10，请编写 Java 代码输出它们的最大值
+*/
+public class OperHomework02{
+    public static void main(String[] args){
+		int a = 60, b = 66, c = 70;
+		int max = a > b ? (a > c ? a : c) : (b > c ? b : c);
+
+		System.out.println(max);
+
+	 }
+}
+```
+
+3. 编写 Java 代码，输入三个整数，分别判断第一个数是否大于 0，第二个数是否小于 10，第三个数是否是偶数。如果都满足条件，则输出“三个条件都满足”，否则输出“不满足所有条件”
+
+```java title="Java"
+/*
+编写 Java 代码，输入三个整数，分别判断第一个数是否大于 0，
+第二个数是否小于 10，第三个数是否是偶数。如果都满足条件，
+则输出“三个条件都满足”，否则输出“不满足所有条件”
+*/
+import java.util.Scanner;
+
+public class OperHomework03{
+	public static void main(String[] args){
+		Scanner s = new Scanner(System.in);		
+		System.out.println("请依次输入3个整数");
+		System.out.print("请输入第一个整数：");
+		int a = s.nextInt();
+		System.out.print("请输入第二个整数：");
+		int b = s.nextInt();
+		System.out.print("请输入第三个整数：");
+		int c = s.nextInt();
+
+		if(a > 0 && b < 10 && c % 2 == 0){
+			System.out.println("三个条件都满足");
+		}else{
+			System.out.println("不满足所有条件");
+		}
+
+		System.out.println((a > 0 && b < 10 && c % 2 == 0) ? "三个条件都满足" : "不满足所有条件");
+	}
+}
+```
+
+4. 编写 Java 代码，输入一个年份，判断它是否是闰年。若该年份能被 4 整除且不能被 100 整除，或者能被 400 整除，则该年份为闰年。输出结果为“该年是闰年”或“该年不是闰年”
+
+```java title="Java"
+/*
+编写 Java 代码，输入一个年份，判断它是否是闰年。
+若该年份能被 4 整除且不能被 100 整除，或者能被 400 整除，则该年份为闰年。
+输出结果为“该年是闰年”或“该年不是闰年”
+*/
+import java.util.Scanner;
+
+public class OperHomework04{
+	public static void main(String[] args){
+		Scanner s = new Scanner(System.in);
+		System.out.print("请输入一个年份：");
+		int year = s.nextInt();
+
+		if((year % 4 == 0 && year % 100 != 0) || year % 400 == 0){
+			System.out.println(year + "是闰年");
+		}else{
+			System.out.println(year + "不是闰年");
+		}
+	}
+}
+```
+
+
+## 控制语句-概述
+
+> **控制语句：用于控制程序的`执行流程`，`改变程序执行的次序`。**
+
+1. 分支语句
+
+if语句
+
+switch语句
+
+2. 循环语句
+
+for循环
+
+while循环
+
+do while循环
+
+3. 跳转语句
+
+break语句
+
+continue语句
+
+
+### 分支语句if
+
+> **if语句：用于判断一个条件是否成立，如果成立则执行if语句块中的语句，否则不执行。**
+
+>> **if语句的`第一种写法`：**
+
+```java title="Java"
+if(布尔表达式){
+  分支语句;
+}
+```
+> **原理：如果`布尔表达式true`，则`执行分支语句`。如果为`false`，则`不执行`。**
+
+
+> **练一练：**
+
+1. **编写一个程序，输入一个人的年龄age，如果他的年龄大于等于18岁，则输出"你已经成年了"，否则不输出任何东西。**
+
+```java title="Java"
+/*
+编写一个程序，输入一个人的年龄age，如果他的年龄大于等于18岁，则输出"你已经成年了"，否则不输出任何东西。
+*/
+import java.util.Scanner;
+
+public class IfTest01 {
+    public static void main(String[] args) {
+        // 编写一个程序，输入一个人的年龄age，如果他的年龄大于等于18岁，则输出"你已经成年了"，否则不输出任何东西。
+        Scanner s = new Scanner(System.in);
+        System.out.print("请输入您的年龄: ");
+        int age = s.nextInt();
+
+        if (age >= 18){
+            System.out.println("你已经成年了?");
+        }
+    }
+}
+```
+
+2. **编写一个程序，输入一个学生的分数score（百分制），如果学生的分数大于等于60，则输出"你已经及格了"，否则不输出任何东西。**
+
+```java title="Java"
+/*
+编写一个程序，输入一个学生的分数score（百分制），如果学生的分数大于等于60，则输出"你已经及格了"，否则不输出任何东西。
+*/
+import java.util.Scanner;
+
+public class IfTest02 {
+    public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+
+        System.out.print("请输入您的成绩: ");
+
+        double score = s.nextDouble();
+
+        if(score >= 60){
+            System.out.println("恭喜你及格了");
+        }
+    }
+}
+```
+
+3. **编写一个程序，输入一个学生的分数score（百分制），如果学生的分数大于等于60，则输出"你已经及格了"，如果学生的分数小于60，则输出“很抱歉，你不及格”。**
+
+```java title="Java"
+/*
+编写一个程序，输入一个学生的分数score（百分制），如果学生的分数大于等于60，则输出"你已经及格了"，如果学生的分数小于60，则输出“很抱歉，你不及格”。
+*/
+import java.util.Scanner;
+
+public class IfTest02 {
+    public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+
+        System.out.print("请输入您的成绩: ");
+
+        double score = s.nextDouble();
+
+        if(score >= 60){
+            System.out.println("恭喜你及格了");
+        }
+		
+		if(score < 60){
+            System.out.println("很抱歉你没有及格");
+        }
+    }
+}
+```
+
+>> **if语句的`第二种写法`：**
+
+```java title="Java"
+if(布尔表达式){
+   分支1;
+}else{
+   分支2;
+}
+```
+> **原理：如果`布尔表达式true`，则`执行分支1`，否则`执行分支2`。**
+
+1. **编写一个程序，输入一个学生的分数score（百分制），如果学生的分数大于等于60，则输出"你已经及格了"，如果学生的分数小于60，则输出“很抱歉，你不及格”。**
+
+改进版：
+
+```java title="Java"
+/*
+编写一个程序，输入一个学生的分数score（百分制），
+如果学生的分数大于等于60，则输出"你已经及格了"，
+如果学生的分数小于60，则输出“很抱歉，你不及格”。
+*/
+import java.util.Scanner;
+
+public class IfTest02{
+	public static void main(String[] args){
+
+		Scanner s = new Scanner(System.in);
+
+		System.out.print("请输入您的成绩：");
+
+		double score = s.nextDouble();
+		
+		/*
+		if(score >= 60){
+			System.out.println("你已经及格了");
+		}
+
+		if(score < 60){
+			System.out.println("很抱歉，你不及格！");
+		}
+		*/
+
+		// 以上程序的效率比较低，判断了两次。
+		// 像这种只有两种情况的，建议使用if else语句。效率高。因为只判断一次。
+		if(score >= 60){
+			System.out.println("你已经及格了");
+		}else{
+			System.out.println("很抱歉，你不及格！");
+		}
+
+		/*
+		if(score >= 60)
+			System.out.println("你已经及格了!!!!");
+		else
+			System.out.println("很抱歉，你不及格！!!!!");
+		*/
+
+		/*
+		if(score >= 60)
+			System.out.println("你已经及格了!!!!");
+			System.out.println("Hello World!");
+		else
+			System.out.println("很抱歉，你不及格！!!!!");
+		*/
+	}
+}
+```
+
+> **注意：**
+
+```java title="Java"
+if(score >= 60)
+	System.out.println("你已经及格了!!!!");
+	System.out.println("Hello World!");
+else
+	System.out.println("很抱歉，你不及格！!!!!");
+
+报错：有eles但是没有if
+```
+
+2. **编写一个程序，输入一个数字num，判断它是否为7的倍数。如果是，则输出"num是7的倍数"，否则输出"num不是7的倍数"。**
+
+**编写一个程序，输入一个数字num，判断它是否同时为3的倍数和5的倍数。如果是，则输出"num既是3的倍数又是5的倍数"，否则输出"num不同时是3的倍数和5的倍数"。**
+
+```java title="Java"
+/*
+编写一个程序，输入一个数字num，判断它是否为7的倍数。如果是，则输出"num是7的倍数"，否则输出"num不是7的倍数"。
+*/
+import java.util.Scanner;
+
+public class IfTest03 {
+    public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+
+        System.out.print("请输入一个整数: ");
+
+        int num = s.nextInt();
+
+        if(num % 7 == 0){
+            System.out.println(num + "是7的倍数");
+        }else{
+            System.out.println(num + "不是7的倍数");
+        }
+
+
+/*
+编写一个程序，输入一个数字num，判断它是否同时为3的倍数和5的倍数。
+如果是，则输出"num既是3的倍数又是5的倍数"，否则输出"num不同时是3的倍数和5的倍数"。
+*/
+        if(num % 3 == 0 && num % 5 == 0){
+            System.out.println(num + "既是3的倍数又是5的倍数");
+        }else{
+            System.out.println(num + "不同时是3的倍数和5的倍数");
+        }
+    }
+}
+```
+
+3. 编写程序模拟用户登录，用户名和密码正确则登录成功，反之则登录失败。
+
+```java title="Java"
+/*
+模拟用户登录，用户名和密码正确则登录成功，反之则登录失败。
+
+注意：字符串的比较不能使用“==”，必须手动调用equals方法来进行比较。（先记住，后面就知道了。）
+
+String name = "admin";
+
+if(name == "admin"){} 这种写法是不专业的，错误的。不建议的。
+
+应该这样写:
+	if(   name.equals("admin")    ){}
+*/
+import java.util.Scanner;
+
+public class IfTest04 {
+    public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+
+        System.out.print("欢迎用户使用本系统, 请先进行用户登录。");
+
+        System.out.print("请输入用户名: ");
+        String username = s.next();
+
+        System.out.print("请输入密码: ");
+        String password = s.next();
+
+        if (username.equals("admin") && password.equals("abc123")) {
+            System.out.print("登录成功");
+        } else {
+            System.out.print("用户名不存在或者密码错误, 登录失败！");
+        }
+    }
+}
+```
+
+
+>> **if语句的`第三种写法`：**
+
+```java title="Java"
+if(布尔表达式){
+   分支1;
+}else if(布尔表达式){
+   分支2;
+}else if(布尔表达式){
+   分支3;
+}
+```
+
+> **原理：从上往下`依次判断布尔表达式`，只要遇到`布尔表达式为true`，则`执行对应的分支`，整个if结束。如果都是`false`，`没有分支执行`。**
+
+
+> **if语句的`第四种写法`：**
+
+```java title="Java"
+if(布尔表达式){
+   分支1;
+}else if(布尔表达式){
+   分支2;
+}else if(布尔表达式){
+   分支3;
+}else{
+   分支4;
+}
+```
+
+> **原理：从上往下`依次判断布尔表达式`，只要遇到`布尔表达式为true`，则`执行对应的分支`，`整个if结束`。如果`都是false`，`没则执行`最后的`else分支`。**
+
+
+>> **练一练：**
+
+1. **编写一个程序，输入一个数字num，判断它是否为正数、负数或零，并输出对应的信息。例如，如果num是正数，则输出"num是正数"，如果num是负数，则输出"num是负数"，如果num等于0，则输出"num等于0"。**
+
