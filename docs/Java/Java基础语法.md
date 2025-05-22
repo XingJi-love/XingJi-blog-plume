@@ -4912,6 +4912,17 @@ public class Test{
 2. 如果扩大内存之后，仍然发生栈内存溢出，可能是递归结束条件不对，需要进行代码的修改。
 
 
+> **递归`调用内存图`：**
+
+![递归调用内存图](./Java基础语法/递归调用内存图.jpg)
+
+1. 元空间(Metaspace)：存放类的信息。**(`使用的是本地内存`)**。
+
+2. 栈内存(Stack)：存放方法的信息。**(进行`压栈和弹栈`操作。**`后进先出`**)**。
+
+3. 堆内存(Heap)：存放对象的信息。**(`存放返回值`)**。
+
+
 > **练一练：**
 
 1. 使用递归计算n的阶乘。
@@ -4934,5 +4945,171 @@ public static int num(int n) {
 }
 ```
 
+> **`斐波那契数列`：**
+
+斐波那契数列概念：`当前数字 = 前两个相邻的数字之和`。
 
 2. 假如有一对兔子，从出生后第3个月起每个月都生一对兔子，小兔子长到第三个月后每个月又生一对兔子，假如兔子都不死，请问第n个月后的兔子有多少对
+
+```java title="Java"
+/*
+假如有一对兔子，从出生后第3个月起每个月都生一对兔子，
+小兔子长到第三个月后每个月又生一对兔子，假如兔子都不死，
+请问第n个月后的兔子有多少对
+*/
+public class Rabbit {
+    public static void main(String[] args) {
+        // n变量, 表示第n个月
+        int n = 6;
+        int total = rabbit(n);
+        System.out.println(n + "月的时候兔子总数: " + total); // 13
+    }
+
+    // 这个rabbit方法就是用来计算第n个月的时候兔子总对数。
+    public static int rabbit(int n) {
+        if(n == 1 || n == 2) { // 递归的结束条件，当n为1或者2的时候返回1对兔子。因为兔子从出生后第3个月起每个月都生一对兔子
+            // 递归的结束条件
+            return 1;
+        }
+        return  rabbit(n-1) + rabbit(n-2); // 当月的兔子总数 = 上个月兔子总数 + 上上个月兔子的总数
+    }
+}
+
+/*
+月份		兔子数量（多少对）																	最终多少对
+------------------------------------------------------------------------------------------------------------
+1			1(新生1)																				1
+2			1(新生2)																				1
+3			1(成熟) + 1(新生1)																    2
+4			1(成熟) + 1(新生1) + 1(新生2)															3
+5			1(成熟) + 1(新生1) + 1(新生2) + 1(成熟) + 1(新生1)										5
+6			1(成熟) + 1(新生1) + 1(新生2) + 1(成熟) + 1(新生1) + 1(成熟) + 1(新生1) + 1(新生2)		    8
+
+当月的兔子总数 = 上个月兔子总数 + 本月所有新生的兔子
+当月的兔子总数 = 上个月兔子总数 + 上上个月兔子的总数
+1
+1
+2
+3
+5
+8
+13
+21
+34
+55
+89
+144   12月份的时候兔子的总对数！！！
+
+规律：当前数字 = 前两个相邻的数字之和。
+这种数字被称为斐波那契数字。
+斐波那契数字组合起来的叫做：斐波那契数列。
+ */
+```
+
+
+## package和import
+
+### package
+
+> **`package包机制：`**
+
+1. package是包机制，有什么用？
+	
+> **`便于管理`。不同的类放在不同的包下。好维护。**
+
+2. package语句`只能写1行`，并且`只能写在java源码的第一行`。
+
+![package怎么定义包](./Java基础语法/package语句只能出现在java源代码的第一行.jpg)
+
+> **注意：`package语句只能出现在java代码第一行`。**
+
+3. 怎么定义包？
+	
+> **`package 包名;`**
+
+4. 定义了包之后，怎么带包编译？
+
++ javac -d . PackageTest01.java
+	
++ 语法：javac -d 生成目录 源文件路径
+
++ 当然，也可以不带包编译，编译之后，可以手动创建目录，这种方式比较麻烦。
+
+5. 一旦定义了package之后，有了包之后，怎么运行java程序呢？
+
++ 重点强调：有了package之后，完整的类名是带包名的。所以运行的时候一定要添加包名：
+	**java org.apache.struts.PackageTest02**
+
+6. package命名规范：
++ 所有的包名都是小写。
+
++ 包名的命名规范：
+
+> **`公司域名倒序 + 项目名 + 模块名 + 功能名;`**
+
++ **例如：`com.powernode.oa.empmgt.service;`**
+
+1. com.powernode 公司域名倒序。
+
+2. oa 是项目名(办公系统)。
+
+3. empmgt 是模块名(员工管理模块)。
+
+4. service 是功能名(服务层)。
+
+### import
+
+> **`import：引入其他类。`**
+
+![不在同一个包下调用方法提示错误.jpg](./Java基础语法/不在同一个包下调用方法提示错误.jpg)
+
+> **注意：`不在同一个包下调用方法提示错误`。`import语句`用来`引入其他类`。**
+
+1. import语句用来引入其他类。
+
+```java title="Java"
+import 包名.类名;
+
+import com.powernode.oa.empmgt.service.UserService;
+```
+
+2. **A类中使用B类，`A类和B类不在同一个包下`时，就需要在`A类中使用import引入B类`。**
+
+3. **java.lang包下的`不需要手动引入`,`系统会自动引入`。**
+
+4. import语句**`只能出现`在`package语句之下`，`class定义之前`**。
+
+5. **import语句`可以编写多个`。**
+
+6. **import语句`可以模糊导入`：`java.util.*`;**
+
+> **注意：不可以写成: `import *;`**
+
+7. **`import静态导入`：`import static java.lang.System.*;`(了解即可,不常用)**
+
+```java title="Java"
+// 静态导入，将System类中的所有静态变量和静态方法全部导入。
+import static java.lang.System.*;
+import static java.lang.Math.*;
+
+public class PackageTest01{
+	public static void main(String[] args){
+		/*
+		System.out.println("1");
+		System.out.println("2");
+		System.out.println("3");
+		System.out.println("4");
+		System.out.println("5");
+		*/
+		
+		out.println("1");
+		out.println("2");
+		out.println("3");
+		out.println("4");
+
+		//System.out.println(Math.abs(-110));
+
+		System.out.println(abs(-120));
+	}
+}
+```
