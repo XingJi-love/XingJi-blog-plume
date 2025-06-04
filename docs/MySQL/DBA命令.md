@@ -3,7 +3,7 @@ title: MySQL | DBA命令
 tags:
   - MySQL
 createTime: 2025/06/01 20:00:00
-permalink: /article/qjie93at/
+permalink: /article/qjie93ae/
 cover: /MySQL.png
 ---
 
