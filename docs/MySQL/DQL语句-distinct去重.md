@@ -9,13 +9,15 @@ cover: /MySQL.png
 
 ![MySQL安装教程](./MySQL安装教程/MySQL.png)
 
+---
+
 查询工作岗位
 
-```sql title="SQL"
+```sql [SQL]
 select job from emp;
 ```
 
-```sql title="SQL"
+```sql [SQL]
 mysql> select job from emp;
 
 +-----------+
@@ -40,11 +42,11 @@ mysql> select job from emp;
 ```
 > **可以看到工作岗位中有`重复的记录`，如何在显示的时候去除重复记录呢？在`字段前添加distinct关键字`**。
 
-```sql title="SQL"
+```sql [SQL]
 select distinct job from emp;
 ```
 
-```sql title="SQL"
+```sql [SQL]
 mysql> select distinct job from emp; 
 
 +-----------+
@@ -62,12 +64,12 @@ mysql> select distinct job from emp;
 
 >> 接下来测试一下，`在distinct关键字前添加其它字段`是否可以？
 
-```sql title="SQL"
+```sql [SQL]
 select ename, distinct job from emp;
 ```
 > **分析一下：`ename是14条记录`，`distinct job是5条记录`，可以同时显示吗？**
 
-```sql title="SQL"
+```sql [SQL]
 mysql> select ename, distinct job from emp;
 
 ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'distinct job from emp' at line 1 
@@ -77,11 +79,11 @@ ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that 
 
 > `练习1`：找出公司中`所有的工作岗位`。
 
-```sql title="SQL"
+```sql [SQL]
 select distinct job from emp;
 ```
 
-```sql title="SQL"
+```sql [SQL]
 mysql> select distinct job from emp;
 
 +-----------+
@@ -98,11 +100,11 @@ mysql> select distinct job from emp;
 
 > `练习2`：找出公司中`不同部门的不同工作岗位`。
 
-```sql title="SQL"
+```sql [SQL]
 select distinct deptno,job from emp;
 ```
 
-```sql title="SQL"
+```sql [SQL]
 mysql> select distinct deptno,job from emp;
 
 +--------+-----------+

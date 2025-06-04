@@ -9,6 +9,8 @@ cover: /MySQL.png
 
 ![MySQL安装教程](./MySQL安装教程/MySQL.png)
 
+---
+
 ## MySQL概述
 
 - MySQL是一个关系型数据库管理系统，由瑞典MySQL AB公司开发，MySQL AB公司被Sun公司收购，Sun公司又被Oracle公司收购，目前属于Oracle公司。

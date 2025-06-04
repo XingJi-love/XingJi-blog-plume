@@ -9,6 +9,8 @@ cover: /MySQL.png
 
 ![MySQL安装教程](./MySQL安装教程/MySQL.png)
 
+---
+
 `查询`是SQL语言的核心，用于表达`SQL查询`的`select查询命令`是功能最强也是最为复杂的SQL语句，它的作用就是从数据库中`检索数据`，并将查询结果返回给用户。 select语句由：`select子句(查询内容)`、`from子句(查询对象)`、`where子句(查询条件)`、`order by子句(排序方式)`、`group by子句(分组方式)`等组成。`查询语句`属于SQL语句中的`DQL语句`，是所有SQL语句中最为复杂也是最重要的语句，所以必须掌握。接下来我们先从简单查询语句开始学习。
 
 ## 查一个字段
@@ -19,7 +21,7 @@ cover: /MySQL.png
 
 语法格式：`select 字段名 from 表名;`
 
-```sql title="SQL"
+```sql [SQL]
 select 字段名 from 表名;
 ```
 
@@ -30,11 +32,11 @@ select 字段名 from 表名;
 
 > 案例1：查询公司中`所有员工编号`
 
-```sql title="SQL"
+```sql [SQL]
 select empno from emp; 
 ```
 
-```sql title="SQL"
+```sql [SQL]
 mysql> desc emp;
 +----------+-------------+------+-----+---------+-------+
 | Field    | Type        | Null | Key | Default | Extra |
@@ -75,7 +77,7 @@ mysql> select empno from emp;
 
 > 案例2：查询公司中`所有员工姓名`
 
-```sql title="SQL"
+```sql [SQL]
 select ename from emp;
 
 SELECT ENAME FROM EMP; //大写小写都可以
@@ -85,7 +87,7 @@ seleCT Ename From emp; //大小写混合都可以
 
 > 在mysql命令行客户端中，sql语句`没有分号是不会执行`的：
 
-```sql title="SQL"
+```sql [SQL]
 mysql> select empno from emp
     ->
     ->
@@ -97,7 +99,7 @@ mysql> select empno from emp
 
 > 末尾加上`;`就执行了：
 
-```sql title="SQL"
+```sql [SQL]
 mysql> select empno from emp
     ->
     ->
@@ -132,7 +134,7 @@ mysql> select empno from emp
 
 > 假设一个`SQL语句`在书写过程中`出错`了，怎么终止这条SQL呢？`\c`
 
-```sql title="SQL"
+```sql [SQL]
 mysql> select   
     ->   empno
     -> froom ——>发现单词写错了
@@ -163,7 +165,7 @@ mysql> select empno from emp; //重新写
 
 > `任务1`：查询所有`部门名称`。
 
-```sql title="SQL"
+```sql [SQL]
 mysql> desc dept;
 +--------+-------------+------+-----+---------+-------+
 | Field  | Type        | Null | Key | Default | Extra |
@@ -188,7 +190,7 @@ mysql> select dname from dept;
 
 > `任务2`：查询所有`薪资等级`。
 
-```sql title="SQL"
+```sql [SQL]
 mysql> desc salgrade;
 +-------+------+------+-----+---------+-------+
 | Field | Type | Null | Key | Default | Extra |
@@ -221,17 +223,17 @@ mysql> select grade from salgrade;
 
 语法格式：`select 字段名1,字段名2,字段名3 from 表名;`
 
-```sql title="SQL"
+```sql [SQL]
 select 字段名1,字段名2,字段名3 from 表名;
 ```
 
 > 案例1：查询员工`编号`以及员工`姓名`。
 
-```sql title="SQL"
+```sql [SQL]
 select empno, ename from emp;
 ```
 
-```sql title="SQL"
+```sql [SQL]
 mysql> desc emp;
 +----------+-------------+------+-----+---------+-------+
 | Field    | Type        | Null | Key | Default | Extra |
@@ -272,11 +274,11 @@ mysql> select empno,ename from emp;
 
 > 字段的`前后顺序`无所谓（`只是显示结果列的时候顺序变了`）：
 
-```sql title="SQL"
+```sql [SQL]
 select ename, empno from emp;
 ```
 
-```sql title="SQL"
+```sql [SQL]
 mysql> select ename,empno from emp;
 +--------+-------+
 | ename  | empno |
@@ -301,7 +303,7 @@ mysql> select ename,empno from emp;
 
 > `任务1`：查询`部门编号`、`部门名称`以及`位置`。
 
-```sql title="SQL"
+```sql [SQL]
 mysql> desc dept;
 +--------+-------------+------+-----+---------+-------+
 | Field  | Type        | Null | Key | Default | Extra |
@@ -326,7 +328,7 @@ mysql> select deptno,dname,loc from dept;
 
 > `任务2`：查询员工的`名字`以及`工作岗位`。
 
-```sql title="SQL"
+```sql [SQL]
 mysql> desc emp;
 +----------+-------------+------+-----+---------+-------+
 | Field    | Type        | Null | Key | Default | Extra |
@@ -373,11 +375,11 @@ mysql> select ename,job from emp;
 
 > 案例1：查询`员工的所有信息`
 
-```sql title="SQL"
+```sql [SQL]
 select * from emp;
 ```
 
-```sql title="SQL"
+```sql [SQL]
 mysql> select * from emp;
 +-------+--------+-----------+------+------------+---------+---------+--------+
 | EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL     | COMM    | DEPTNO |
@@ -403,11 +405,11 @@ mysql> select * from emp;
 
 > 案例2：查询`所有部门信息`
 
-```sql title="SQL"
+```sql [SQL]
 select * from dept;
 ```
 
-```sql title="SQL"
+```sql [SQL]
 mysql> select * from dept;
 +--------+------------+----------+
 | DEPTNO | DNAME      | LOC      |
@@ -431,11 +433,11 @@ mysql> select * from dept;
 
 > `任务1`：查询所有的`薪资等级`以及`每个薪资等级的最低工资和最高工资`。
 
-```sql title="SQL"
+```sql [SQL]
 select * from salgrade;
 ```
 
-```sql title="SQL"
+```sql [SQL]
 mysql> select * from salgrade;
 +-------+-------+-------+
 | GRADE | LOSAL | HISAL |
@@ -458,11 +460,11 @@ mysql> select * from salgrade;
 
 > 案例1：查询`每个员工的月薪`
 
-```sql title="SQL"
+```sql [SQL]
 select ename, sal from emp;
 ```
 
-```sql title="SQL"
+```sql [SQL]
 mysql> select ename ,sal from emp;
 +--------+---------+
 | ename  | sal     |
@@ -488,11 +490,11 @@ mysql> select ename ,sal from emp;
 
 > 案例2：查询`每个员工的年薪（月薪 * 12）`
 
-```sql title="SQL"
+```sql [SQL]
 select ename, sal * 12 from emp;
 ```
 
-```sql title="SQL"
+```sql [SQL]
 mysql> select ename ,sal*12 from emp;
 +--------+----------+
 | ename  | sal*12   |
@@ -517,11 +519,11 @@ mysql> select ename ,sal*12 from emp;
 
 > `任务1`：查询`每个员工月薪加1000`之后的`月薪`
 
-```sql title="SQL"
+```sql [SQL]
 select ename,sal+1000 from emp;
 ```
 
-```sql title="SQL"
+```sql [SQL]
 mysql> select ename ,sal+1000 from emp;
 +--------+----------+
 | ename  | sal+1000 |
@@ -547,11 +549,11 @@ mysql> select ename ,sal+1000 from emp;
 
 > `任务2`：查询`每个员工月薪加1000`之后的`年薪`
 
-```sql title="SQL"
+```sql [SQL]
 select ename,(sal+1000)*12 from emp;
 ```
 
-```sql title="SQL"
+```sql [SQL]
 mysql> select ename ,(sal+1000)*12 from emp;
 +--------+---------------+
 | ename  | (sal+1000)*12 |
@@ -581,11 +583,11 @@ mysql> select ename ,(sal+1000)*12 from emp;
 
 我们借用一下之前的SQL语句
 
-```sql title="SQL"
+```sql [SQL]
 select ename, sal * 12 from emp;
 ```
 
-```sql title="SQL"
+```sql [SQL]
 mysql> select ename,sal * 12 from emp;
 +--------+----------+
 | ename  | sal * 12 |
@@ -614,11 +616,11 @@ mysql> select ename,sal * 12 from emp;
 
 > 使用`as关键字`
 
-```sql title="SQL"
+```sql [SQL]
 select ename, sal * 12 as yearsal from emp;
 ```
 
-```sql title="SQL"
+```sql [SQL]
 mysql> select ename,sal * 12 as yearsal from emp;
 +--------+----------+
 | ename  | yearsal  |
@@ -648,11 +650,11 @@ mysql> select ename,sal * 12 as yearsal from emp;
 
 > 其实`as关键字`可以省略，只要使用`空格`即可
 
-```sql title="SQL"
+```sql [SQL]
 select ename, sal * 12 yearsal from emp;
 ```
 
-```sql title="SQL"
+```sql [SQL]
 mysql> select ename,sal * 12 yearsal from emp;
 +--------+----------+
 | ename  | yearsal  |
@@ -679,11 +681,11 @@ mysql> select ename,sal * 12 yearsal from emp;
 
 ### 别名中有空格
 
-```sql title="SQL"
+```sql [SQL]
 select ename, sal * 12 year sal from emp;
 ```
 
-```sql title="SQL"
+```sql [SQL]
 mysql> select ename,sal * 12 year sal from emp;
 
 ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'sal from emp' at line 1
@@ -697,12 +699,12 @@ ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that 
 > 记住：如果别名中`有空格`的话，可以将这个别名使用`双引号或者单引号`将其括起来。
 
 
-```sql title="SQL"
+```sql [SQL]
 select ename, sal * 12 "year sal" from emp;
 select ename, sal * 12 'year sal' from emp; ——>单引号是标准
 ```
 
-```sql title="SQL"
+```sql [SQL]
 mysql> select ename,sal * 12 "year sal" from emp;
 +--------+----------+
 | ename  | year sal |
@@ -754,11 +756,11 @@ mysql> select ename,sal * 12 'year sal' from emp;
 
 > **如果别名采用中文呢？**
 
-```sql title="SQL"
+```sql [SQL]
 select ename, sal * 12 年薪 from emp;
 ```
 
-```sql title="SQL"
+```sql [SQL]
 mysql> select ename,sal * 12 年薪 from emp;
 +--------+----------+
 | ename  | 年薪     |
@@ -786,11 +788,11 @@ mysql> select ename,sal * 12 年薪 from emp;
 
 > `任务`：查询`所有员工的信息`，要求每个`字段(每一列的表头)`名采用`中文显示`。
 
-```sql title="SQL"
+```sql [SQL]
 select empno 员工编号, ename 员工姓名, job 员工职位, mgr 上级编号, hiredate 入职日期, sal 工资, comm 奖金, deptno 部门编号 from emp;
 ```
 
-```sql title="SQL"
+```sql [SQL]
 mysql> select * from emp;
 +-------+--------+-----------+------+------------+---------+---------+--------+
 | EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL     | COMM    | DEPTNO |
