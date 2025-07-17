@@ -10,7 +10,7 @@ contributors: false
 changelog: false
 ---
 
-![Java | Java基础语法](./Java.jpg)
+![Java | 基础语法](./Java.jpg)
 
 ::: timeline card  placement="between"
 - 节点一
