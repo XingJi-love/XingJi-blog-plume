@@ -37,7 +37,7 @@ cover: /MySQL.png
 
 ---
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select 
   ...
 from
@@ -65,7 +65,7 @@ where
 
 > 案例1：查询`月薪3000`的`员工编号及姓名`
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select 
   empno,ename
 from
@@ -76,7 +76,7 @@ where
 select empno,ename from emp where sal = 3000; -- 也可以写成一行
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select empno,ename from emp where sal = 3000;
 +-------+-------+
 | empno | ename |
@@ -98,7 +98,7 @@ mysql> select empno,ename,sal from emp where sal = 3000;-- 判断是否查询成
 
 > 案例2：查询员工`FORD的岗位及月薪`
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select
 	job, sal
 from
@@ -109,7 +109,7 @@ where
 select job, sal from emp where ename = 'FORD';-- 也可以写成一行
 ```
 
-```sql [SQL] 
+```sql title="SQL" [SQL] 
 mysql> select job, sal from emp where ename = 'FORD';
 
 +---------+---------+
@@ -123,7 +123,7 @@ mysql> select job, sal from emp where ename = 'FORD';
 
 > 存储在表emp中的员工姓名是`FORD`，`全部大写`，如果在查询的时候，**`写成全部小写会怎样呢`**？
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select
 	job, sal
 from
@@ -132,7 +132,7 @@ where
 	ename = 'ford';
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select job, sal from emp where ename = 'ford';
 
 +---------+---------+
@@ -145,7 +145,7 @@ mysql> select job, sal from emp where ename = 'ford';
 
 > 通过测试发现，即使写成小写ford，也是可以查询到结果的，**不过这里需要注意的是：在`Oracle数据库`当中是`查询不到数据`的，`Oracle的语法要比MySQL`的`语法严谨`。对于SQL语句本身来说是不区分大小写的，但是对于表中真实存储的数据，大写A和小写a还是不一样的，这一点Oracle做的很好。MySQL的语法更随性。另外在`Oracle`当中，字符串是`必须使用单引号`括起来的，但在MySQL当中，字符串可以使用`单引号`，也可以使用`双引号`**，如下：
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select
 	job, sal
 from
@@ -154,7 +154,7 @@ where
   ename = "FORD";
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select job, sal from emp where ename = "FORD";
 
 +---------+---------+
@@ -167,7 +167,7 @@ mysql> select job, sal from emp where ename = "FORD";
 
 > 案例3：查询`岗位是MANAGER`的`员工编号及姓名`
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select
   empno, ename
 from
@@ -176,7 +176,7 @@ where
   job = 'MANAGER';
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select empno,ename from emp where job = 'MANAGER';
 
 +-------+-------+
@@ -191,7 +191,7 @@ mysql> select empno,ename from emp where job = 'MANAGER';
 
 > `任务`：查询`工资级别`是`1的最低工资以及最高工资`
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select losal,hisal from salgrade where grade = 1;
 
 +-------+-------+
@@ -208,7 +208,7 @@ mysql> select losal,hisal from salgrade where grade = 1;
 
 > 案例1：查询`工资不是3000`的`员工编号、姓名、薪资`
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select
   empno,ename,sal
 from
@@ -219,7 +219,7 @@ where
 select empno,ename,sal from emp where sal <> 3000; -- 也可以写成一行
 ```
 
-```sql [SQL] 
+```sql title="SQL" [SQL] 
 mysql> select empno,ename,sal from emp where sal <> 3000;
 
 +-------+--------+---------+
@@ -243,7 +243,7 @@ mysql> select empno,ename,sal from emp where sal <> 3000;
 
 > 案例2：查询`工作岗位不是MANAGER`的`员工姓名和岗位`
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select
   ename,job
 from
@@ -254,7 +254,7 @@ where
 select ename,job from emp where job <> 'MANAGER'; -- 也可以写成一行
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename,job from emp where job <> 'MANAGER';
 
 +--------+-----------+
@@ -277,7 +277,7 @@ mysql> select ename,job from emp where job <> 'MANAGER';
 
 > 任务：查询`不在部门编号`为`10的部门工作的员工信息`
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select
   *
 from
@@ -288,7 +288,7 @@ where
 select * from emp where deptno <> 10; -- 也可以写成一行
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select * from emp where deptno <> 10;
 
 +-------+--------+----------+------+------------+---------+---------+--------+
@@ -317,7 +317,7 @@ mysql> select * from emp where deptno <> 10;
 
 > 案例: 找出`薪资大于3000`的`员工姓名、薪资`
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select 
   ename, sal
 from
@@ -328,7 +328,7 @@ where
 select ename,sal from emp where sal > 3000; -- 也可以写成一行
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename,sal from emp where sal > 3000;
 
 +-------+---------+
@@ -344,7 +344,7 @@ mysql> select ename,sal from emp where sal > 3000;
 
 > 案例: 找出`薪资大于等于3000`的`员工姓名、薪资`
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select 
   ename, sal
 from
@@ -355,7 +355,7 @@ where
 select ename,sal from emp where sal >= 3000; -- 也可以写成一行
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename,sal from emp where sal >= 3000;
 
 +-------+---------+
@@ -373,7 +373,7 @@ mysql> select ename,sal from emp where sal >= 3000;
 
 > 案例: 找出`薪资小于3000`的`员工姓名、薪资`
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select 
   ename, sal
 from
@@ -384,7 +384,7 @@ where
 select ename,sal from emp where sal < 3000; -- 也可以写成一行
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename,sal from emp where sal < 3000;
 
 +--------+---------+
@@ -410,7 +410,7 @@ mysql> select ename,sal from emp where sal < 3000;
 
 案例：找出薪资小于等于3000的员工姓名、薪资
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select 
   ename, sal
 from
@@ -421,7 +421,7 @@ where
 select ename,sal from emp where sal <= 3000; -- 也可以写成一行
 ```
 
-```sql [SQL] 
+```sql title="SQL" [SQL] 
 mysql> select ename,sal from emp where sal <= 3000;
 
 +--------+---------+
@@ -453,7 +453,7 @@ mysql> select ename,sal from emp where sal <= 3000;
 
 > 案例: 找出薪资大于等于3000并且小于等于5000的员工姓名、薪资。
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select
   ename,sal
 from
@@ -466,7 +466,7 @@ select ename,sal from emp where sal >= 3000 and sal <= 5000; -- 也可以写成�
 select ename,sal from emp where sal >= 3000 && sal <= 5000; -- 也可以写成一行
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename,sal from emp where sal >=3000 and sal <
 =5000;
 
@@ -495,7 +495,7 @@ mysql> select ename,sal from emp where sal >=3000 && sal <=
 
 > `任务`：**找出`工资级别为2~4（包含2和4）`的`最低工资和最高工资`。**
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select losal,hisal from salgrade where grade >= 2 an
 d grade <= 4;
 
@@ -518,7 +518,7 @@ d grade <= 4;
 
 > 案例：找出`工作岗位`是`MANAGER和SALESMAN`的`员工姓名、工作岗位`
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select 
   ename, job
 from
@@ -529,7 +529,7 @@ where
 select ename,job from emp where job = 'MANAGER' or job = 'SALESMAN'; -- 也可以写成一行
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename,job from emp where job = 'MANAGER' or j
 ob = 'SALESMAN';
 
@@ -549,7 +549,7 @@ ob = 'SALESMAN';
 
 > **注意：这个题目描述中有这样一句话：`MANAGER和SALESMAN`，有的同学一看到“`和`”，就直接使用“`and`”了，因为“和”对应的英文单词是“and”，如果是这样的话，就大错特错了，因为and表示并且，使用and表示工作岗位既是MANAGER又是SALESMAN的员工，这样的员工是不存在的，因为每一个员工只有一个岗位，不可能同时从事两个岗位。所以使用and是查询不到任何结果的。如下**
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select 
   ename, job
 from
@@ -560,7 +560,7 @@ where
 select ename,job from emp where job = 'MANAGER' and job = 'SALESMAN'; -- 也可以写成一行
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename,job from emp where job = 'MANAGER' and job = 'SALESMAN';
 
 Empty set (0.00 sec)
@@ -569,11 +569,11 @@ Empty set (0.00 sec)
 
 > **`任务`：查询`20和30部门`的`员工信息`。**
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select * from emp where deptno = 20 or deptno = 30;
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select * from emp where deptno = 20 or deptno = 30;
 
 +-------+--------+----------+------+------------+---------+---------+--------+
@@ -605,7 +605,7 @@ mysql> select * from emp where deptno = 20 or deptno = 30;
 
 >> **先来看一下错误写法：**
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select
   ename,sal,deptno
 from
@@ -616,7 +616,7 @@ where
 select ename,sal,deptno from emp where sal < 1500 and deptno = 20 or deptno = 30; -- 也可以写成一行
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename,sal,deptno from emp where sal < 1500 and deptno = 20 or deptno = 30;
 
 +--------+---------+--------+
@@ -638,7 +638,7 @@ mysql> select ename,sal,deptno from emp where sal < 1500 and deptno = 20 or dept
 
 >> **正确写法如下：**
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select
   ename,sal,deptno
 from
@@ -649,7 +649,7 @@ where
 select ename,sal,deptno from emp where sal < 1500 and (deptno = 20 or deptno = 30); -- 也可以写成一行
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename,sal,deptno from emp where sal < 1500 and (deptno = 20 or deptno = 30);
 
 +--------+---------+--------+
@@ -665,7 +665,7 @@ mysql> select ename,sal,deptno from emp where sal < 1500 and (deptno = 20 or dep
 ```
 
 > `任务`：找出`薪资小于1500`的，并且`工作岗位是CLERK和SALESMAN`的`员工姓名、薪资、岗位`。
-```sql [SQL]
+```sql title="SQL" [SQL]
 select 
   ename,sal,job
 from
@@ -676,7 +676,7 @@ where
 select ename,sal,job from emp where sal < 1500 and (job = 'CLERK' or job = 'SALESMAN'); -- 也可以写成一行
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename,sal,job from emp where sal < 1500 and (job = 'CLERK' or job = 'SALESMAN');
 
 +--------+---------+----------+
@@ -708,7 +708,7 @@ mysql> select ename,sal,job from emp where sal < 1500 and (job = 'CLERK' or job 
 
 > 案例：找出`薪资在1600到3000`的`员工姓名、薪资`。
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select 
   ename,sal
 from
@@ -719,7 +719,7 @@ where
 select ename,sal from emp where sal between 1600 and 3000; -- 也可以写成一行
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename,sal from emp where sal between 1600 and 3000;
 
 +-------+---------+
@@ -738,7 +738,7 @@ mysql> select ename,sal from emp where sal between 1600 and 3000;
 
 >> 采用`左大右小`的方式：
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select 
   ename,sal
 from
@@ -749,7 +749,7 @@ where
 select ename,sal from emp where sal between 3000 and 1600; -- 也可以写成一行
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename,sal from emp where sal between 3000 and 1600;
 
 Empty set (0.00 sec)
@@ -758,7 +758,7 @@ Empty set (0.00 sec)
 
 > `任务`：查询在`1982-01-23`到`1987-04-19`之间`入职的员工`。
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select
   *
 from
@@ -769,7 +769,7 @@ where
 select * from emp where hiredate between '1982-01-23' and '1987-04-19'; -- 也可以写成一行
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select * from emp;
 
 +-------+--------+-----------+------+------------+---------+---------+--------+
@@ -820,7 +820,7 @@ mysql> select * from emp where hiredate between '1982-01-23' and '1987-04-19';
 
 > 案例1：找出`津贴为空`的`员工姓名、薪资、津贴`。
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select
   ename,sal,comm
 from
@@ -831,7 +831,7 @@ where
 select ename,sal,comm from emp where comm is null; -- 也可以写成一行
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename,sal,comm from emp where comm is null;
 
 +--------+---------+------+
@@ -853,7 +853,7 @@ mysql> select ename,sal,comm from emp where comm is null;
 
 >> 我们使用`等号`，尝试一下：
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select
   ename,sal,comm
 from
@@ -864,7 +864,7 @@ where
 select ename,sal,comm from emp where comm = null; -- 也可以写成一行
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename,sal,comm from emp where comm = null;
 
 Empty set (0.00 sec)
@@ -876,7 +876,7 @@ Empty set (0.00 sec)
 
 > 案例2：找出`津贴不为空`的`员工姓名、薪资、津贴`。
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select
   ename,sal,comm
 from
@@ -887,7 +887,7 @@ where
 select ename,sal,comm from emp where comm is not null; -- 也可以写成一行
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename,sal,comm from emp where comm is not null;
 
 +--------+---------+---------+
@@ -919,7 +919,7 @@ in后面有一个小括号，小括号当中有多个值，值和值之间采用
 
 >> **第一种：`使用or`**
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select
   ename,sal,job
 from
@@ -930,7 +930,7 @@ where
 select ename,sal,job from emp where job =  'MANAGER' or job = 'SALESMAN'; -- 也可以写成一行
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename,sal,job from emp where job =  'MANAGER' or job = 'SALESMAN';
 
 +--------+---------+----------+
@@ -950,7 +950,7 @@ mysql> select ename,sal,job from emp where job =  'MANAGER' or job = 'SALESMAN';
 
 >> **第二种：`使用in`**
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select
   ename,sal,job
 from
@@ -961,7 +961,7 @@ where
 select ename,sal,job from emp where job in('MANAGER', 'SALESMAN'); -- 也可以写成一行
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename,sal,job from emp where job in('MANAGER', 'SALESMAN');
 
 +--------+---------+----------+
@@ -980,7 +980,7 @@ mysql> select ename,sal,job from emp where job in('MANAGER', 'SALESMAN');
 
 > 案例2：找出`薪资是1500/1600/3000`的`员工姓名、工作岗位`
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select
   ename,job
 from
@@ -991,7 +991,7 @@ where
 select ename,job from emp where sal in(1500, 1600, 3000); -- 也可以写成一行
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename,job from emp where sal in(1500, 1600, 3000);
 
 +--------+----------+
@@ -1009,7 +1009,7 @@ mysql> select ename,job from emp where sal in(1500, 1600, 3000);
 
 >> **第一种：`使用or`**
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select 
   empno,ename
 from
@@ -1020,7 +1020,7 @@ where
 select empno,ename from emp where deptno = 10 or deptno = 20; -- 也可以写成一行
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select empno,ename from emp where deptno = 10 or deptno = 20;
 
 +-------+--------+
@@ -1040,7 +1040,7 @@ mysql> select empno,ename from emp where deptno = 10 or deptno = 20;
 
 >> **第二种：`使用in`**
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select 
   empno,ename
 from
@@ -1051,7 +1051,7 @@ where
 select empno,ename from emp where deptno in(10, 20); -- 也可以写成一行
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select empno,ename from emp where deptno in(10, 20);
 
 +-------+--------+
@@ -1080,7 +1080,7 @@ mysql> select empno,ename from emp where deptno in(10, 20);
 
 >> **第一种：使用`and`**
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select 
   ename,job
 from
@@ -1091,7 +1091,7 @@ where
 select ename,job from emp where job <> 'MANAGER' and job <> 'SALESMAN'; -- 也可以写成一行
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename,job from emp where job <> 'MANAGER' and job <> 'SALESMAN';
 
 +--------+-----------+
@@ -1110,7 +1110,7 @@ mysql> select ename,job from emp where job <> 'MANAGER' and job <> 'SALESMAN';
 
 >> **第二种：使用`not in`**
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select 
   ename,job
 from
@@ -1121,7 +1121,7 @@ where
 select ename,job from emp where job not in('MANAGER', 'SALESMAN'); -- 也可以写成一行
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename,job from emp where job not in('MANAGER', 'SALESMAN');
 
 +--------+-----------+
@@ -1140,7 +1140,7 @@ mysql> select ename,job from emp where job not in('MANAGER', 'SALESMAN');
 
 > **`任务`：找出`薪资不是1600和3000`的`员工姓名、薪资`。**
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select 
   ename,sal
 from
@@ -1151,7 +1151,7 @@ where
 select ename,sal from emp where sal not in(1600, 3000); -- 也可以写成一行
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename,sal from emp where sal not in(1600, 3000);
 
 +--------+---------+
@@ -1177,11 +1177,11 @@ mysql> select ename,sal from emp where sal not in(1600, 3000);
 
 > 先来看一下emp表中的数据
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select * from emp;
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select * from emp;
 
 +-------+--------+-----------+------+------------+---------+---------+--------+
@@ -1209,11 +1209,11 @@ mysql> select * from emp;
 
 >> 写这样一条SQL语句：
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select * from emp where comm in(NULL, 300);
 ```
 
-```sql [SQL] 
+```sql title="SQL" [SQL] 
 mysql> select * from emp where comm in(NULL, 300);
 +-------+-------+----------+------+------------+---------+--------+--------+
 | EMPNO | ENAME | JOB      | MGR  | HIREDATE   | SAL     | COMM   | DEPTNO |
@@ -1227,7 +1227,7 @@ mysql> select * from emp where comm in(NULL, 300);
 
 >> 首先你要知道`in的执行原理`实际上是采用`=`和`or`的方式，也就是说，以上SQL语句实际上是：
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select * from emp where comm = NULL or comm = 300;
 ```
 
@@ -1237,11 +1237,11 @@ select * from emp where comm = NULL or comm = 300;
 
 > 再写这样一条SQL语句：
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select * from emp where comm not in(NULL, 300);
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select * from emp where comm not in(NULL, 300);
 
 Empty set (0.00 sec)
@@ -1251,7 +1251,7 @@ Empty set (0.00 sec)
 
 > 首先你要知道`not in的执行原理`实际上是采用`<>和and`的方式，也就是说，以上SQL语句实际上是：
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select * from emp where comm <> NULL and comm <> 300;
 ```
 
@@ -1278,7 +1278,7 @@ select * from emp where comm <> NULL and comm <> 300;
 or的效率为O(n)，而in的效率为O(log n), 当n越大的时候效率相差越明显（**也就是说数据量越大的时候，in的效率越高**）。以下是测试过程：
 第一步，创建测试表，并生成测试数据，测试数据为1000万条记录。数据库中关闭了query cache，因此数据库缓存不会对查询造成影响。具体的代码如下：
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 #创建测试的test表
 DROP TABLE IF EXISTS test; 
 CREATE TABLE test( 
@@ -1320,7 +1320,7 @@ CALL pre_test();
 
 > 每种情况又采用不同的in和or的数量进行测试。由于测试语句的数据量有4种情况，我这里就称为A组、B组、C组、D组，其中A组为3个值，B组为150个值，C组为300个值，D组为1000个值。具体的测试语句如下：
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 #A组
 #in和or中有3条数据的情况
 SELECT * FROM test WHERE id IN (1,23,48);
@@ -1386,7 +1386,7 @@ D组or和in的执行时间： or的执行时间为：6min 17s     in的执行�
 
 >> 模糊查询的`语法格式`如下：
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select .. from .. where 字段 like '通配符表达式';
 ```
 
@@ -1394,11 +1394,11 @@ select .. from .. where 字段 like '通配符表达式';
 
 > 案例1：查询员工名字以'S'开始的员工姓名
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select ename from emp where ename like 'S%';
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename from emp where ename like 'S%';
 +-------+
 | ename |
@@ -1411,11 +1411,11 @@ mysql> select ename from emp where ename like 'S%';
 
 > 案例2：查询`员工名字以'T'结尾`的`员工姓名`
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select ename from emp where ename like '%T';
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename from emp where ename like '%T';
 +-------+
 | ename |
@@ -1427,11 +1427,11 @@ mysql> select ename from emp where ename like '%T';
 
 > 案例3：查询员工名字中含有'O'的员工姓名
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select ename from emp where ename like '%O%';
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename from emp where ename like '%O%';
 +-------+
 | ename |
@@ -1445,11 +1445,11 @@ mysql> select ename from emp where ename like '%O%';
 
 > 案例4：查询`员工名字中第二个字母是'A'`的`员工姓名`
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select ename from emp where ename like '_A%';
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename from emp where ename like '_A%';
 +--------+
 | ename  |
@@ -1465,7 +1465,7 @@ mysql> select ename from emp where ename like '_A%';
 
 >> 执行以下`SQL语句`，先准备`测试数据`：
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 drop table if exists student;
 create table student(
   id int,
@@ -1479,7 +1479,7 @@ select * from student;
 
 >> 查看`原始powernode表结构`：
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> show tables;
 +---------------------+
 | Tables_in_powernode |
@@ -1493,7 +1493,7 @@ mysql> show tables;
 
 >> 创建`student表`：
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> drop table if exists student;
 Query OK, 0 rows affected, 1 warning (0.01 sec)
 
@@ -1515,7 +1515,7 @@ Query OK, 1 row affected (0.01 sec)
 
 >> 查看`student表`中的数据：
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select * from student;
 
 +------+----------+
@@ -1530,11 +1530,11 @@ mysql> select * from student;
 
 > 查询`学员名字中含有下划线的`，执行以下SQL试试：
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select * from student where name like '%_%';
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select * from student where name like '%_%';
 
 +------+----------+
@@ -1549,11 +1549,11 @@ mysql> select * from student where name like '%_%';
 
 > 显然这个查询结果不是我们想要的，以上SQL之所以将所有数据全部显示了，**因为`下划线代表任意单个字符`，如果你想让这个`下划线`变成一个`普通的下划线字符`**，就要使用转义字符了，在`mysql当中转义字符`是“`\`”，这个和java语言中的转义字符是一样的：
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select * from student where name like '%\_%';
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select * from student where name like '%\_%';
 
 +------+----------+

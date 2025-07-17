@@ -41,7 +41,7 @@ cover: /MySQL.png
 
 **例子**：
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select * from emp;
 +-------+--------+-----------+------+------------+---------+---------+--------+
 | EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL     | COMM    | DEPTNO |
@@ -156,7 +156,7 @@ mysql> select e.ename,d.dname from emp e,dept d;
 
 > **案例：查询`每个员工所在的部门名称`，要求显示`员工名、部门名`**。
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select
 	e.ename,d.dname
 from
@@ -170,7 +170,7 @@ SELECT e.ename, d.dname FROM emp e (inner) JOIN dept d ON e.deptno = d.deptno;
 ```
 
 > **`员工表(emp)`**：
-```sql [SQL] 
+```sql title="SQL" [SQL] 
 mysql> select * from emp;
 +-------+--------+-----------+------+------------+---------+---------+--------+
 | EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL     | COMM    | DEPTNO |
@@ -194,7 +194,7 @@ mysql> select * from emp;
 ```
 
 > **`部门表(dept)`**：
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select * from dept;
 +--------+------------+----------+
 | DEPTNO | DNAME      | LOC      |
@@ -212,7 +212,7 @@ mysql> select * from dept;
 :::
 
 > **`内连接之等值连接查询结果:`**
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> SELECT e.ename, d.dname FROM emp e JOIN dept d ON e.deptno = d.deptno;
 +--------+------------+
 | ename  | dname      |
@@ -248,7 +248,7 @@ mysql> SELECT e.ename, d.dname FROM emp e JOIN dept d ON e.deptno = d.deptno;
 
 > 案例：查询`每个员工的工资等级`，要求显示`员工名、工资、工资等级`。
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select
 	e.ename,e.sal,s.grade
 from
@@ -262,7 +262,7 @@ SELECT e.ename, e.sal, s.grade FROM emp e INNER JOIN salgrade s ON e.sal BETWEEN
 ```
 
 > **`员工表(emp)`**：
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select * from emp;
 +-------+--------+-----------+------+------------+---------+---------+--------+
 | EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL     | COMM    | DEPTNO |
@@ -286,7 +286,7 @@ mysql> select * from emp;
 ```
 
 > **`工资等级表(salgrade)`**：
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select * from salgrade;
 +-------+-------+-------+
 | GRADE | LOSAL | HISAL |
@@ -308,7 +308,7 @@ mysql> select * from salgrade;
 
 
 > **`内连接之非等值连接查询结果：`**
-```sql [SQL] 
+```sql title="SQL" [SQL] 
 mysql> SELECT e.ename, e.sal, s.grade FROM emp e INNER JOIN salgrade s ON e.sal BETWEEN s.losal AND s.hisal;
 +--------+---------+-------+
 | ename  | sal     | grade |
@@ -338,7 +338,7 @@ mysql> SELECT e.ename, e.sal, s.grade FROM emp e INNER JOIN salgrade s ON e.sal 
 
 > 案例：找出`每个员工的直属领导`，要求显示`员工名、领导名`。
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select
 	e.ename 员工名, l.ename 领导名
 from
@@ -350,7 +350,7 @@ on
 ```
 
 > **`内连接之自连接查询结果:`**
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select e.ename 员工, l.ename 领导 from emp e join emp l on e.mgr = l.empno;
 
 +--------+-------+
@@ -404,7 +404,7 @@ mysql> select e.ename 员工, l.ename 领导 from emp e join emp l on e.mgr = l.
 
 > 案例：查询`所有部门信息`，并且找出`每个部门下的员工`。
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select
   d.*,e.*
 from
@@ -416,7 +416,7 @@ on
 ```
 
 > **`左连接查询结果：`**
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select e.*, d.* from dept d left outer join emp e on e.deptno = d.deptno;
 
 +-------+--------+-----------+------+------------+---------+---------+--------+--------+------------+----------+
@@ -451,7 +451,7 @@ mysql> select e.*, d.* from dept d left outer join emp e on e.deptno = d.deptno;
 
 还是上面的案例，可以写作右连接。
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select
   d.*,e.*
 from
@@ -463,7 +463,7 @@ on
 ```
 
 > **`右连接查询结果：`**
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select e.*, d.* from emp e right outer join dept d on e.deptno = d.deptno;
 
 +-------+--------+-----------+------+------------+---------+---------+--------+--------+------------+----------+
@@ -490,7 +490,7 @@ mysql> select e.*, d.* from emp e right outer join dept d on e.deptno = d.deptno
 
 > 案例：找出`所有员工的上级领导`，要求显示`员工名和领导名`。
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select 
   e.ename 员工名,l.ename 领导名 
 from 
@@ -500,7 +500,7 @@ left join
 on
   e.mgr = l.empno;
 ```
-```sql [SQL]
+```sql title="SQL" [SQL]
 select 
   e.ename 员工名,l.ename 领导名 
 from 
@@ -513,7 +513,7 @@ on
 
 > **`左,右连接查询结果：`**
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select e.ename 员工 ,l.ename 领导 from emp e left join emp l on e.mgr = l.empno; -- 左连接
 
 +--------+-------+
@@ -581,7 +581,7 @@ MySQL`不支持full join`。`oracle数据库支持`。
 ![全连接订单表.png](./DQL语句-连接查询/全连接订单表.png)
 
 > **案例：查询`所有的客户和订单`。**
-```sql [SQL]
+```sql title="SQL" [SQL]
 select 
  c.*,o.* 
 from 
@@ -593,7 +593,7 @@ on
 ```
 
 > **`全连接查询结果：`**
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select c.*,o.* from t_customer c full join t_order o on c.cid = o.cid; -- 全连接
 
 +--------+-------+-------+-------+
@@ -624,7 +624,7 @@ NULL| NULL    | 300  | 9900 | NULL |
 
 > 案例：找出`每个员工的部门`，并且要求显示`每个员工的薪资等级`。
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select 
  e.ename,d.dname,s.grade 
 from 
@@ -642,7 +642,7 @@ on
 ![多张表连接.png](./DQL语句-连接查询/多张表连接.png)
 
 > **`多张表连接查询结果：`**
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select * from emp;
 
 +-------+--------+-----------+------+------------+---------+---------+--------+

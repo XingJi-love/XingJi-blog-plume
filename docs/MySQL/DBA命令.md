@@ -16,16 +16,16 @@ cover: /MySQL.png
 
 创建一个用户名为java1，密码设置为123的本地用户：
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 create user 'java1'@'localhost' identified by '123';
 ```
 创建一个用户名为java2，密码设置为123的外网用户：
-```sql [SQL]
+```sql title="SQL" [SQL]
 create user 'java2'@'%' identified by '123';
 ```
 采用以上方式新建的用户没有任何权限：系统表也只能看到以下两个
 
-```sql [SQL]
+```sql title="SQL" [SQL]
  mysql -ujava1 -p123
 mysql: [Warning] Using a password on the command line interface can be insecure.
 Welcome to the MySQL monitor.  Commands end with ; or \g.
@@ -51,10 +51,10 @@ mysql> show databases;
 ```
 
 使用root用户查看系统中当前用户有哪些？
-```sql [SQL]
+```sql title="SQL" [SQL]
 select user,host from mysql.user;
 ```
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select user,host from mysql.user;
 
 +------------------+-----------+
@@ -93,7 +93,7 @@ mysql> select user,host from mysql.user;
 也可以提供具体的数据库和表，例如：`powernode.emp` （`powernode数据库的emp表`）
 :::
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 # 将所有库所有表的查询权限赋予本地用户java1
 grant select,insert,delete,update,create on *.* to 'java1'@'localhost';
 
@@ -104,11 +104,11 @@ grant all privileges on powernode.* to 'java1'@'localhost';
 
 > **查看某个用户拥有`哪些权限`？**
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 show grants for 'java1'@'localhost';
 show grants for 'java2'@'%';
 ```
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> show grants for 'java1'@'localhost';
 +----------------------------------------------------------------------------+
 | Grants for java1@localhost                                                 |
@@ -128,7 +128,7 @@ mysql> show grants for 'java2'@'%';
 
 **`with grant option`**：
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 # with grant option的作用是：java2用户也可以给其他用户授权了。
 
 grant select,insert,delete,update on *.* to 'java2'@'%' with grant option;
@@ -139,7 +139,7 @@ grant select,insert,delete,update on *.* to 'java2'@'%' with grant option;
 
 > **`revoke 权限 on 数据库名.表名 from '用户'@'IP地址';`**
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 # 撤销本地用户java1的insert、update、delete权限
 revoke insert, update, delete on powernode.* from 'java1'@'localhost'
 
@@ -155,7 +155,7 @@ revoke insert on powernode.* from 'java2'@'%'
 
 具有管理用户权限的用户才能修改密码，例如root账户可以修改其他账户的密码：
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 # 本地用户修改密码
 alter user 'java1'@'localhost' identified by '456';
 
@@ -169,7 +169,7 @@ alter user 'java2'@'%' identified by '456';
 
 ## 修改用户名
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 rename user '原始用户名'@'localhost' to '新用户名'@'localhost';
 rename user '原始用户名'@'localhost' to '新用户名'@'%';
 
@@ -182,11 +182,11 @@ rename user 'java11'@'localhost' to 'java123'@'%';
 
 ## 删除用户
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 drop user 'java123'@'localhost';
 drop user 'java2'@'%';
 ```
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select user,host from mysql.user;
 +------------------+-----------+
 | user             | host      |
@@ -224,7 +224,7 @@ mysql> select user,host from mysql.user;
 ## 数据备份
 
 - 导出数据（请在登录mysql数据库之前进行）
-```sql [SQL]
+```sql title="SQL" [SQL]
 # 导出powernode这个数据库中所有的表
 mysqldump powernode > e:/powernode.sql -uroot -p1234 --default-character-set=utf8
 
@@ -234,7 +234,7 @@ mysqldump powernode emp > e:/powernode.sql -uroot -p1234 --default-character-set
 
 - 导入数据第一种方式：（请在登录mysql之前进行）
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 # 现在登录mysql状态下新建一个数据库
 create database powernode;
 # 在登录mysql之前执行以下命令
@@ -243,7 +243,7 @@ mysql powernode < e:/powernode.sql -uroot -p1234 --default-character-set=utf8
 
 - 导入数据第二种方式：（请在登录mysql之后操作）
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 create  database powernode;
 use powernode;
 source d:/powernode.sql

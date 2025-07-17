@@ -19,7 +19,7 @@ cover: /MySQL.png
    1. `where后面、from后面、select后面`都是可以的。
 :::
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select ..(select)..
 from ..(select)..
 where ..(select)..
@@ -32,7 +32,7 @@ where ..(select)..
 
 >> **`错误的示范`：**
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename,sal from emp where sal > avg(sal);
 
 ERROR 1111 (HY000): Invalid use of group function
@@ -45,7 +45,7 @@ ERROR 1111 (HY000): Invalid use of group function
 
 ![where子查询找出平均薪资.png](./DQL语句-子查询/where子查询找出平均薪资.png)
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> 第一步: 找出平均薪资 \c
 mysql> select avg(sal) from emp;
 +-------------+
@@ -60,7 +60,7 @@ mysql> select avg(sal) from emp;
 
 ![where子查询找出高于平均薪资的员工.png](./DQL语句-子查询/where子查询找出高于平均薪资的员工.png)
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> 第二步: 找出高于平均薪资的员工 \c
 mysql> select ename,sal from emp where sal > 2073.214286;
 +-------+---------+
@@ -78,7 +78,7 @@ mysql> select ename,sal from emp where sal > 2073.214286;
 
 >> **`可以使用子查询`：**
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename,sal from emp where sal > (select avg(sal) from emp);
 
 +-------+---------+
@@ -103,7 +103,7 @@ mysql> select ename,sal from emp where sal > (select avg(sal) from emp);
 
 >> **第一步：先找出`每个部门平均工资`。**
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> 第一步: 找出每个部门的平均工资 \c
 mysql> select deptno,avg(sal) as avgsal from emp group by deptno; //找出每个部门平均工资
 +--------+-------------+
@@ -132,7 +132,7 @@ mysql> select * from salgrade;  //查看工资等级表
 
 >> **第二步：将以上查询结果当做临时表t，t表和salgrade表进行连接查询。条件：t.avgsal between s.losal and s.hisal**
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> 第二步：将以上查询结果当做临时表t，t表和salgrade表进行连接查询。条件：t.avgsal between s.losal and s.hisal \c
 
 mysql> select t.*,s.grade from (select deptno, avg(sal) avgsal from emp group by deptno) t join salgrade s on t.avgsal between s.losal and s.hisal;
@@ -152,7 +152,7 @@ mysql> select t.*,s.grade from (select deptno, avg(sal) avgsal from emp group by
 
 ## select后面使用子查询
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select e.ename,(select d.dname from dept d where e.deptno=d.deptno) as dname from emp e;
 
 +--------+------------+
@@ -190,7 +190,7 @@ mysql> select e.ename,(select d.dname from dept d where e.deptno=d.deptno) as dn
 :::
 
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 drop table if exists t_customer;
 drop table if exists t_order;
 
@@ -219,7 +219,7 @@ select * from t_customer;
 select * from t_order;
 ```
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select * from t_customer; //查询顾客表
 
 +-------------+---------------+
@@ -246,7 +246,7 @@ mysql> select * from t_order; //查询订单表
 
 > **现在我们来看一个简单的案例，假设我们要查询先前有过订单的顾客，而`订单信息`保存在`t_order表`中，`顾客信息`保存在`t_customer表`中。我们可以使用以下 sql 语句：**
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select * from t_customer c where exists(select * from t_order o where o.customer_id=c.customer_id);
 
 +-------------+---------------+
@@ -271,7 +271,7 @@ mysql> select * from t_customer c where exists(select * from t_order o where o.c
 
 > **例如，我们想要查找所有`没有下过订单的顾客`，可以使用以下 sql 语句：**
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select * from t_customer c where not exists(select * from t_order o where o.customer_id=c.customer_id);
 
 +-------------+---------------+
@@ -301,7 +301,7 @@ mysql> select * from t_customer c where not exists(select * from t_order o where
 
 >> **使用 `IN 操作符`：**
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 SELECT *
 FROM products
 WHERE product_name IN ('手机', '平板电脑')
@@ -314,7 +314,7 @@ AND product_id IN (
 
 >> **使用 `EXISTS 操作符`：**
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 SELECT *
 FROM products
 WHERE product_name IN ('手机', '平板电脑')
@@ -348,7 +348,7 @@ AND EXISTS (
 
 >> **`原始查询结果`：**
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename,sal from emp where job='SALESMAN';
 +--------+---------+
 | ename  | sal     |
@@ -373,7 +373,7 @@ mysql> select ename,sal from emp where job='MANAGER';
 
 >> **使用`or`：**
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename,sal from emp where job='MANAGER' or job='SALESMAN';
 
 +--------+---------+
@@ -392,7 +392,7 @@ mysql> select ename,sal from emp where job='MANAGER' or job='SALESMAN';
 
 >> **使用`union all`：**
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename,sal from emp where job='MANAGER'
     -> union all
     -> select ename,sal from emp where job='SALESMAN';
@@ -427,7 +427,7 @@ mysql> select ename,sal from emp where job='MANAGER'
 
 3. **案例：查询员工表`前5条记录`**
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select * from emp limit 0,5;
 
 +-------+--------+----------+------+------------+---------+---------+--------+
@@ -442,7 +442,7 @@ mysql> select * from emp limit 0,5;
 5 rows in set (0.00 sec)
 ```
 > **如果`下标是从0开始`，可以`简写`为：**
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select * from emp limit 5;
 
 +-------+--------+----------+------+------------+---------+---------+--------+
@@ -458,7 +458,7 @@ mysql> select * from emp limit 5;
 ```
 
 4. **查询`工资排名在前5名`的员工(limit是在`order by执行之后`才会`执行`的)**
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename,sal from emp order by sal desc limit 5;
 
 +-------+---------+
@@ -478,7 +478,7 @@ mysql> select ename,sal from emp order by sal desc limit 5;
 ::: tip 提示
 > **假设`每页显示3条记录`：`pageSize = 3`**
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 第1页：limit 0, 3
 
 第2页：limit 3, 3

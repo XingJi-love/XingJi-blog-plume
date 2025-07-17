@@ -24,10 +24,10 @@ cover: /MySQL.png
 
 ### max
 **找出员工的最高薪资**
-```sql [SQL]
+```sql title="SQL" [SQL]
 select max(sal) from emp;
 ```
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select max(sal) from emp;
 +----------+
 | max(sal) |
@@ -39,10 +39,10 @@ mysql> select max(sal) from emp;
 
 ### min
 **找出员工的最低工资**
-```sql [SQL]
+```sql title="SQL" [SQL]
 select min(sal) from emp;
 ```
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select min(sal) from emp;
 +----------+
 | min(sal) |
@@ -54,10 +54,10 @@ mysql> select min(sal) from emp;
 
 ### avg
 **计算员工的平均薪资**
-```sql [SQL]
+```sql title="SQL" [SQL]
 select avg(sal) from emp;
 ```
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select avg(sal) from emp;
 +-------------+
 | avg(sal)    |
@@ -69,10 +69,10 @@ mysql> select avg(sal) from emp;
 
 ### sum
 **计算员工的工资和**
-```sql [SQL]
+```sql title="SQL" [SQL]
 select sum(sal) from emp;
 ```
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select sum(sal) from emp;
 +----------+
 | sum(sal) |
@@ -82,10 +82,10 @@ mysql> select sum(sal) from emp;
 1 row in set (0.00 sec)
 ```
 **计算员工的津贴之和**
-```sql [SQL]
+```sql title="SQL" [SQL]
 select sum(comm) from emp;
 ```
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select sum(comm) from emp;
 +-----------+
 | sum(comm) |
@@ -97,7 +97,7 @@ mysql> select sum(comm) from emp;
 
 > 查询所有员工信息
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select * from emp;
 +-------+--------+-----------+------+------------+---------+---------+--------+
 | EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL     | COMM    | DEPTNO |
@@ -125,12 +125,12 @@ mysql> select * from emp;
 
 **统计员工人数**
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select count(ename) from emp;
 select count(*) from emp;
 select count(1) from emp;
 ```
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select count(ename) from emp;
 +--------------+
 | count(ename) |
@@ -160,10 +160,10 @@ mysql> select count(1) from emp;
 
 > 例如：`count(comm) 结果是 4，而不是14`
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 select count(comm) from emp;
 ```
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select * from emp;
 +-------+--------+-----------+------+------------+---------+---------+--------+
 | EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL     | COMM    | DEPTNO |
@@ -201,10 +201,10 @@ mysql> select count(comm) from emp;
 
 
 **统计岗位数量**
-```sql [SQL]
+```sql title="SQL" [SQL]
 select count(distinct job) from emp;
 ```
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select count(distinct job) from emp;
 +---------------------+
 | count(distinct job) |
@@ -216,7 +216,7 @@ mysql> select count(distinct job) from emp;
 
 ## 分组函数组合使用
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select count(*),max(sal),min(sal),avg(sal),sum(sal) from emp;
 +----------+----------+----------+-------------+----------+
 | count(*) | max(sal) | min(sal) | avg(sal)    | sum(sal) |
@@ -231,7 +231,7 @@ mysql> select count(*),max(sal),min(sal),avg(sal),sum(sal) from emp;
 **分组函数不能直接使用在where子句当中**
 
 select ename,job from emp where sal > avg(sal); 这个会报错的
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename,job from emp where sal > avg(sal);
 ERROR 1111 (HY000): Invalid use of group function
 ```
@@ -249,10 +249,10 @@ group by 字段
 group by 字段1,字段2,字段3....
 
 **找出每个岗位的平均薪资**
-```sql [SQL]
+```sql title="SQL" [SQL]
 select job, avg(sal) from emp group by job;
 ```
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select job,avg(sal) from emp group by job;
 +-----------+-------------+
 | job       | avg(sal)    |
@@ -267,10 +267,10 @@ mysql> select job,avg(sal) from emp group by job;
 ```
 
 **找出每个部门最高工资**
-```sql [SQL]
+```sql title="SQL" [SQL]
 select deptno,max(sal) from emp group by deptno;
 ```
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select deptno,max(sal) from emp group by deptno;
 +--------+----------+
 | deptno | max(sal) |
@@ -283,10 +283,10 @@ mysql> select deptno,max(sal) from emp group by deptno;
 ```
 
 **找出每个部门不同岗位的平均薪资**
-```sql [SQL]
+```sql title="SQL" [SQL]
 select deptno,job,avg(sal) from emp group by deptno,job;
 ```
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select deptno,job,avg(sal) from emp group by deptno,job;
 +--------+-----------+-------------+
 | deptno | job       | avg(sal)    |
@@ -305,10 +305,10 @@ mysql> select deptno,job,avg(sal) from emp group by deptno,job;
 ```
 
 **当select语句中`有group by的话`，select后面`只能跟分组函数或参加分组的字段`**
-```sql [SQL]
+```sql title="SQL" [SQL]
 select ename,deptno,avg(sal) from emp group by deptno; // 这个SQL执行后会报错。
 ```
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select ename,deptno,avg(sal) from emp group by deptno;
 ERROR 1055 (42000): Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'powernode.emp.ENAME' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
 ```
@@ -321,11 +321,11 @@ having写在`group by的后面`，当你对分组之后的数据不满意，可�
 使用原则：`尽量在where中过滤`，实在不行，`再使用having`。越早过滤效率越高。
 
 **找出除20部门之外，其它部门的平均薪资。**
-```sql [SQL]
+```sql title="SQL" [SQL]
 select deptno,avg(sal) from emp where deptno<>20 group by deptno; // 建议
 select deptno,avg(sal) from emp group by deptno having deptno <> 20; // 不建议
 ```
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select deptno ,avg(sal) from emp where deptno<>20 group by deptno;
 +--------+-------------+
 | deptno | avg(sal)    |
@@ -346,10 +346,10 @@ mysql> select deptno ,avg(sal) from emp group by deptno having deptno<>20;
 ```
 
 **查询每个部门平均薪资，找出平均薪资高于2000的。**
-```sql [SQL]
+```sql title="SQL" [SQL]
 select deptno,avg(sal) from emp group by deptno having avg(sal) > 2000;
 ```
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select deptno,avg(sal) from emp group by deptno having avg(sal) > 2000;
 +--------+-------------+
 | deptno | avg(sal)    |
@@ -366,7 +366,7 @@ mysql> select deptno,avg(sal) from emp group by deptno having avg(sal) > 2000;
 
 > **`substring_index函数`的使用：**
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select substring_index('http://www.baidu.com','.',1);
 +-----------------------------------------------+
 | substring_index('http://www.baidu.com','.',1) |
@@ -386,7 +386,7 @@ mysql> select substring_index('http://www.baidu.com','.',2);
 
 > **`group_concat函数`的使用：**
 
-```sql [SQL]
+```sql title="SQL" [SQL]
 mysql> select group_concat(empno) from emp group by job;
 +---------------------+
 | group_concat(empno) |
