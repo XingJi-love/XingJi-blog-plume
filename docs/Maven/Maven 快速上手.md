@@ -1,10 +1,15 @@
-![image-20241119113250984](https://s2.loli.net/2024/11/19/rgjRD8vHEao7bJQ.png)
+---
+title: Maven | Maven 快速上手
+tags:
+  - Maven
+createTime: 2025/07/26 22:59:34
+permalink: /article/pzentan6/
+cover: /Maven-1.jpg
+---
 
-# Maven快速上手
+![Maven](./Maven.jpg)
 
-**注意：** 开始之前，看看你C盘空间够不够，最好预留20GB空间以上！
-
-**吐槽：** 很多电脑预装系统C盘都给得巨少，就算不装软件，一些软件的缓存文件也能给你塞满，建议有时间重装一下系统重新分配一下磁盘空间。
+## Maven 快速上手
 
 Maven 翻译为"专家"、"内行"，是 Apache 下的一个纯 Java 开发的开源项目。基于项目对象模型（缩写：POM）概念，Maven利用一个中央信息片断能管理一个项目的构建、报告和文档等步骤。Maven 是一个项目管理工具，可以对 Java 项目进行构建、依赖管理。Maven 也可被用于构建和管理各种项目，例如 C#，Ruby，Scala 和其他语言编写的项目。Maven 曾是 Jakarta 项目的子项目，现为由 Apache 软件基金会主持的独立 Apache 项目。
 
@@ -31,7 +36,7 @@ Maven也需要安装环境，但是IDEA已经自带了Maven环境，因此我们
 
 而下面的pom.xml则是Maven的核心配置，也是整个项目的所有依赖、插件、以及各种配置的集合，它也是使用XML格式编写的，一个标准的pom配置长这样：
 
-```xml
+```xml title="xml"
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -67,7 +72,7 @@ Maven也需要安装环境，但是IDEA已经自带了Maven环境，因此我们
 
 我们可以创建一个`dependencies`节点：
 
-```xml
+```xml title="xml"
 <dependencies>
     //里面填写的就是所有的依赖
 </dependencies>
@@ -75,7 +80,7 @@ Maven也需要安装环境，但是IDEA已经自带了Maven环境，因此我们
 
 那么现在就可以向节点中填写依赖了，那么我们如何知道每个依赖的坐标呢？我们可以在：https://central.sonatype.com 进行查询，我们直接搜索Lombok即可，打开后可以看到已经给我们写出了依赖的坐标：
 
-```xml
+```xml title="xml"
 <dependency>
     <groupId>org.projectlombok</groupId>
     <artifactId>lombok</artifactId>
@@ -85,7 +90,7 @@ Maven也需要安装环境，但是IDEA已经自带了Maven环境，因此我们
 
 我们直接将其添加到`dependencies`节点中即可，现在我们来编写一个测试用例看看依赖导入成功了没有：
 
-```java
+```java title="java"
 public class Main {
     public static void main(String[] args) {
         Student student = new Student("小明", 18);
@@ -94,7 +99,7 @@ public class Main {
 }
 ```
 
-```java
+```java title="java"
 @Data
 @AllArgsConstructor
 public class Student {
@@ -115,7 +120,7 @@ public class Student {
 
 1. 可以配置IDEA自带的Maven插件远程仓库镜像地址，我们打开IDEA的安装目录，找到`安装根目录/plugins/maven/lib/maven3/conf`文件夹，找到`settings.xml`文件，打开编辑，找到mirros标签，添加以下内容：
 
-   ```xml
+   ```xml title="xml"
    <mirror>
      <id>aliyunmaven</id>
      <mirrorOf>central</mirrorOf>
@@ -146,7 +151,7 @@ public class Student {
 
 这里我们来测试一下JUnit，我们可以在网站上搜索JUnit的依赖，我们这里导入最新的JUnit5作为依赖：
 
-```xml
+```xml title="xml"
 <dependency>
     <groupId>org.junit.jupiter</groupId>
     <artifactId>junit-jupiter</artifactId>
@@ -157,7 +162,7 @@ public class Student {
 
 我们所有的测试用例全部编写到Maven项目给我们划分的test目录下，位于此目录下的内容不会在最后被打包到项目中，只用作开发阶段测试使用：
 
-```java
+```java title="java"
 public class MainTest {
 
     @Test
@@ -171,7 +176,7 @@ public class MainTest {
 
 因此，一般仅用作测试的依赖如JUnit只保留在测试中即可，那么现在我们再来添加JDBC和Mybatis的依赖：
 
-```xml
+```xml title="xml"
 <dependency>
     <groupId>mysql</groupId>
     <artifactId>mysql-connector-java</artifactId>
@@ -186,7 +191,7 @@ public class MainTest {
 
 我们发现，Maven还给我们提供了一个`resource`目标，我们可以将一些静态资源，比如配置文件，放入到这个文件夹中，项目在打包时会将资源文件夹中文件一起打包的Jar中，比如我们在这里编写一个Mybatis的配置文件：
 
-```xml
+```xml title="xml"
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE configuration
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
@@ -220,7 +225,7 @@ public class MainTest {
 
 现在我们创建一下测试用例，顺便带大家回顾一下JUnit5的使用：
 
-```java
+```java title="java"
 public class MainTest {
 
     //因为配置文件位于内部，我们需要使用Resources类的getResourceAsStream来获取内部的资源文件
@@ -251,7 +256,7 @@ public class MainTest {
 
 - **system**：作用域和provided是一样的，但是它不是从远程仓库获取，而是直接导入本地Jar包。
 
-```xml
+```xml title="xml"
 <dependency>
      <groupId>javax.jntm</groupId>
      <artifactId>lbwnb</artifactId>
@@ -267,7 +272,7 @@ public class MainTest {
 
 前面我们给大家介绍了依赖的导入方式和各种作用域，我们接着来看如何在其他项目中引入我们自己编写的Maven项目作为依赖使用。这里我们创建一个用于测试的简单项目：
 
-```xml
+```xml title="xml"
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -283,7 +288,7 @@ public class MainTest {
 </project>
 ```
 
-```java
+```java title="java"
 public class TestUtils {
     public static void test() {
         System.out.println("抛开事实不谈，你们就没有一点错吗？");
@@ -295,7 +300,7 @@ public class TestUtils {
 
 接着我们就可以在需要使用此项目作为依赖的其他项目中使用它了，只需要填写和这边一样的坐标：
 
-```xml
+```xml title="xml"
 <dependency>
     <groupId>com.test</groupId>
     <artifactId>TestMaven</artifactId>
@@ -305,7 +310,7 @@ public class TestUtils {
 
 接着我们就可以在项目中直接使用了：
 
-```java
+```java title="java"
 public static void main(String[] args) {
     TestUtils.test();
 }
@@ -315,7 +320,7 @@ public static void main(String[] args) {
 
 注意，如果我们的旧项目中引入了一些其他的依赖，那么此依赖是会一起被传递的，比如这里我们添加了MyBatis的依赖到原项目中：
 
-```xml
+```xml title="xml"
 <dependencies>
     <dependency>
         <groupId>org.mybatis</groupId>
@@ -333,13 +338,13 @@ public static void main(String[] args) {
 
 在某些情况下，可能我们并不希望某些依赖直接被项目连带引入，因此，当项目中的某些依赖不希望被使用此项目作为依赖的项目使用时，我们可以给依赖添加`optional`标签表示此依赖是可选的，默认在导入依赖时，不会导入可选的依赖：
 
-```xml
+```xml title="xml"
 <optional>true</optional>
 ```
 
 比如Mybatis的POM文件中，就存在大量的可选依赖：
 
-```xml
+```xml title="xml"
 <dependency>
   <groupId>org.slf4j</groupId>
   <artifactId>slf4j-api</artifactId>
@@ -365,7 +370,7 @@ public static void main(String[] args) {
 
 现在我们可以让使用此项目作为依赖的项目不使用可选依赖，但是如果别人的项目中没有将我们不希望的依赖作为可选依赖，这就导致我们还是会连带引入这些依赖，这个时候我们就可以通过排除依赖来防止添加不必要的依赖，只需添加`exclusion`标签即可：
 
-```xml
+```xml title="xml"
 <dependency>
     <groupId>com.test</groupId>
     <artifactId>TestMaven</artifactId>
@@ -388,7 +393,7 @@ public static void main(String[] args) {
 
 要创建一个子项目非常简单，我们只需右键左侧栏，新建模块，来创建一个子项目：
 
-```xml
+```xml title="xml"
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -412,7 +417,7 @@ public static void main(String[] args) {
 
 我们可以看到，IDEA默认给我们添加了一个parent节点，表示此Maven项目是父Maven项目的子项目，子项目直接继承父项目的`groupId`，子项目会继承父项目的所有依赖，我们来编写一个测试用例尝试一下:
 
-```java
+```java title="java"
 import lombok.extern.java.Log;
 
 @Log
@@ -427,7 +432,7 @@ public class Main {
 
 我们还可以让父Maven项目统一管理所有的依赖，包括版本号等，子项目可以选取需要的作为依赖，而版本全由父项目管理，我们可以将`dependencies`全部放入`dependencyManagement`节点，这样父项目就完全作为依赖统一管理。
 
-```xml
+```xml title="xml"
 <dependencyManagement>
     <dependencies>
         <dependency>
@@ -458,7 +463,7 @@ public class Main {
 
 我们发现，子项目的依赖失效了，因为现在父项目没有依赖，而是将所有的依赖进行集中管理，子项目需要什么再拿什么即可，同时子项目无需指定版本，所有的版本全部由父项目决定，子项目只需要使用即可：
 
-```xml
+```xml title="xml"
 <dependencies>
     <dependency>
         <groupId>org.projectlombok</groupId>
@@ -470,7 +475,7 @@ public class Main {
 
 当然，父项目如果还存在dependencies节点的话，里面的内依赖依然是直接继承：
 
-```xml
+```xml title="xml"
 <dependencies>
     <dependency>
         <groupId>org.junit.jupiter</groupId>
@@ -506,7 +511,7 @@ public class Main {
 - 测试类的名称必须是以`Test`结尾，比如`MainTest`
 - 测试方法上必须标注`@Test`注解或是其他标记JUnit测试案例的注解
 
-```java
+```java title="java"
 public class MainTest {
 
     @Test
@@ -532,7 +537,7 @@ public class MainTest {
 
 当然，以上方式存在一定的问题，比如这里并没有包含项目中用到的一些其他依赖，如果我们需要打包一个可执行文件，那么我不仅需要将自己编写的类打包到Jar中，同时还需要将依赖也一并打包到Jar中，因为我们使用了别人为我们提供的框架，自然也需要运行别人的代码，我们需要使用另一个插件来实现一起打包：
 
-```xml
+```xml title="xml"
 <plugin>
     <artifactId>maven-assembly-plugin</artifactId>
     <version>3.1.0</version>
@@ -567,14 +572,8 @@ public class MainTest {
 
 我们之前还讲解了多模块项目，那么多模块下父项目存在一个`packing`打包类型标签，所有的父级项目的`packing`都为`pom`，`packing`默认是`jar`类型，如果不作配置，maven会将该项目打成jar包：
 
-```xml
+```xml title="xml"
 <packaging>pom</packaging>
 ```
 
 作为父级项目，还有一个重要的属性，那就是modules，通过modules标签将项目的所有子项目引用进来，在`build`父级项目时，会根据子模块的相互依赖关系整理一个`build`顺序，然后依次`build`直到所有任务都完成。
-
-
-
-————————————————
-版权声明：本文为柏码知识库版权所有，禁止一切未经授权的转载、发布、出售等行为，违者将被追究法律责任。
-原文链接：https://www.itbaima.cn/document/ru4ogh2waocpn4jo

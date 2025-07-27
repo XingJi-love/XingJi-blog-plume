@@ -7,7 +7,7 @@ import FRIENDS from '../data/friends.json'
   <p class="about-me-card-title-normal">友情链接</p>
   <div class="about-me-friends-title">
     <p class="about-me-card-text-big about-me-card-text-color">我的好友们</p>
-    <router-link to="/more/friends/"> <icon name="game-icons:three-friends"/> 所有好友 </router-link>
+    <router-link to="/friends/"> <icon name="game-icons:three-friends"/> 所有好友 </router-link>
   </div>
   <div class="about-me-friends-content">
     <a :href="item.link" target="_blank" class="about-me-friends-item" v-for="(item, index) in FRIENDS" :key="index" :title="item.name+':'+item.link">

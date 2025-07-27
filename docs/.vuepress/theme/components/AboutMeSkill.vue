@@ -28,28 +28,41 @@
 <script setup>
 import { ref } from 'vue';
 
+// 技能
 const technology = ref([
+  { type: 'ROS', icon: 'skill-icons:ros-light' },
   { type: 'Vue', icon: 'logos:vue' },
-  { type: 'Pinia', icon: 'logos:pinia' },
+  { type: 'Spring', icon: 'devicon:spring' },
+  { type: 'MySQL', icon: 'devicon:mysql' },
+  { type: 'HTML5', icon: 'logos:html-5' },
+  { type: 'CSS3', icon: 'logos:css-3' },
   { type: 'JavaScript', icon: 'vscode-icons:file-type-js' },
   { type: 'TypeScript', icon: 'vscode-icons:file-type-typescriptdef' },
-  { type: 'Less', icon: 'logos:less' },
-  { type: 'CSS3', icon: 'logos:css-3' },
-  { type: 'HTML5', icon: 'logos:html-5' },
-  { type: 'Java', icon: 'vscode-icons:file-type-java' },
-  { type: 'C/C++', icon: 'vscode-icons:file-type-cpp2' },
-  { type: 'Spring', icon: 'devicon:spring' },
-  { type: 'Python', icon: 'material-icon-theme:python' },
-  { type: 'MySQL', icon: 'devicon:mysql' }
+  { type: 'Python', icon: 'logos:python' },
+  { type: 'C++', icon: 'devicon:cplusplus' },
+  { type: 'Java', icon: 'devicon:java' },
+  { type: 'Shell', icon: 'catppuccin:powershell' },
+  { type: 'GraphQL', icon: 'logos:graphql' },
+  { type: 'Redis', icon: 'devicon:redis' },
+  { type: 'MongoDB', icon: 'devicon:mongodb' },
+  { type: 'Elasticsearch', icon: 'devicon:elasticsearch' },
+  { type: 'RabbitMQ', icon: 'devicon:rabbitmq' }
 ]);
 
+// 工具
 const tools = ref([
   { type: 'WebStorm', icon: 'devicon:webstorm' },
   { type: 'VSCode', icon: 'vscode-icons:file-type-vscode' },
+  { type: 'Android Studio', icon: 'devicon:androidstudio' },
   { type: 'pnpm', icon: 'vscode-icons:file-type-light-pnpm' },
   { type: 'npm', icon: 'logos:npm' },
   { type: 'Vite', icon: 'devicon:vitejs' },
   { type: 'IDEA', icon: 'logos:intellij-idea' },
+  { type: 'Git', icon: 'devicon:git' },
+  { type: 'GitHub', icon: 'devicon:github' },
+  { type: 'GitLab', icon: 'devicon:gitlab' },
+  { type: 'Docker', icon: 'devicon:docker' },
+  { type: 'Postman', icon: 'devicon:postman' },
   { type: 'Netlify', icon: 'devicon:netlify' },
 ]);
 </script>
