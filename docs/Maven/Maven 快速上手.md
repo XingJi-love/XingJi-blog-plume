@@ -4,7 +4,7 @@ tags:
   - Maven
 createTime: 2025/07/26 22:59:34
 permalink: /article/pzentan6/
-cover: /Maven-1.jpg
+cover: /Maven.jpg
 ---
 
 ![Maven](./Maven.jpg)
