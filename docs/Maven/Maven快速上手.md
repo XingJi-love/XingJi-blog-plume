@@ -1,5 +1,5 @@
 ---
-title: Maven | Maven 快速上手
+title: Maven | Maven快速上手
 tags:
   - Maven
 createTime: 2025/07/26 22:59:34
@@ -24,13 +24,13 @@ Maven也需要安装环境，但是IDEA已经自带了Maven环境，因此我们
 
 我们之前使用的都是最原始的Java项目目录格式，其中`src`目录直接包含我们的包以及对应的代码：
 
-![image-20241118220530127](https://s2.loli.net/2024/11/18/EaOJqQ9DdxM5lNG.png)
+![Maven项目结构](./Maven快速上手/img-1.jpg)
 
 这是IDEA为我们提供的一种非常高效简洁的项目目录格式，虽然它用起来非常的简单方便，但是在管理依赖上，确实比较麻烦，我们得手动将我们需要的依赖以jar包的形式导入，光寻找这些jar包就得花费很多时间，并且不同的jar包还会依赖更多jar包，就像下崽一样，所以对于大型项目来说，这并不是一个很好的使用方式。
 
 而Maven就很好地解决了这个问题，我们可以先来看一下，一个Maven项目和我们普通的项目有什么区别：
 
-![img](https://s2.loli.net/2024/08/28/iVXseYS6kcAzCnp.jpg)
+![Maven项目结构](./Maven快速上手/img-2.jpg)
 
 其中src目录下存放我们的源代码和测试代码，分别位于main和test目录下，而test和main目录下又具有java、resources目录，它们分别用于存放Java源代码、静态资源（如配置文件、图片等）、很多JavaWeb项目可能还会用到webapp目录。
 
@@ -110,7 +110,7 @@ public class Student {
 
 项目运行成功，表示成功导入了依赖。那么，Maven是如何进行依赖管理呢，以致于如此便捷的导入依赖，我们来看看Maven项目的依赖管理流程：
 
-![img](https://s2.loli.net/2024/11/19/5s2HWYlJgSCOp1q.jpg)
+![Maven依赖管理流程](./Maven快速上手/img-3.jpg)
 
 通过流程图我们得知，一个项目依赖一般是存储在中央仓库中，也有可能存储在一些其他的远程仓库（可以自行搭建私服）几乎所有的依赖都被放到了中央仓库中，因此，Maven可以直接从中央仓库中下载大部分的依赖（因此Maven第一次导入依赖是需要联网的，否则无法下载）远程仓库中下载之后 ，会暂时存储在本地仓库，我们会发现我们本地存在一个`.m2`文件夹，这就是Maven本地仓库文件夹，默认建立在C盘，如果你C盘空间不足，会出现问题。
 
@@ -316,7 +316,7 @@ public static void main(String[] args) {
 }
 ```
 
-![image-20241119105655739](https://s2.loli.net/2024/11/19/vdz8KjP2JBHayok.png)
+![Maven安装、可选和排除](./Maven快速上手/img-4.jpg)
 
 注意，如果我们的旧项目中引入了一些其他的依赖，那么此依赖是会一起被传递的，比如这里我们添加了MyBatis的依赖到原项目中：
 
@@ -332,7 +332,7 @@ public static void main(String[] args) {
 
 此时在引入此项目的其他项目中，此依赖也被一起传递：
 
-![image-20241119110829917](https://s2.loli.net/2024/11/19/b723DJzNVAjCYE1.png)
+![Maven安装、可选和排除](./Maven快速上手/img-5.jpg)
 
 也就是说，当我们的项目依赖于其他内容时，为了保证完整性，默认情况下会一并引入所有此项目包含的依赖项。
 
@@ -502,7 +502,7 @@ public class Main {
 
 比如`clean`命令会自动清理`target`目录下的所有内容：
 
-![image-20241119113903101](https://s2.loli.net/2024/11/19/dH8mpF3CQ2Yf69k.png)
+![Maven测试和打包](./Maven快速上手/img-6.jpg)
 
 所有的命令在执行完成之后都会显示BUILD SUCCESS，否则就是在执行过程中出现了什么错误。
 
@@ -521,17 +521,17 @@ public class MainTest {
 }
 ```
 
-![image-20241119161523176](https://s2.loli.net/2024/11/19/F9McUmyIqoVZX1T.png)
+![Maven测试和打包](./Maven快速上手/img-7.jpg)
 
 我们接着来看`package`命令，它用于将我们的项目打包为jar文件，以供其他项目作为依赖引入，或是作为一个可执行的Java应用程序运行。
 
 我们可以直接点击`package`来进行打包操作。注意，在使用`package`命令打包之前也会自动执行一次`test`命令，来保证项目能够正常运行，当测试出现问题时，打包将无法完成，我们也可以手动跳过，选择`执行Maven目标`来手动执行Maven命令，输入`mvn package -Dmaven.test.skip=true `来以跳过测试的方式进行打包。
 
-![image-20241119162039936](https://s2.loli.net/2024/11/19/Hca5MzbeWtNkFU6.png)
+![Maven测试和打包](./Maven快速上手/img-8.jpg)
 
 接着在target目录下会出现我们打包完成的jar包，在JavaSE中我们就给大家介绍过，一个jar包实际上就是对我们生成的字节码文件进行的压缩打包，因此，我们也可以使用常见的压缩工具打开jar包查看其内部文件。
 
-![image-20241119162344760](https://s2.loli.net/2024/11/19/WdgNQJArRwfxpyY.png)
+![Maven测试和打包](./Maven快速上手/img-9.jpg)
 
 此时jar包中已经包含了我们项目中编写的类了，可以直接被其他项目导入使用。
 
@@ -568,7 +568,7 @@ public class MainTest {
 
 我们只需要执行`java -jar`命令即可运行打包好的Java程序：
 
-![image-20241119162858366](https://s2.loli.net/2024/11/19/hxT1lJDQgBGOSHf.png)
+![Maven测试和打包](./Maven快速上手/img-10.jpg)
 
 我们之前还讲解了多模块项目，那么多模块下父项目存在一个`packing`打包类型标签，所有的父级项目的`packing`都为`pom`，`packing`默认是`jar`类型，如果不作配置，maven会将该项目打成jar包：
 
