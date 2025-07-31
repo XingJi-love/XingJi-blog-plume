@@ -1,74 +1,158 @@
 /*颜色*/
 :root {
-    /*主页 卡片背景*/
-    --main-card-background: rgba(255, 255, 255, 0.8);
-    /*主页卡片边框*/
-    --main-card-border: #e3e8f7;
-    /*主页卡片阴影*/
-    --main-border-shadow: #2c2d300c;
-    /*主页 卡片 hover 颜色*/
-    --about-card-hover-bg: rgba(100, 190, 190, 0.8);
-    /*主页 按钮 背景*/
-    --home-action-bnt-bg: rgb(235, 235, 239);
-
-
-    /*博客单项hover border 颜色*/
-    --vp-blog-post-item-hover-border: rgba(80, 134, 161, 0.5);
-    /*博客单项hover shadow*/
-    --vp-blog-post-item-hover-shadow: rgba(80, 134, 161, 0.2);
-
-    /*语言 span 背景*/
-    --about-me-skill-item-bg: #f4f2ed;
+  /*卡片背景*/
+  --main-card-background: rgba(255, 255, 255, 0.85);
+  /*卡片边框*/
+  --main-card-border: #e3e8f7;
+  /*卡片阴影*/
+  --main-border-shadow: #2c2d300c;
+  /*卡片 hover */
+  --about-card-hover-bg: rgba(100, 190, 190, 0.8);
+  /*按钮 背景*/
+  --home-action-bnt-bg: rgb(235, 235, 239);
+  /*语言 span 背景*/
+  --about-me-skill-item-bg: #f4f2ed;
+  /* 容器背景 */
+  --main-container-bg: rgba(255, 255, 255, 0.9);
 }
 
 [data-theme="dark"] {
-    --main-card-background: rgba(27, 28, 32, 0.8);
-    --main-card-border: #3d3d3f;
-    --main-border-shadow: #00000050;
-    --about-card-hover-bg: rgba(100, 190, 190, 0.8);
-    --home-action-bnt-bg: rgb(50, 54, 63);
-
-    --vp-blog-post-item-hover-border: rgba(80, 134, 161, 0.4);
-    --vp-blog-post-item-hover-shadow: rgba(80, 134, 161, 0.15);
-
-    --about-me-skill-item-bg: #15191c;
+  --main-card-background: rgba(27, 28, 32, 0.85);
+  --main-card-border: #3d3d3f;
+  --main-border-shadow: #00000050;
+  --about-card-hover-bg: rgba(100, 190, 190, 0.8);
+  --home-action-bnt-bg: rgb(50, 54, 63);
+  --about-me-skill-item-bg: #15191c;
+  --main-container-bg: rgba(0, 0, 0, 0.9);
 }
 
-/*blog logo title*/
+/*卡片背景*/
+.about-me-card-bg {
+  padding: 1rem;
+  border-radius: 12px;
+  background-color: var(--main-card-background);
+  border: 1px solid var(--main-card-border);
+  box-shadow: 0 8px 12px -4px var(--main-border-shadow);
+  overflow: hidden;
+}
+
+/*卡片文字 小号*/
+.about-me-card-title-normal {
+  color: var(--vp-c-text-2);
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+/*卡片文字 大号*/
+.about-me-card-text-big {
+  color: var(--vp-c-text-1);
+  margin: 10px 0;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.1;
+  @media screen and (max-width: 770px) {
+    font-size: 24px;
+    margin: 7px 0;
+  }
+}
+
+/*卡片文字 暗色*/
+.about-me-card-text-soft {
+  color: var(--vp-c-text-2);
+}
+
+/*卡片文字 彩色*/
+.about-me-card-text-color {
+  background: var(
+    --vp-bg-home-hero-name,
+    linear-gradient(
+      315deg,
+      var(--vp-c-purple-1) 10%,
+      var(--vp-c-brand-2) 75%,
+      var(--vp-c-brand-2) 100%
+    )
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.vp-blog {
+  background-image: linear-gradient(
+      var(--main-container-bg),
+      var(--main-container-bg)
+    ),
+    url(/images/bg-2.jpg);
+}
+
+/*颜色*/
+:root {
+  /*文章背景线条颜色*/
+  --vp-doc-blog-bg: rgba(100, 190, 190, 0.09);
+  /*博客单项hover border 颜色*/
+  --vp-blog-post-item-hover-border: rgba(80, 134, 161, 0.5);
+  /*博客单项hover shadow*/
+  --vp-blog-post-item-hover-shadow: rgba(80, 134, 161, 0.2);
+}
+
+[data-theme="dark"] {
+  --vp-doc-blog-bg: rgba(30, 120, 120, 0.05);
+  --vp-blog-post-item-hover-border: rgba(80, 134, 161, 0.4);
+  --vp-blog-post-item-hover-shadow: rgba(80, 134, 161, 0.15);
+}
+
+/*左上角logo*/
 .vp-navbar-title span {
-    font-weight: bolder;
-    font-size: 1.4rem;
+  font-family: LogoFont, serif;
+  font-weight: bolder;
+  font-size: 1.4rem;
 }
 
 /*文章背景*/
 .vp-doc-container {
-    /*文章背景线条颜色*/
-    --vp-doc-blog-bg: rgba(100, 190, 190, 0.12);
-
-    background-image: linear-gradient(90deg, var(--vp-doc-blog-bg) 3%, transparent 0),
-    linear-gradient(1turn, var(--vp-doc-blog-bg) 3%, transparent 0);
-    background-position: 50%;
-    background-size: 20px 20px;
+  background: radial-gradient(
+        farthest-side at -33.33% 50%,
+        #0000 52%,
+        var(--vp-doc-blog-bg) 54% 57%,
+        #0000 59%
+      )
+      0 calc(100px / 2),
+    radial-gradient(
+        farthest-side at 50% 133.33%,
+        #0000 52%,
+        var(--vp-doc-blog-bg) 54% 57%,
+        #0000 59%
+      )
+      calc(100px / 2) 0,
+    radial-gradient(
+      farthest-side at 133.33% 50%,
+      #0000 52%,
+      var(--vp-doc-blog-bg) 54% 57%,
+      #0000 59%
+    ),
+    radial-gradient(
+      farthest-side at 50% -33.33%,
+      #0000 52%,
+      var(--vp-doc-blog-bg) 54% 57%,
+      #0000 59%
+    ),
+    rgba(103, 145, 122, 0);
+  background-size: calc(100px / 4.667) 100px, 100px calc(100px / 4.667);
 }
-
-[data-theme="dark"] .vp-doc-container {
-    --vp-doc-blog-bg: rgba(30, 120, 120, 0.15);
-}
-
 /*博客页面 单个卡片效果*/
 .vp-blog-post-item {
-    @media screen and (max-width: 770px) {
-        margin: 0 0 !important;
-        border-radius: 6px;
-    }
-    transition: box-shadow 0.2s ease-out, border-color 0.2s ease-out !important;
-    border: 1px rgba(255, 0, 0, 0) solid;
-
-    &:hover {
-        box-shadow: 0 0 7px 2px var(--vp-blog-post-item-hover-shadow) !important;
-        border: 1px var(--vp-blog-post-item-hover-border) solid;
-    }
+  @media screen and (max-width: 770px) {
+    margin: 0 0 !important;
+    border-radius: 6px;
+  }
+  transition: box-shadow 0.2s ease-out, border-color 0.2s ease-out !important;
+  border: 1px rgba(255, 0, 0, 0) solid;
+  &:hover {
+    box-shadow: 0 0 7px 2px var(--vp-blog-post-item-hover-shadow) !important;
+    border: 1px var(--vp-blog-post-item-hover-border) solid;
+  }
 }
+
 
 /*地址栏*/
 .main {
@@ -306,52 +390,6 @@
         transform: rotate(-1turn);
     }
 }
-
-/*--------------------主页--------------------*/
-
-/*单个卡片背景*/
-.about-me-card-bg {
-    padding: 1rem;
-    border-radius: 12px;
-    background-color: var(--main-card-background);
-    border: 1px solid var(--main-card-border);
-    box-shadow: 0 8px 12px -4px var(--main-border-shadow);
-    overflow: hidden;
-}
-
-/*卡片 小 title*/
-.about-me-card-title-normal {
-    color: var(--vp-c-text-2);
-    font-size: 13px;
-    margin-bottom: 10px;
-}
-
-/*卡片 大 text*/
-.about-me-card-text-big {
-    color: var(--vp-c-text-1);
-    margin: 10px 0;
-    font-size: 36px;
-    font-weight: 700;
-    line-height: 1.1;
-    @media screen and (max-width: 770px) {
-        font-size: 24px;
-        margin: 7px 0;
-    }
-}
-
-/*卡片 暗色 text*/
-.about-me-card-text-soft {
-    color: var(--vp-c-text-2);
-}
-
-/*卡片 彩色 text*/
-.about-me-card-text-color {
-    background: var(--vp-bg-home-hero-name, linear-gradient(315deg, var(--vp-c-purple-1) 10%, var(--vp-c-brand-2) 75%, var(--vp-c-brand-2) 100%));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
 
 
 /* 自定义鼠标样式 */
