@@ -4,7 +4,7 @@ tags:
   - chart
 createTime: 2025/03/30 00:38:05
 permalink: /article/2rtdsrxy/
-cover: /images/壁纸.jpg
+cover: /images/bg-1.jpg
 ---
 
 ## chart.js 图表

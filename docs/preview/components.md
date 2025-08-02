@@ -4,7 +4,7 @@ tags:
   - components
 createTime: 2025/03/30 20:33:32
 permalink: /article/xn8lymxa/
-cover: /images/壁纸.jpg
+cover: /images/bg-1.jpg
 ---
 
 ## 徽章

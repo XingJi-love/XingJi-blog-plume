@@ -7,10 +7,10 @@ copyright: false
 outline: false
 readingTime: false
 lastUpdated: false
-createTime: 2025/03/30 21:20:05
 prev: false
 next: false
 title: about
+createTime: 2025/03/30 21:20:05
 ---
 
 <center>
@@ -50,7 +50,7 @@ title: about
 
 <p align="center">
   <a href="https://skillicons.dev">
-    <img src="https://skillicons.dev/icons?i=java,spring,gradle,maven,hibernate,redis,kafka,rabbitmq,docker,kubernetes,aws,linux,mysql,postgresql,mongodb,postman,idea,webstorm,vscode,sublime,git,github" />
+    <img src="https://skillicons.dev/icons?i=java,html,css,ts,js,vue,spring,gradle,maven,hibernate,redis,nginx,kafka,rabbitmq,linux,kali,mysql,postgresql,mongodb,postman,idea,webstorm,vscode,sublime,git,github" />
   </a>
 </p>
 

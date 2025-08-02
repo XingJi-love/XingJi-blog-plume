@@ -4,7 +4,7 @@ tags:
   - embed
 createTime: 2025/03/30 17:52:54
 permalink: /article/vufmnbtm/
-cover: /images/壁纸.jpg
+cover: /images/bg-1.jpg
 ---
 
 ## PDF 阅读
