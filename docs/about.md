@@ -34,6 +34,8 @@ createTime: 2025/03/30 21:20:05
 
 ## 👨‍💻 关于我
 
+<p align="center"><img width="450px" src="https://github.com/abhisheknaiidu/abhisheknaiidu/raw/master/code.gif?raw=true"></p>
+
 大家好，我是 **XINGJI**，一名 00 后 Java 后端初学者，正在成都边学边做。  
 坚信「**打好基础、多做项目、持续输出**」是成长最快的路径。
 
