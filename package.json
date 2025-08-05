@@ -38,7 +38,7 @@
     "markmap-toolbar": "^0.18.12",
     "markmap-view": "^0.18.12",
     "mermaid": "^11.9.0",
-    "mpegts.js": "^1.8.0",
+    "mpegts.js": "^1.7.3",
     "swiper": "^11.2.10",
     "vuepress-plugin-umami": "0.0.4"
   }

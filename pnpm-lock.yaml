@@ -42,7 +42,7 @@ importers:
         specifier: ^11.9.0
         version: 11.9.0
       mpegts.js:
-        specifier: ^1.8.0
+        specifier: ^1.7.3
         version: 1.8.0
       swiper:
         specifier: ^11.2.10
