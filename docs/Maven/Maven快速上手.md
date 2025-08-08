@@ -80,7 +80,10 @@ Maven也需要安装环境，但是IDEA已经自带了Maven环境，因此我们
 
 那么现在就可以向节点中填写依赖了，那么我们如何知道每个依赖的坐标呢？我们可以在：https://central.sonatype.com 进行查询，我们直接搜索Lombok即可，打开后可以看到已经给我们写出了依赖的坐标：
 
-![](./Maven快速上手/img-11.gif)
+<!--![Maven依赖导入](./Maven快速上手/img-11.gif)-->
+
+![Maven依赖导入](https://s2.loli.net/2025/08/09/eKX3j8uqSEtQsJh.gif)
+
 
 ```xml title="xml"
 <dependency>
@@ -148,17 +151,22 @@ public class Student {
 
 - **compile** ：默认的依赖有效范围，如果在定义依赖关系的时候，没有明确指定依赖有效范围的话，则**`默认采用该依赖有效范围`**，此范围表示在**`编译`、`运行`、`测试`**时均有效。
 
-  ![](./Maven快速上手/img-12.gif)
+<!--![](./Maven快速上手/img-12.gif)-->
+
+![Maven依赖作用域](https://s2.loli.net/2025/08/09/hRmIP5y3ktZlWKv.gif)
 
 - **provided** ：**仅在`编译`、`测试`时有效**，但是在**`运行时无效`**，也就是说，项目在运行时，不需要此依赖，比如我们上面的Lombok，我们只需要在编译阶段使用它，编译完成后，**实际上已经转换为对应的代码了**，因此Lombok不需要在项目**运行时也存在**。
 
-  ![](./Maven快速上手/img-13.gif)
+<!--![](./Maven快速上手/img-13.gif)-->
 
-  ![](./Maven快速上手/img-14.jpg)
+![Maven依赖作用域](https://s2.loli.net/2025/08/09/wuxT6hmWREoOXUI.gif)
+
+![Maven依赖作用域](./Maven快速上手/img-14.jpg)
 
 - **runtime** ：**在`运行`、`测试`时有效**，但是在**`编译代码时无效`**。比如**JDBC驱动**就是典型的**只需要运行时使用**，因为**JDBC驱动**由**数据库厂商开发**，我们**使用的始终是JDK中提供的`接口`**，不需要直接使用特定驱动中的**类或是方法**，因此**只需在运行时包含即可**。
 
-  ![](./Maven快速上手/img-15.gif)
+<!--![](./Maven快速上手/img-15.gif)-->
+![Maven依赖作用域](https://s2.loli.net/2025/08/09/7cBUsywIqWPfZjX.gif)
 
 - **test** ：**只在`测试`时有效**，例如：`JUnit框架`，我们一般只会在测试阶段使用`JUnit`，而实际项目运行时，我们就用不到测试了，所以这个选项非常适合`测试相关的框架`。
 
