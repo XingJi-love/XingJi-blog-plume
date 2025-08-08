@@ -80,7 +80,7 @@ Maven也需要安装环境，但是IDEA已经自带了Maven环境，因此我们
 
 那么现在就可以向节点中填写依赖了，那么我们如何知道每个依赖的坐标呢？我们可以在：https://central.sonatype.com 进行查询，我们直接搜索Lombok即可，打开后可以看到已经给我们写出了依赖的坐标：
 
-![](D:\Blog-Vuepress\my-project\docs\Maven\Maven快速上手\img-11.gif)
+![](./Maven快速上手/img-11.gif)
 
 ```xml title="xml"
 <dependency>
