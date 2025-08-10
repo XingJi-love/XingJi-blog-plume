@@ -170,6 +170,8 @@ public class Student {
 
 - **test** ：**只在`测试`时有效**，例如：`JUnit框架`，我们一般只会在测试阶段使用`JUnit`，而实际项目运行时，我们就用不到测试了，所以这个选项非常适合`测试相关的框架`。
 
+  ![](./Maven快速上手/img-16.gif)
+
 
 这里我们来测试一下JUnit，我们可以在网站上搜索JUnit的依赖，我们这里导入最新的JUnit5作为依赖：
 
@@ -196,22 +198,25 @@ public class MainTest {
 }
 ```
 
-因此，一般仅用作测试的依赖如JUnit只保留在测试中即可，那么现在我们再来添加JDBC和Mybatis的依赖：
+因此，一般仅用作测试的依赖如`JUnit只保留在测试`中即可，那么现在我们再来添加`JDBC和Mybatis`的依赖：
 
 ```xml title="xml"
 <dependency>
     <groupId>mysql</groupId>
     <artifactId>mysql-connector-java</artifactId>
-    <version>8.0.27</version>
+    <version>8.0.33</version>
+    <scope>runtime</scope>
 </dependency>
 <dependency>
     <groupId>org.mybatis</groupId>
     <artifactId>mybatis</artifactId>
-    <version>3.5.7</version>
+    <version>3.5.19</version>
 </dependency>
 ```
 
 我们发现，Maven还给我们提供了一个`resource`目标，我们可以将一些静态资源，比如配置文件，放入到这个文件夹中，项目在打包时会将资源文件夹中文件一起打包的Jar中，比如我们在这里编写一个Mybatis的配置文件：
+
+![](./Maven快速上手/img-17.gif)
 
 ```xml title="xml"
 <?xml version="1.0" encoding="UTF-8" ?>
@@ -228,14 +233,15 @@ public class MainTest {
     <typeAliases>
         <package name="com.test.entity"/>
     </typeAliases>
+    
     <environments default="development">
         <environment id="development">
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
                 <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
                 <property name="url" value="jdbc:mysql://localhost:3306/web_study"/>
-                <property name="username" value="test"/>
-                <property name="password" value="123456"/>
+                <property name="username" value="root"/>
+                <property name="password" value="1225"/>
             </dataSource>
         </environment>
     </environments>
@@ -243,6 +249,27 @@ public class MainTest {
         <mapper class="com.test.mapper.TestMapper"/>
     </mappers>
 </configuration>
+```
+
+设计一个名为web_study的数据库，写入相关数据：
+
+![](./Maven快速上手/img-19.jpg)
+
+![](./Maven快速上手/img-20.jpg)
+
+定义一个TestMapper的测试接口:
+
+```java title="java"
+package com.test.mapper;
+
+import com.test.entity.Student;
+import org.apache.ibatis.annotations.Select;
+
+public interface TestMapper {
+
+    @Select("SELECT * FROM db_student WHERE id = #{id}")
+    Student selectById(int id);
+}
 ```
 
 现在我们创建一下测试用例，顺便带大家回顾一下JUnit5的使用：
@@ -259,7 +286,7 @@ public class MainTest {
     @SneakyThrows
     public static void before(){
         factory = new SqlSessionFactoryBuilder()
-                .build(Resources.getResourceAsStream("mybatis.xml"));
+                .build(Resources.getResourceAsStream("mybatis-config.xml"));
     }
 
 
@@ -268,11 +295,17 @@ public class MainTest {
     public void test(){
         try (SqlSession sqlSession = factory.openSession(true)){
             TestMapper testMapper = sqlSession.getMapper(TestMapper.class);
-            System.out.println(testMapper.getStudentBySid(1));
+            System.out.println(testMapper.selectById(1));
         }
     }
 }
 ```
+
+![](./Maven快速上手/img-18.gif)
+
+进行`Mybatis连接数据库测试`:
+
+![](./Maven快速上手/img-21.gif)
 
 那么就有人提问了，如果我需要的依赖没有上传的远程仓库，而是只有一个Jar怎么办呢？我们可以使用第四种作用域：
 
@@ -302,7 +335,7 @@ public class MainTest {
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.test</groupId>
-    <artifactId>TestMaven</artifactId>
+    <artifactId>itbaima-mavenTest</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     ...
@@ -312,23 +345,27 @@ public class MainTest {
 
 ```java title="java"
 public class TestUtils {
-    public static void test() {
-        System.out.println("抛开事实不谈，你们就没有一点错吗？");
+    public static void test(){
+        System.out.println("啊真的是你丫");
     }
 }
 ```
 
-接着我们点击右上角的Maven选项，然后执行`install`或直接在命令行中输入`mvn install`来安装我们自己的项目到本地Maven仓库中。
+接着我们点击右上角的Maven选项，然后执行`install`或直接在命令行中输入`mvn install`来安装我们自己的项目到**`本地Maven仓库`**中。
+
+![](./Maven快速上手/img-22.gif)
 
 接着我们就可以在需要使用此项目作为依赖的其他项目中使用它了，只需要填写和这边一样的坐标：
 
 ```xml title="xml"
 <dependency>
     <groupId>com.test</groupId>
-    <artifactId>TestMaven</artifactId>
+    <artifactId>itbaima-mavenTest</artifactId>
     <version>1.0-SNAPSHOT</version>
 </dependency>
 ```
+
+![](./Maven快速上手/img-23.gif)
 
 接着我们就可以在项目中直接使用了：
 
@@ -347,22 +384,37 @@ public static void main(String[] args) {
     <dependency>
         <groupId>org.mybatis</groupId>
         <artifactId>mybatis</artifactId>
-        <version>3.5.16</version>
+        <version>3.5.19</version>
     </dependency>
 </dependencies>
 ```
 
 此时在引入此项目的其他项目中，此依赖也被一起传递：
 
+![](./Maven快速上手/img-24.gif)
+
 ![Maven安装、可选和排除](./Maven快速上手/img-5.jpg)
 
 也就是说，当我们的项目依赖于其他内容时，为了保证完整性，默认情况下会一并引入所有此项目包含的依赖项。
 
-在某些情况下，可能我们并不希望某些依赖直接被项目连带引入，因此，当项目中的某些依赖不希望被使用此项目作为依赖的项目使用时，我们可以给依赖添加`optional`标签表示此依赖是可选的，默认在导入依赖时，不会导入可选的依赖：
+在某些情况下，可能我们并不希望某些依赖直接被项目连带引入，因此，当项目中的`某些依赖不希望被使用`此项目作为依赖的项目使用时，我们可以给依赖添加`optional`标签表示此依赖是可选的，默认在导入依赖时，`不会导入`可选的依赖：
 
 ```xml title="xml"
 <optional>true</optional>
 ```
+
+```xml title="xml"
+<dependencies>
+    <dependency>
+        <groupId>org.mybatis</groupId>
+        <artifactId>mybatis</artifactId>
+        <version>3.5.19</version>
+        <optional>true</optional>
+    </dependency>
+</dependencies>
+```
+
+![](./Maven快速上手/img-25.gif)
 
 比如Mybatis的POM文件中，就存在大量的可选依赖：
 
@@ -395,8 +447,8 @@ public static void main(String[] args) {
 ```xml title="xml"
 <dependency>
     <groupId>com.test</groupId>
-    <artifactId>TestMaven</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <artifactId>itbaima-mavenTest</artifactId>
+    <version>1.3-SNAPSHOT</version>
     <exclusions>
         <exclusion>
             <groupId>org.mybatis</groupId>
@@ -407,37 +459,82 @@ public static void main(String[] args) {
 </dependency>
 ```
 
-此时我们通过这种方式手动排除了Test项目中包含的MyBatis依赖，这样项目中就不会包含此依赖了。
+![](./Maven快速上手/img-26.gif)
+
+此时我们通过这种方式手动排除了`Test项目`中`包含的MyBatis依赖`，这样项目中就`不会包含此依赖了`。
 
 ### Maven继承和多模块
 
-一个Maven项目可以继承自另一个Maven项目，比如多个子项目都需要父项目的依赖，我们就可以使用继承关系来快速配置。在我们学习到SpringBoot或是SpringCloud开发时，很多项目往往都会采用这种多模块子项目的形式的去编写，来更加合理地对项目中代码进行职责划分。
+一个Maven项目可以继承自另一个Maven项目，比如`多个子项目`**都需要**`父项目的依赖`，我们就可以使用`继承关系`来快速配置。在我们学习到`SpringBoot`或是`SpringCloud`开发时，很多项目往往都会采用这种`多模块子项目`的形式的去编写，来更加合理地对项目中代码进行职责划分。
 
-要创建一个子项目非常简单，我们只需右键左侧栏，新建模块，来创建一个子项目：
+父项目(pom.xml文件):
 
 ```xml title="xml"
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>MavenTest</artifactId>
-        <groupId>org.example</groupId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ChildModel</artifactId>
+    <groupId>com.test</groupId>
+    <artifactId>hello</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>hello-user</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.5.19</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.38</version>
+        </dependency>
+    </dependencies>
+
+</project>
+```
+
+要创建一个子项目非常简单，我们只需右键左侧栏，新建模块，来`创建一个子项目`：
+
+![](./Maven快速上手/img-28.jpg)
+
+```xml title="xml"
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.test</groupId>
+        <artifactId>hello</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>hello-user</artifactId>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
 </project>
 ```
 
-我们可以看到，IDEA默认给我们添加了一个parent节点，表示此Maven项目是父Maven项目的子项目，子项目直接继承父项目的`groupId`，子项目会继承父项目的所有依赖，我们来编写一个测试用例尝试一下:
+我们可以看到，IDEA默认给我们添加了一个`parent节点`，表示此Maven项目是**父Maven项目的`子项目`**，子项目直接继承父项目的`groupId`，子项目会继承父项目的`所有依赖`，我们来编写一个测试用例尝试一下:
 
 ```java title="java"
 import lombok.extern.java.Log;
@@ -445,45 +542,36 @@ import lombok.extern.java.Log;
 @Log
 public class Main {
     public static void main(String[] args) {
-        log.info("我是日志信息");
+        log.info("Hello World!");
     }
 }
 ```
 
-可以看到，子项目也成功继承了Lombok依赖。
+![](./Maven快速上手/img-27.jpg)
 
-我们还可以让父Maven项目统一管理所有的依赖，包括版本号等，子项目可以选取需要的作为依赖，而版本全由父项目管理，我们可以将`dependencies`全部放入`dependencyManagement`节点，这样父项目就完全作为依赖统一管理。
+可以看到，子项目也成功继承了`Lombok依赖`。
+
+我们还可以让父Maven项目**统一管理所有的`依赖`，包括`版本号`等**，子项目可以选取需要的作为依赖，而**`版本`全由`父项目`管理**，我们可以将`dependencies`全部放入`dependencyManagement`节点，这样父项目就完全作为依赖统一管理。
 
 ```xml title="xml"
 <dependencyManagement>
-    <dependencies>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.22</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>5.8.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.27</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
-            <version>3.5.7</version>
-        </dependency>
-    </dependencies>
-</dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>3.5.19</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.38</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 ```
 
-我们发现，子项目的依赖失效了，因为现在父项目没有依赖，而是将所有的依赖进行集中管理，子项目需要什么再拿什么即可，同时子项目无需指定版本，所有的版本全部由父项目决定，子项目只需要使用即可：
+我们发现，`子项目`的`依赖失效了`，因为现在`父项目没有依赖`，而是将所有的依赖进行`集中管理`，子项目需要什么再拿什么即可，同时子项目`无需指定版本`，`所有的版本`全部由`父项目决定`，子项目只需要使用即可：
 
 ```xml title="xml"
 <dependencies>
@@ -495,7 +583,9 @@ public class Main {
 </dependencies>
 ```
 
-当然，父项目如果还存在dependencies节点的话，里面的内依赖依然是直接继承：
+![](./Maven快速上手/img-29.gif)
+
+当然，父项目如果还存在`dependencies节点`的话，里面的内依赖依然是`直接继承`：
 
 ```xml title="xml"
 <dependencies>
@@ -511,6 +601,8 @@ public class Main {
     <dependencies>
       ...
 ```
+
+![](./Maven快速上手/img-30.gif)
 
 ### Maven测试和打包
 
@@ -562,7 +654,7 @@ public class MainTest {
 ```xml title="xml"
 <plugin>
     <artifactId>maven-assembly-plugin</artifactId>
-    <version>3.1.0</version>
+    <version>3.7.1</version>
     <configuration>
         <descriptorRefs>
             <descriptorRef>jar-with-dependencies</descriptorRef>
