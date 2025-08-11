@@ -609,21 +609,36 @@ public class Main {
 我们可以看到在IDEA右上角Maven板块中，每个Maven项目都有一个生命周期，实际上这些是Maven的一些插件，每个插件都有各自的功能，比如：
 
 - `clean`命令，执行后会清理整个`target`文件夹，在之后编写Springboot项目时可以解决一些缓存没更新的问题。
+
+  ![](./Maven快速上手/img-31.gif)
+
 - `validate`命令可以验证项目的可用性。
+
+  ![](./Maven快速上手/img-32.gif)
+
 - `compile`命令可以将项目编译为.class文件。
+
+  ![](./Maven快速上手/img-33.gif)
+
 - `install`命令可以将当前项目安装到本地仓库，以供其他项目导入作为依赖使用
+
 - `verify`命令可以按顺序执行每个默认生命周期阶段（`validate`，`compile`，`package`等）
+
+  ![](./Maven快速上手/img-34.gif)
 
 比如`clean`命令会自动清理`target`目录下的所有内容：
 
 ![Maven测试和打包](./Maven快速上手/img-6.jpg)
 
-所有的命令在执行完成之后都会显示BUILD SUCCESS，否则就是在执行过程中出现了什么错误。
+所有的命令在执行完成之后都会显示`BUILD SUCCESS`，否则就是在执行过程中出现了什么错误。
 
 除了上述介绍的几种命令外，我们还可以通过使用`test`命令，一键测试所有位于test目录下的测试案例，但是请注意默认的`test`命令有以下要求：
 
 - 测试类的名称必须是以`Test`结尾，比如`MainTest`
+
 - 测试方法上必须标注`@Test`注解或是其他标记JUnit测试案例的注解
+
+  ![](./Maven快速上手/img-35.gif)
 
 ```java title="java"
 public class MainTest {
