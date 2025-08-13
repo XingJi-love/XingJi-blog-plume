@@ -643,9 +643,26 @@ public class Main {
 ```java title="java"
 public class MainTest {
 
-    @Test
-    public void test() {
-        System.out.println("我是测试");
+    //因为配置文件位于内部，我们需要使用Resources类的getResourceAsStream来获取内部的资源文件
+    private static SqlSessionFactory factory;
+
+    //在JUnit5中@Before被废弃，它被细分了：
+    @BeforeAll // 一次性开启所有测试案例只会执行一次 (方法必须是static)
+    // @BeforeEach 一次性开启所有测试案例每个案例开始之前都会执行一次
+    @SneakyThrows
+    public static void before(){
+        factory = new SqlSessionFactoryBuilder()
+                .build(Resources.getResourceAsStream("mybatis-config.xml"));
+    }
+
+
+    @DisplayName("Mybatis数据库测试")  //自定义测试名称
+    @RepeatedTest(3)  //自动执行多次测试
+    public void test(){
+        try (SqlSession sqlSession = factory.openSession(true)){
+            TestMapper testMapper = sqlSession.getMapper(TestMapper.class);
+            System.out.println(testMapper.selectById(2));
+        }
     }
 }
 ```
@@ -653,6 +670,8 @@ public class MainTest {
 ![Maven测试和打包](./Maven快速上手/img-7.jpg)
 
 我们接着来看`package`命令，它用于将我们的项目打包为jar文件，以供其他项目作为依赖引入，或是作为一个可执行的Java应用程序运行。
+
+![](./Maven快速上手/img-36.gif)
 
 我们可以直接点击`package`来进行打包操作。注意，在使用`package`命令打包之前也会自动执行一次`test`命令，来保证项目能够正常运行，当测试出现问题时，打包将无法完成，我们也可以手动跳过，选择`执行Maven目标`来手动执行Maven命令，输入`mvn package -Dmaven.test.skip=true `来以跳过测试的方式进行打包。
 
@@ -666,10 +685,12 @@ public class MainTest {
 
 当然，以上方式存在一定的问题，比如这里并没有包含项目中用到的一些其他依赖，如果我们需要打包一个可执行文件，那么我不仅需要将自己编写的类打包到Jar中，同时还需要将依赖也一并打包到Jar中，因为我们使用了别人为我们提供的框架，自然也需要运行别人的代码，我们需要使用另一个插件来实现一起打包：
 
+![](./Maven快速上手/img-37.gif)
+
 ```xml title="xml"
 <plugin>
     <artifactId>maven-assembly-plugin</artifactId>
-    <version>3.7.1</version>
+    <version>3.1.0</version>
     <configuration>
         <descriptorRefs>
             <descriptorRef>jar-with-dependencies</descriptorRef>
@@ -696,6 +717,13 @@ public class MainTest {
 导入插件后，我们可以重新进行一次打包任务，等待打包完成即可得到我们的Jar文件，此时会出现两个文件，其中一个是之前的正常打包得到的jar文件，还有一个就是包含了所有依赖以及配置了主类的jar文件。
 
 我们只需要执行`java -jar`命令即可运行打包好的Java程序：
+
+```CMD title="CMD"
+D:\0-Maven\itbaima-maven>cd D:\0-Maven\itbaima-maven\HelloWorld\target
+
+D:\0-Maven\itbaima-maven\HelloWorld\target>java -jar HelloWorld-1.0-SNAPSHOT-jar-with-dependencies.jar      
+啊真的是你丫
+```
 
 ![Maven测试和打包](./Maven快速上手/img-10.jpg)
 
