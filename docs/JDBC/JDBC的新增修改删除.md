@@ -1070,74 +1070,74 @@ Connection conn = DriverManager.getConnection(url, user, password);
 ## getConnection(String url)
 这种方式参数只有一个url，那用户名和密码放在哪里呢？可以放到url当中，代码如下：
 ```java
-import java.sql.Driver;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+package com.powernode.jdbc;
+
 import java.sql.Connection;
+import java.sql.DriverManager;
 
-public class JDBCTest05 {
-    public static void main(String[] args){
-        try {
-            // 1. 注册驱动
-            Class.forName("com.mysql.cj.jdbc.Driver");
+public class JDBCTest02 {
+    public static void main(String[] args) throws Exception {
+        // getConnection的重载方法
+        // getConnection(url)
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        String url = "jdbc:mysql://localhost:3306/jdbc?user=root&password=1225&useUnicode=true&serverTimezone=Asia/Shanghai&useSSL=true&characterEncoding=utf-8";
+        
+        Connection conn = DriverManager.getConnection(url);
+        
+        System.out.println("连接对象：" + conn);
 
-            // 2. 获取连接
-            String url = "jdbc:mysql://localhost:3306/jdbc?user=root&password=123456";
-            Connection conn = DriverManager.getConnection(url);
-
-            System.out.println("连接对象：" + conn);
-        } catch(SQLException|ClassNotFoundException e){
-            e.printStackTrace();
-        }
+        // getConnection(url, info)
     }
 }
 ```
 
 执行结果：
-![image.png](https://cdn.nlark.com/yuque/0/2023/png/21376908/1702455014436-0f8654ab-8919-444f-a5b3-03b8c11736ae.png#averageHue=%2313110f&clientId=uad1d7c4b-3ad5-4&from=paste&height=76&id=u583c9f06&originHeight=76&originWidth=632&originalType=binary&ratio=1&rotation=0&showTitle=false&size=8658&status=done&style=shadow&taskId=u5cc7dddf-c500-4258-97a9-55f93a03d6a&title=&width=632)
+![](./JDBC的新增修改删除/img-64.jpg)
 
 ## getConnection(String url, Properties info)
 这种方式有两个参数，一个是url，一个是Properties对象。
 
-- url：可以单纯提供一个url地址
-- info：可以将url的参数存放到该对象中
+- url：可以`单纯提供一个url地址`
+- info：可以将`url的参数`存放到该`对象`中
 
 代码如下：
 ```java
-import java.sql.Driver;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+package com.powernode.jdbc;
+
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.Properties;
 
-public class JDBCTest06 {
-    public static void main(String[] args){
-        try {
-            // 1. 注册驱动
-            Class.forName("com.mysql.cj.jdbc.Driver");
+public class JDBCTest02 {
+    public static void main(String[] args) throws Exception {
+        // getConnection的重载方法
+        // getConnection(url)
+        /*Class.forName("com.mysql.cj.jdbc.Driver");
+        String url = "jdbc:mysql://localhost:3306/jdbc?user=root&password=1225&useUnicode=true&serverTimezone=Asia/Shanghai&useSSL=true&characterEncoding=utf-8";
+        Connection conn = DriverManager.getConnection(url);
+        System.out.println("连接对象：" + conn);*/
 
-            // 2. 获取连接
-            String url = "jdbc:mysql://localhost:3306/jdbc";
-            
-            Properties info = new Properties();
-            info.setProperty("user", "root");
-            info.setProperty("password", "123456");
-            info.setProperty("useUnicode", "true");
-            info.setProperty("serverTimezone", "Asia/Shanghai");
-            info.setProperty("useSSL", "true");
-            info.setProperty("characterEncoding", "utf-8");
-            
-            Connection conn = DriverManager.getConnection(url, info);
+        // getConnection(url, info)
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        // url
+        String url = "jdbc:mysql://localhost:3306/jdbc";
+        // info
+        Properties info = new Properties();
+        info.put("user","root");
+        info.put("password","1225");
+        info.put("useUnicode","true");
+        info.put("serverTimezone","Asia/Shanghai");
+        info.put("useSSL","true");
+        info.put("characterEncoding","utf-8");
 
-            System.out.println("连接对象：" + conn);
-        } catch(SQLException|ClassNotFoundException e){
-            e.printStackTrace();
-        }
+        Connection conn = DriverManager.getConnection(url,info);
+
+        System.out.println("连接对象：" + conn);
     }
 }
 ```
 
 执行结果：
-![image.png](https://cdn.nlark.com/yuque/0/2023/png/21376908/1702455362524-bc4e9ffa-ca7d-433a-af73-01cf76d556a0.png#averageHue=%23141210&clientId=uad1d7c4b-3ad5-4&from=paste&height=70&id=u8e5e09e5&originHeight=70&originWidth=651&originalType=binary&ratio=1&rotation=0&showTitle=false&size=8686&status=done&style=shadow&taskId=u5fc59869-8791-4891-9bf0-46233ec61a2&title=&width=651)
+![](./JDBC的新增修改删除/img-65.jpg)
 
 以上这两种方式作为了解，不是重点。

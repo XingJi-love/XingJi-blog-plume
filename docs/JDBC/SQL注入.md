@@ -9,7 +9,6 @@ cover: /JDBC.jpg
 
 ![JDBC | SQL注入](./JDBC.jpg)
 
-![](https://cdn.nlark.com/yuque/0/2023/jpeg/21376908/1692002570088-3338946f-42b3-4174-8910-7e749c31e950.jpeg#averageHue=%23f9f8f8&from=url&id=O8j9i&originHeight=78&originWidth=1400&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&title=)
 # SQL注入问题
 SQL注入问题说的是：用户输入的信息中含有SQL语句关键字，和程序中的SQL语句进行字符串拼接，导致程序中的SQL语句改变了原意。（SQL注入问题是一种系统安全问题）
 接下来我们来演示一下SQL注入问题。以用户登录为例。使用表：t_user
@@ -120,7 +119,6 @@ select realname from t_user where name = 'aaa' and password = 'bbb' or '1'='1';
 ![image.png](https://cdn.nlark.com/yuque/0/2023/png/21376908/1702977070115-c06f8f95-d42f-43e7-9b69-53eac3b155b2.png#averageHue=%23f0efee&clientId=u156f6b41-7663-4&from=paste&height=171&id=ue79d55bc&originHeight=171&originWidth=144&originalType=binary&ratio=1&rotation=0&showTitle=false&size=3817&status=done&style=shadow&taskId=u33810237-dd0a-4fa9-9aef-067015aad10&title=&width=144)
 把所有结果全部查到了，这是因为 '1'='1' 是恒成立的，并且使用的是 or 运算符，所以 or 前面的条件等于是没有的。这样就会把所有数据全部查到。而在程序中的判断逻辑是只要结果集中有数据，则表示登录成功。所以以上的输入方式最终的结果就是登录成功。你设想一下，如果这个系统是一个高级别保密系统，只有登录成功的人才有权限，那么这个系统是不是极其危险了。
 
-![](https://cdn.nlark.com/yuque/0/2023/jpeg/21376908/1692002570088-3338946f-42b3-4174-8910-7e749c31e950.jpeg#averageHue=%23f9f8f8&from=url&id=b1eb1&originHeight=78&originWidth=1400&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&title=)
 # 解决SQL注入问题
 导致SQL注入的根本原因是什么？只有找到真正的原因，问题才能得到解决。
 
@@ -242,7 +240,6 @@ public class JDBCTest03 {
 - PreparedStatement执行速度更快，可以避免SQL注入攻击；(PreparedStatement对于同一条SQL语句来说，编译一次，执行N次。而Statement是每次都要进行编译的。因此PreparedStatement效率略微高一些。)
 - PreparedStatement会做类型检查，是类型安全的；
 
-![](https://cdn.nlark.com/yuque/0/2023/jpeg/21376908/1692002570088-3338946f-42b3-4174-8910-7e749c31e950.jpeg#averageHue=%23f9f8f8&from=url&id=ix3qZ&originHeight=78&originWidth=1400&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&title=)
 # PreparedStatement的使用
 ## 新增操作
 需求：向 emp 表中插入这样一条记录：
@@ -325,7 +322,6 @@ public class JDBCTest04 {
 执行结果如下：
 ![image.png](https://cdn.nlark.com/yuque/0/2024/png/21376908/1708238667879-fe0a662a-f9e8-4933-afd0-5290856c21fd.png#averageHue=%23f4eeeb&clientId=u12e62e1b-f7c7-4&from=paste&height=370&id=uef77b401&originHeight=370&originWidth=673&originalType=binary&ratio=1&rotation=0&showTitle=false&size=36467&status=done&style=none&taskId=uc7a3d803-b1e3-40ee-98ca-368bb593c98&title=&width=673)
 
-![](https://cdn.nlark.com/yuque/0/2023/jpeg/21376908/1692002570088-3338946f-42b3-4174-8910-7e749c31e950.jpeg#averageHue=%23f9f8f8&from=url&id=X4tEj&originHeight=78&originWidth=1400&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&title=)
 ## 修改操作
 需求：将员工编号为8888的员工，姓名修改为李四，岗位修改为产品经理，月薪修改为5000.0，其他不变。
 ```java
@@ -392,7 +388,6 @@ public class JDBCTest05 {
 执行结果如下：
 ![image.png](https://cdn.nlark.com/yuque/0/2024/png/21376908/1708239544671-626c918f-fd56-4cfa-8aa2-df1976979414.png#averageHue=%23f6f0ed&clientId=u12e62e1b-f7c7-4&from=paste&height=375&id=u7bfa3f92&originHeight=375&originWidth=675&originalType=binary&ratio=1&rotation=0&showTitle=false&size=36597&status=done&style=none&taskId=u16478375-ba9f-4cac-89e8-61688719844&title=&width=675)
 
-![](https://cdn.nlark.com/yuque/0/2023/jpeg/21376908/1692002570088-3338946f-42b3-4174-8910-7e749c31e950.jpeg#averageHue=%23f9f8f8&from=url&id=yiZjS&originHeight=78&originWidth=1400&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&title=)
 ## 删除操作
 需求：将员工编号为8888的删除。
 ```java
@@ -456,7 +451,6 @@ public class JDBCTest06 {
 执行结果如下：
 ![image.png](https://cdn.nlark.com/yuque/0/2024/png/21376908/1708240126660-979bd865-6e83-41c7-9724-68c247209e9e.png#averageHue=%23d9ac6c&clientId=u12e62e1b-f7c7-4&from=paste&height=344&id=u8aa56fc6&originHeight=344&originWidth=658&originalType=binary&ratio=1&rotation=0&showTitle=false&size=33453&status=done&style=none&taskId=u5931a97b-d280-4586-abc4-aab041a7523&title=&width=658)
 
-![](https://cdn.nlark.com/yuque/0/2023/jpeg/21376908/1692002570088-3338946f-42b3-4174-8910-7e749c31e950.jpeg#averageHue=%23f9f8f8&from=url&id=RDFvt&originHeight=78&originWidth=1400&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&title=)
 ## 模糊查询
 需求：查询员工名字中第二个字母是 O 的。
 ```java
@@ -532,7 +526,6 @@ pstmt.setString(1, "O");
 ```
 由于占位符 ? 被单引号包裹，因此这个占位符是无效的。
 
-![](https://cdn.nlark.com/yuque/0/2023/jpeg/21376908/1692002570088-3338946f-42b3-4174-8910-7e749c31e950.jpeg#averageHue=%23f9f8f8&from=url&id=pU8Ea&originHeight=78&originWidth=1400&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&title=)
 ## 分页查询
 对于MySQL来说，通用的分页SQL语句：
 假设每页显示3条记录：pageSize = 3
@@ -616,7 +609,6 @@ public class JDBCTest08 {
 执行结果如下：
 ![image.png](https://cdn.nlark.com/yuque/0/2024/png/21376908/1708241685820-a51b06ef-5b38-4e64-806c-0c1b86fe1fab.png#averageHue=%23fbf9f8&clientId=u907c0c1a-424e-4&from=paste&height=99&id=u9d0f25ee&originHeight=99&originWidth=152&originalType=binary&ratio=1&rotation=0&showTitle=false&size=3174&status=done&style=shadow&taskId=u2501bf73-20d4-4c69-a735-1ba98ec06af&title=&width=152)
 
-![](https://cdn.nlark.com/yuque/0/2023/jpeg/21376908/1692002570088-3338946f-42b3-4174-8910-7e749c31e950.jpeg#averageHue=%23f9f8f8&from=url&id=hAryG&originHeight=78&originWidth=1400&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&title=)
 ## blob数据的插入和读取
 准备一张表：t_img，三个字段，一个id主键，一个图片名字name，一个img。
 建表语句如下：
@@ -783,7 +775,6 @@ public class JDBCTest10 {
 ```
 执行完毕之后，查看一下图片大小是否和原图片相同，打开看看是否可以正常显示。
 
-![](https://cdn.nlark.com/yuque/0/2023/jpeg/21376908/1692002570088-3338946f-42b3-4174-8910-7e749c31e950.jpeg#averageHue=%23f9f8f8&from=url&id=mIusF&originHeight=78&originWidth=1400&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&title=)
 # JDBC批处理操作
 准备一张商品表：t_product
 建表语句如下：
@@ -859,7 +850,6 @@ public class NoBatchTest {
 执行结果如下：
 ![image.png](https://cdn.nlark.com/yuque/0/2024/png/21376908/1708249553654-263146be-a485-4313-831f-892a776abd1d.png#averageHue=%23edeceb&clientId=u21834790-ed4d-4&from=paste&height=67&id=u376a8236&originHeight=67&originWidth=175&originalType=binary&ratio=1&rotation=0&showTitle=false&size=2603&status=done&style=shadow&taskId=u9b065934-65ea-4ab2-8bd0-0a29936bbb8&title=&width=175)
 
-![](https://cdn.nlark.com/yuque/0/2023/jpeg/21376908/1692002570088-3338946f-42b3-4174-8910-7e749c31e950.jpeg#averageHue=%23f9f8f8&from=url&id=PoOE1&originHeight=78&originWidth=1400&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&title=)
 ## 使用批处理
 使用批处理，向 t_product 表中插入一万条商品信息，并记录耗时！
 **注意：启用批处理需要在URL后面添加这个的参数：rewriteBatchedStatements=true**
@@ -933,7 +923,6 @@ public class BatchTest {
 1.  减少了网络通信次数：JDBC 批处理会将多个 SQL 语句一次性发送给服务器，减少了客户端和服务器之间的通信次数，从而提高了数据写入的速度，特别是对于远程服务器而言，优化效果更为显著。 
 2.  减少了数据库操作次数：JDBC 批处理会将多个 SQL 语句合并成一条 SQL 语句进行执行，从而减少了数据库操作的次数，减轻了数据库的负担，大大提高了数据写入的速度。  
 
-![](https://cdn.nlark.com/yuque/0/2023/jpeg/21376908/1692002570088-3338946f-42b3-4174-8910-7e749c31e950.jpeg#averageHue=%23f9f8f8&from=url&id=g9Pw5&originHeight=78&originWidth=1400&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&title=)
 # DbUtils工具类的封装
 JDBC编程六步中，很多代码是重复出现的，可以为这些代码封装一个工具类。让JDBC代码变的更简洁。
 ```java
@@ -1009,7 +998,4 @@ public class DbUtils {
         }
     }
 }
-
 ```
-
-![](https://cdn.nlark.com/yuque/0/2023/jpeg/21376908/1692002570088-3338946f-42b3-4174-8910-7e749c31e950.jpeg#averageHue=%23f9f8f8&from=url&id=Ttvmv&originHeight=78&originWidth=1400&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&title=)

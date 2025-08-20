@@ -25,7 +25,6 @@ ResultSet 的遍历是基于 JDBC 的流式处理机制的，即一行一行地�
 
 需要注意的是，在使用完 ResultSet 对象之后，需要及时关闭它，以释放数据库资源并避免潜在的内存泄漏问题。否则，如果在多个线程中打开了多个 ResultSet 对象，并且没有正确关闭它们的话，可能会导致数据库连接过多，从而影响系统的稳定性和性能。
 
-![](https://cdn.nlark.com/yuque/0/2023/jpeg/21376908/1692002570088-3338946f-42b3-4174-8910-7e749c31e950.jpeg#averageHue=%23f9f8f8&from=url&id=acVGP&originHeight=78&originWidth=1400&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&title=)
 ## 通过列索引获取数据（以String类型获取）
 需求：获取t_user表中所有数据，在控制台打印输出每一行的数据。
 ```sql
@@ -34,6 +33,7 @@ select id,name,password,realname,gender,tel from t_user;
 要查询的数据如下图：
 ![image.png](https://cdn.nlark.com/yuque/0/2023/png/21376908/1702536722789-fc5bbe25-598a-4619-b5b0-2dc1871da569.png#averageHue=%23f5f3f1&clientId=u4be5fce1-1b74-4&from=paste&height=137&id=u4577f84c&originHeight=137&originWidth=543&originalType=binary&ratio=1&rotation=0&showTitle=false&size=11309&status=done&style=none&taskId=u78254320-0cef-41c6-afba-771a9b8d6ea&title=&width=543)
 代码如下（重点关注第4步 第5步 第6步）：
+
 ```java
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -171,7 +171,6 @@ if(conn != null){
 ```
 ResultSet最终也是需要关闭的。**先关闭ResultSet，再关闭Statement，最后关闭Connection**。
 
-![](https://cdn.nlark.com/yuque/0/2023/jpeg/21376908/1692002570088-3338946f-42b3-4174-8910-7e749c31e950.jpeg#averageHue=%23f9f8f8&from=url&id=O8j9i&originHeight=78&originWidth=1400&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&title=)
 ## 通过列名获取数据（以String类型获取）
 获取当前行的数据，不仅可以通过列下标获取，还可以通过查询结果的列名来获取，通常这种方式是被推荐的，因为可读性好。
 例如这样的SQL：
@@ -263,7 +262,6 @@ public class JDBCTest10 {
 ![image.png](https://cdn.nlark.com/yuque/0/2023/png/21376908/1702540685314-fa65fdea-6aad-4781-99fa-c007955b5b3f.png#averageHue=%23191613&clientId=u858f9b9d-17d9-4&from=paste&height=225&id=ua4405eca&originHeight=225&originWidth=1042&originalType=binary&ratio=1&rotation=0&showTitle=false&size=40887&status=done&style=shadow&taskId=ub13101ac-bd74-45a7-81db-f89d783e604&title=&width=1042)
 提示name列是不存在的。所以一定是根据查询结果中的列名来获取，而不是表中原始的列名。
 
-![](https://cdn.nlark.com/yuque/0/2023/jpeg/21376908/1692002570088-3338946f-42b3-4174-8910-7e749c31e950.jpeg#averageHue=%23f9f8f8&from=url&id=InE0y&originHeight=78&originWidth=1400&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&title=)
 ## 以指定的类型获取数据
 前面的程序可以看到，不管数据库表中是什么数据类型，都以String类型返回。当然，也能以指定类型返回。
 使用PowerDesigner再设计一张商品表：t_product，使用Navicat for MySQL工具准备数据如下：
@@ -349,7 +347,6 @@ public class JDBCTest11 {
 执行结果如下：
 ![image.png](https://cdn.nlark.com/yuque/0/2023/png/21376908/1702541874721-10c9a4f2-370f-4ce4-985e-6cf8da2e3ffb.png#averageHue=%23131110&clientId=u858f9b9d-17d9-4&from=paste&height=122&id=ue711ac2d&originHeight=122&originWidth=522&originalType=binary&ratio=1&rotation=0&showTitle=false&size=11018&status=done&style=shadow&taskId=u241eaa77-525f-4fbd-9bdd-9a7523caff4&title=&width=522)
 
-![](https://cdn.nlark.com/yuque/0/2023/jpeg/21376908/1692002570088-3338946f-42b3-4174-8910-7e749c31e950.jpeg#averageHue=%23f9f8f8&from=url&id=SE92d&originHeight=78&originWidth=1400&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&title=)
 ## 获取结果集的元数据信息（了解）
 ResultSetMetaData 是一个接口，用于描述 ResultSet 中的元数据信息，即查询结果集的结构信息，例如查询结果集中包含了哪些列，每个列的数据类型、长度、标识符等。
 
@@ -434,7 +431,6 @@ public class JDBCTest12 {
 
 在上面的代码中，我们首先创建了一个 Statement 对象，然后执行了一条 SQL 查询语句，生成了一个 ResultSet 对象。接下来，我们通过 ResultSet 对象的 getMetaData() 方法获取了 ResultSetMetaData 对象，进而获取了查询结果中列的信息并进行输出。需要注意的是，在进行列信息的获取时，列的编号从 1 开始计算。该示例代码将获取查询结果集中所有列名、数据类型以及长度等信息。
 
-![](https://cdn.nlark.com/yuque/0/2023/jpeg/21376908/1692002570088-3338946f-42b3-4174-8910-7e749c31e950.jpeg#averageHue=%23f9f8f8&from=url&id=iCiM1&originHeight=78&originWidth=1400&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&title=)
 # 获取新增行的主键值
 有很多表的主键字段值都是自增的，在某些特殊的业务环境下，当我们插入了新数据后，希望能够获取到这条新数据的主键值，应该如何获取呢？
 在 JDBC 中，如果要获取插入数据后的主键值，可以使用 Statement 接口的 executeUpdate() 方法的重载版本，该方法接受一个额外的参数，用于指定是否需要获取自动生成的主键值。然后，通过以下两个步骤获取插入数据后的主键值：
