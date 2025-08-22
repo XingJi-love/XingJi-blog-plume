@@ -2,7 +2,7 @@
 title: JDBC | JDBC事务
 tags:
   - JDBC
-createTime: 2025/08/14 15:18:36
+createTime: 2025/08/14 15:18:04
 permalink: /article/yugpmdxt/
 cover: /JDBC.jpg
 ---

@@ -2,7 +2,7 @@
 title: JDBC | JDBC的查询
 tags:
   - JDBC
-createTime: 2025/08/14 15:18:36
+createTime: 2025/08/14 15:18:02
 permalink: /article/nq91mklb/
 cover: /JDBC.jpg
 ---

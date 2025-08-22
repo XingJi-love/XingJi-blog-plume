@@ -2,7 +2,7 @@
 title: JDBC | JDBC概述
 tags:
   - JDBC
-createTime: 2025/08/14 15:18:36
+createTime: 2025/08/14 15:18:00
 permalink: /article/z6814hv0/
 cover: /JDBC.jpg
 ---
@@ -155,5 +155,7 @@ JDBC API帮助文档就在JDK的帮助文档当中。
 ![](./JDBC概述/img-12.jpg)
 
 第二步：把lib包引入项目环境
+
 ![](./JDBC概述/img-13.jpg)
-![图片5.png](https://cdn.nlark.com/yuque/0/2023/png/21376908/1701941622028-54dee69e-3879-439a-a877-a994eea2ba26.png#averageHue=%23f5f2f1&clientId=u88d51c01-0843-4&from=paste&height=420&id=u1bf9c766&originHeight=420&originWidth=1104&originalType=binary&ratio=1&rotation=0&showTitle=false&size=22625&status=done&style=none&taskId=u5d922472-2932-4659-a9bb-a326a7bbb67&title=&width=1104)
+
+![](./JDBC概述/img-14.jpg)

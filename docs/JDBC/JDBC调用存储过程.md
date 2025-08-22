@@ -2,7 +2,7 @@
 title: JDBC | JDBC调用存储过程
 tags:
   - JDBC
-createTime: 2025/08/14 15:18:36
+createTime: 2025/08/14 15:18:05
 permalink: /article/f18rvs32/
 cover: /JDBC.jpg
 ---
