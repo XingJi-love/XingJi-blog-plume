@@ -170,8 +170,9 @@ public class Student {
 
 - **test** ：**只在`测试`时有效**，例如：`JUnit框架`，我们一般只会在测试阶段使用`JUnit`，而实际项目运行时，我们就用不到测试了，所以这个选项非常适合`测试相关的框架`。
 
-  ![](./Maven快速上手/img-16.gif)
+<!--![](./Maven快速上手/img-16.gif)-->
 
+![Maven依赖作用域](https://s2.loli.net/2025/08/23/BnLTPzMWZ67xJSl.gif)
 
 这里我们来测试一下JUnit，我们可以在网站上搜索JUnit的依赖，我们这里导入最新的JUnit5作为依赖：
 
@@ -216,7 +217,9 @@ public class MainTest {
 
 我们发现，Maven还给我们提供了一个`resource`目标，我们可以将一些静态资源，比如配置文件，放入到这个文件夹中，项目在打包时会将资源文件夹中文件一起打包的Jar中，比如我们在这里编写一个Mybatis的配置文件：
 
-![](./Maven快速上手/img-17.gif)
+<!--![](./Maven快速上手/img-17.gif)-->
+
+![Maven依赖作用域](https://s2.loli.net/2025/08/23/XShUweI8iudKCvZ.gif)
 
 ```xml title="xml"
 <?xml version="1.0" encoding="UTF-8" ?>
@@ -301,11 +304,15 @@ public class MainTest {
 }
 ```
 
-![](./Maven快速上手/img-18.gif)
+<!--![](./Maven快速上手/img-18.gif)-->
+
+![Maven依赖作用域](https://image.dooo.ng/c/2025/08/23/68a97c8c61076.gif)
 
 进行`Mybatis连接数据库测试`:
 
-![](./Maven快速上手/img-21.gif)
+<!--![](./Maven快速上手/img-21.gif)-->
+
+![Maven依赖作用域](https://s2.loli.net/2025/08/23/iJXjzodTpKh9Mw2.gif)
 
 那么就有人提问了，如果我需要的依赖没有上传的远程仓库，而是只有一个Jar怎么办呢？我们可以使用第四种作用域：
 
@@ -353,7 +360,9 @@ public class TestUtils {
 
 接着我们点击右上角的Maven选项，然后执行`install`或直接在命令行中输入`mvn install`来安装我们自己的项目到**`本地Maven仓库`**中。
 
-![](./Maven快速上手/img-22.gif)
+<!--![](./Maven快速上手/img-22.gif)-->
+
+![Maven安装、可选和排除](https://image.dooo.ng/c/2025/08/23/68a97d2704953.gif)
 
 接着我们就可以在需要使用此项目作为依赖的其他项目中使用它了，只需要填写和这边一样的坐标：
 
@@ -365,7 +374,9 @@ public class TestUtils {
 </dependency>
 ```
 
-![](./Maven快速上手/img-23.gif)
+<!--![](./Maven快速上手/img-23.gif)-->
+
+![Maven安装、可选和排除](https://s2.loli.net/2025/08/23/1I2jHt8fXJ6ce3m.gif)
 
 接着我们就可以在项目中直接使用了：
 
@@ -391,7 +402,9 @@ public static void main(String[] args) {
 
 此时在引入此项目的其他项目中，此依赖也被一起传递：
 
-![](./Maven快速上手/img-24.gif)
+<!--![](./Maven快速上手/img-24.gif)-->
+
+![Maven安装、可选和排除](https://image.dooo.ng/c/2025/08/23/68a97da714a1f.gif)
 
 ![Maven安装、可选和排除](./Maven快速上手/img-5.jpg)
 
@@ -414,7 +427,9 @@ public static void main(String[] args) {
 </dependencies>
 ```
 
-![](./Maven快速上手/img-25.gif)
+<!--![](./Maven快速上手/img-25.gif)-->
+
+![Maven安装、可选和排除](https://image.dooo.ng/c/2025/08/23/68a97dd3db5ed.gif)
 
 比如Mybatis的POM文件中，就存在大量的可选依赖：
 
@@ -459,7 +474,9 @@ public static void main(String[] args) {
 </dependency>
 ```
 
-![](./Maven快速上手/img-26.gif)
+<!--![](./Maven快速上手/img-26.gif)-->
+
+![Maven安装、可选和排除](https://image.dooo.ng/c/2025/08/23/68a97e024c4a1.gif)
 
 此时我们通过这种方式手动排除了`Test项目`中`包含的MyBatis依赖`，这样项目中就`不会包含此依赖了`。
 
@@ -583,7 +600,9 @@ public class Main {
 </dependencies>
 ```
 
-![](./Maven快速上手/img-29.gif)
+<!--![](./Maven快速上手/img-29.gif)-->
+
+![Maven继承和多模块](https://s2.loli.net/2025/08/23/G7h9rgHmapLeixZ.gif)
 
 当然，父项目如果还存在`dependencies节点`的话，里面的内依赖依然是`直接继承`：
 
@@ -602,7 +621,9 @@ public class Main {
       ...
 ```
 
-![](./Maven快速上手/img-30.gif)
+<!--![](./Maven快速上手/img-30.gif)-->
+
+![Maven继承和多模块](https://s2.loli.net/2025/08/23/zdFhOuoHSxZjmcG.gif)
 
 ### Maven测试和打包
 
@@ -610,21 +631,25 @@ public class Main {
 
 - `clean`命令，执行后会清理整个`target`文件夹，在之后编写Springboot项目时可以解决一些缓存没更新的问题。
 
-  ![](./Maven快速上手/img-31.gif)
+  <!--![](./Maven快速上手/img-31.gif)-->
+  ![Maven测试和打包](https://s2.loli.net/2025/08/23/HRg6SXolUcT9NbG.gif)
 
 - `validate`命令可以验证项目的可用性。
 
-  ![](./Maven快速上手/img-32.gif)
+  <!--![](./Maven快速上手/img-32.gif)-->
+  ![Maven测试和打包](https://s2.loli.net/2025/08/23/gsGJq2Y19MUFjbm.gif)
 
 - `compile`命令可以将项目编译为.class文件。
 
-  ![](./Maven快速上手/img-33.gif)
+  <!--![](./Maven快速上手/img-33.gif)-->
+  ![Maven测试和打包](https://s2.loli.net/2025/08/23/xTpXAZqJ3k5P2HI.gif)
 
 - `install`命令可以将当前项目安装到本地仓库，以供其他项目导入作为依赖使用
 
 - `verify`命令可以按顺序执行每个默认生命周期阶段（`validate`，`compile`，`package`等）
 
-  ![](./Maven快速上手/img-34.gif)
+  <!--![](./Maven快速上手/img-34.gif)-->
+  ![Maven测试和打包](https://image.dooo.ng/c/2025/08/23/68a97efa596d6.gif)
 
 比如`clean`命令会自动清理`target`目录下的所有内容：
 
@@ -638,7 +663,8 @@ public class Main {
 
 - 测试方法上必须标注`@Test`注解或是其他标记JUnit测试案例的注解
 
-  ![](./Maven快速上手/img-35.gif)
+  <!--![](./Maven快速上手/img-35.gif)-->
+  ![Maven测试和打包](https://s2.loli.net/2025/08/23/s6ngcGiO942ZzBq.gif)
 
 ```java title="java"
 public class MainTest {
@@ -671,7 +697,8 @@ public class MainTest {
 
 我们接着来看`package`命令，它用于将我们的项目打包为jar文件，以供其他项目作为依赖引入，或是作为一个可执行的Java应用程序运行。
 
-![](./Maven快速上手/img-36.gif)
+<!--![](./Maven快速上手/img-36.gif)-->
+![Maven测试和打包](https://s2.loli.net/2025/08/23/NYCf4mt8VzUQEsi.gif)
 
 我们可以直接点击`package`来进行打包操作。注意，在使用`package`命令打包之前也会自动执行一次`test`命令，来保证项目能够正常运行，当测试出现问题时，打包将无法完成，我们也可以手动跳过，选择`执行Maven目标`来手动执行Maven命令，输入`mvn package -Dmaven.test.skip=true `来以跳过测试的方式进行打包。
 
@@ -685,7 +712,8 @@ public class MainTest {
 
 当然，以上方式存在一定的问题，比如这里并没有包含项目中用到的一些其他依赖，如果我们需要打包一个可执行文件，那么我不仅需要将自己编写的类打包到Jar中，同时还需要将依赖也一并打包到Jar中，因为我们使用了别人为我们提供的框架，自然也需要运行别人的代码，我们需要使用另一个插件来实现一起打包：
 
-![](./Maven快速上手/img-37.gif)
+<!--![](./Maven快速上手/img-37.gif)-->
+![Maven测试和打包](https://image.dooo.ng/c/2025/08/23/68a9829addb1b.gif)
 
 ```xml title="xml"
 <plugin>
