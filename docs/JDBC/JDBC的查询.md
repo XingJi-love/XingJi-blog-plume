@@ -547,11 +547,13 @@ public class JDBCTest05 {
 ```
 
 执行结果如下：
+
 ![](./JDBC的查询/img-11.jpg)
 
 在上面的代码中，我们首先创建了一个 `Statement 对象`，然后执行了一条 SQL 查询语句，生成了一个 `ResultSet 对象`。接下来，我们通过` ResultSet 对象`的 `getMetaData() 方法`获取了 `ResultSetMetaData 对象`，进而获取了查询结果中列的信息并进行输出。需要注意的是，在进行列信息的获取时，列的编号从 1 开始计算。该示例代码将`获取查询结果集中所有列名、数据类型以及长度`等信息。
 
 # 获取新增行的主键值
+
 有很多表的主键字段值都是自增的，在某些特殊的业务环境下，当我们插入了新数据后，希望能够获取到这条新数据的主键值，应该如何获取呢？
 在 JDBC 中，如果要获取插入数据后的主键值，可以使用 Statement 接口的 executeUpdate() 方法的重载版本，该方法接受一个额外的参数，用于指定是否需要获取自动生成的主键值。然后，通过以下两个步骤获取插入数据后的主键值：
 
@@ -631,6 +633,9 @@ public class JDBCTest13 {
 ```
 
 执行结果如下：
+
 ![image.png](https://cdn.nlark.com/yuque/0/2023/png/21376908/1702543846750-ba186e76-04fa-4ef1-8d57-7fc40598c02e.png#averageHue=%23181513&clientId=ucecc8983-3edd-4&from=paste&height=76&id=u73f30d19&originHeight=76&originWidth=287&originalType=binary&ratio=1&rotation=0&showTitle=false&size=6899&status=done&style=shadow&taskId=ue1f27885-34fa-45d1-9da8-062ab8917fd&title=&width=287)
+
 ![image.png](https://cdn.nlark.com/yuque/0/2023/png/21376908/1702543887747-8bfa21c9-e7b4-49c9-8dec-dbca00a645a7.png#averageHue=%23dcb26c&clientId=ucecc8983-3edd-4&from=paste&height=164&id=uf79fbdbf&originHeight=164&originWidth=572&originalType=binary&ratio=1&rotation=0&showTitle=false&size=13072&status=done&style=none&taskId=u91dfc8c2-3fff-4213-8df9-ef9c0ad88f7&title=&width=572)
+
 以上代码中，我们将 Statement.RETURN_GENERATED_KEYS 传递给 executeUpdate() 方法，以指定需要获取插入的主键值。然后，通过调用 Statement 对象的 getGeneratedKeys() 方法获取包含插入的主键值的 ResultSet 对象，通过 ResultSet 对象获取主键值。需要注意的是，在使用 Statement 对象的 getGeneratedKeys() 方法获取自动生成的主键值时，主键值的获取方式具有一定的差异，需要根据不同的数据库种类和版本来进行调整。
