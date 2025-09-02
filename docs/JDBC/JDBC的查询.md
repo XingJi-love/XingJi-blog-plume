@@ -557,8 +557,11 @@ public class JDBCTest05 {
 有很多表的主键字段值都是自增的，在某些特殊的业务环境下，当我们插入了新数据后，希望能够获取到这条新数据的主键值，应该如何获取呢？
 在 JDBC 中，如果要获取插入数据后的主键值，可以使用 Statement 接口的 executeUpdate() 方法的重载版本，该方法接受一个额外的参数，用于指定是否需要获取自动生成的主键值。然后，通过以下两个步骤获取插入数据后的主键值：
 
+
 1.  在执行 executeUpdate() 方法时指定一个标志位，表示需要返回插入的主键值。
+
 2.  调用 Statement 对象的 getGeneratedKeys() 方法，返回一个包含插入的主键值的 ResultSet 对象。 
+
 
 ```java
 import java.sql.DriverManager;
