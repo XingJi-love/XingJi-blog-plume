@@ -558,12 +558,14 @@ public class JDBCTest05 {
 在 JDBC 中，如果要获取插入数据后的主键值，可以使用 Statement 接口的 executeUpdate() 方法的重载版本，该方法接受一个额外的参数，用于指定是否需要获取自动生成的主键值。然后，通过以下两个步骤获取插入数据后的主键值：
 
 
-1.  在执行 executeUpdate() 方法时指定一个标志位，表示需要返回插入的主键值。
+1.  在执行 `executeUpdate() `方法时指定`一个标志位`，表示需要`返回插入的主键值`。
 
-2.  调用 Statement 对象的 getGeneratedKeys() 方法，返回一个包含插入的主键值的 ResultSet 对象。 
+2.  调用 `Statement `对象的 `getGeneratedKeys() `方法，返回一个包含`插入的主键值`的 `ResultSet 对象`。 
 
 
 ```java
+package com.powernode.jdbc;
+
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Connection;
@@ -571,15 +573,17 @@ import java.sql.Statement;
 import java.util.ResourceBundle;
 import java.sql.ResultSet;
 
-public class JDBCTest13 {
-    public static void main(String[] args){
-        
-    	// 通过以下代码获取属性文件中的配置信息
-		ResourceBundle bundle = ResourceBundle.getBundle("jdbc");
-		String driver = bundle.getString("driver");
-		String url = bundle.getString("url");
-		String user = bundle.getString("user");
-		String password = bundle.getString("password");
+/**
+ * 获取新增行的主键值
+ */
+public class JDBCTest06 {
+    public  static void main(String[] args) {
+        // 通过以下代码获取属性文件中的配置信息
+        ResourceBundle bundle = ResourceBundle.getBundle("com.powernode.jdbc.jdbc");
+        String driver = bundle.getString("driver");
+        String url = bundle.getString("url");
+        String user = bundle.getString("user");
+        String password = bundle.getString("password");
 
         Connection conn = null;
         Statement stmt = null;
@@ -595,16 +599,19 @@ public class JDBCTest13 {
             stmt = conn.createStatement();
 
             // 4. 执行SQL语句
-            String sql = "insert into t_user(name,password,realname,gender,tel) values('zhangsan','111','张三','男','19856525352')";
-            // 第一步
+            String sql = "insert into t_product(name,price,create_time) values('小米su7',1.0,'2024-02-23')";
+            // 注意：第二个参数是标志位，用来表示是否将新插入的数据行的主键值返回
             int count = stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
-            // 第二步
+            System.out.println("插入了" + count + "条记录");
+            // 获取新增行的主键值
+            // 返回的这个rs结果集中就包含了新增行的主键值
             rs = stmt.getGeneratedKeys();
-            if(rs.next()){
-                int id = rs.getInt(1);
-                System.out.println("新增数据行的主键值：" + id);
+            // 通过结果集取主键值
+            if (rs.next()) {
+                long id = rs.getLong(1);
+                System.out.println("新增行的主键值：" + id);
             }
-            
+
         } catch(SQLException | ClassNotFoundException e){
             e.printStackTrace();
         } finally {
@@ -637,8 +644,8 @@ public class JDBCTest13 {
 
 执行结果如下：
 
-![image.png](https://cdn.nlark.com/yuque/0/2023/png/21376908/1702543846750-ba186e76-04fa-4ef1-8d57-7fc40598c02e.png#averageHue=%23181513&clientId=ucecc8983-3edd-4&from=paste&height=76&id=u73f30d19&originHeight=76&originWidth=287&originalType=binary&ratio=1&rotation=0&showTitle=false&size=6899&status=done&style=shadow&taskId=ue1f27885-34fa-45d1-9da8-062ab8917fd&title=&width=287)
+![](./JDBC的查询/img-12.jpg)
 
-![image.png](https://cdn.nlark.com/yuque/0/2023/png/21376908/1702543887747-8bfa21c9-e7b4-49c9-8dec-dbca00a645a7.png#averageHue=%23dcb26c&clientId=ucecc8983-3edd-4&from=paste&height=164&id=uf79fbdbf&originHeight=164&originWidth=572&originalType=binary&ratio=1&rotation=0&showTitle=false&size=13072&status=done&style=none&taskId=u91dfc8c2-3fff-4213-8df9-ef9c0ad88f7&title=&width=572)
+![](./JDBC的查询/img-13.jpg)
 
-以上代码中，我们将 Statement.RETURN_GENERATED_KEYS 传递给 executeUpdate() 方法，以指定需要获取插入的主键值。然后，通过调用 Statement 对象的 getGeneratedKeys() 方法获取包含插入的主键值的 ResultSet 对象，通过 ResultSet 对象获取主键值。需要注意的是，在使用 Statement 对象的 getGeneratedKeys() 方法获取自动生成的主键值时，主键值的获取方式具有一定的差异，需要根据不同的数据库种类和版本来进行调整。
+以上代码中，我们将 `Statement.RETURN_GENERATED_KEYS` 传递给 `executeUpdate() `方法，以指定`需要获取插入的主键值`。然后，通过调用 `Statement` 对象的 `getGeneratedKeys() `方法获取包含插入的主键值的` ResultSet 对象`，通过` ResultSet 对象`获取`主键值`。需要注意的是，在使用 `Statement `对象的 `getGeneratedKeys() `方法`获取自动生成的主键值`时，主键值的获取方式具有一定的差异，需要根据不同的数据库种类和版本来进行调整。

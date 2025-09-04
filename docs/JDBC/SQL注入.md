@@ -9,111 +9,263 @@ cover: /JDBC.jpg
 
 ![JDBC | SQL注入](./JDBC.jpg)
 
+# DbUtils工具类的封装
+JDBC编程六步中，很多`代码是重复出现`的，可以为这些代码`封装一个工具类`。让`JDBC代码变的更简洁`。
+```java
+package com.powernode.jdbc.utils;
+
+import java.sql.*;
+import java.util.ResourceBundle;
+
+/**
+ * JDBC工具类
+ */
+public class DbUtils {
+    /**
+     * 工具类的构造方法一般都是私有的，因为工具类中一般都是静态的，
+     * 工具类就是为了方便编程，所以工具类中的方法都是直接采用“类名.”
+     * 的方法访问，因此不需要new对象
+     */
+    private DbUtils() {}
+
+    // 静态变量
+    private static String driver;
+
+    private static String url;
+
+    private static String user;
+
+    private static String password;
+
+
+    /**
+     * 静态代码块
+     *
+     * 在类加载的时候，注册驱动，对于整个应用程序来说，注册驱动只需要做一次即可。所以选择静态代码块。
+     * 静态代码块在类加载时执行，并且只执行一次。
+     */
+    static{
+        // 通过以下代码获取属性文件中的配置信息
+        ResourceBundle bundle = ResourceBundle.getBundle("com.powernode.jdbc.jdbc");
+        driver = bundle.getString("driver");
+        url = bundle.getString("url");
+        user = bundle.getString("user");
+        password = bundle.getString("password");
+
+        // 注册驱动
+        try {
+            Class.forName(driver);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    /**
+     * 获取数据库连接
+     * @return 连接对象
+     * @throws SQLException
+     */
+    public static Connection getConnection() throws SQLException {
+        // 实际上这里每次调用 getConnection() 方法时都会获取一个全新的数据连接对象，实际这样的效率是比较低的，后期会使用连接池进行改造。
+        Connection conn = DriverManager.getConnection(url,user,password);
+        return conn;
+    }
+
+    /**
+     * 释放资源
+     * @param conn 连接对象
+     * @param stmt 数据库操作对象
+     * @param rs 结果集对象
+     */
+    public static void close(Connection conn, Statement stmt, ResultSet rs){
+        if(rs != null){
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        if (stmt != null) {
+            try {
+                stmt.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+}
+```
+
+## 封装步骤
+
+### 代码块
+
+![](./SQL注入/img-1.jpg)
+
+### 连接数据库对象
+
+![](./SQL注入/img-2.jpg)
+
+### 释放资源
+
+![](./SQL注入/img-3.jpg)
+
+## 实际应用
+
+```java
+package com.powernode.jdbc;
+
+import com.powernode.jdbc.utils.DbUtils;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+/**
+ * DbUtils工具类的封装，让JDBC的代码变简洁
+ */
+public class JDBCTest07 {
+    public static void main(String[] args) {
+
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            // 3. 获取数据库操作对象
+            conn = DbUtils.getConnection();
+            stmt = conn.createStatement();
+            // 4. 执行SQL语句
+            String sql = "insert into t_product(name,price,create_time) values('小米su7',1.0,'2024-02-23')";
+            // 注意：第二个参数是标志位，用来表示是否将新插入的数据行的主键值返回
+            int count = stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
+            System.out.println("插入了" + count + "条记录");
+            // 获取新增行的主键值
+            // 返回的这个rs结果集中就包含了新增行的主键值
+            rs = stmt.getGeneratedKeys();
+            // 通过结果集取主键值
+            if (rs.next()) {
+                long id = rs.getLong(1);
+                System.out.println("新增行的主键值：" + id);
+            }
+
+        }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }finally{
+            DbUtils.close(conn,stmt,rs);
+        }
+    }
+}
+```
+
+执行结果如下：
+
+![](./SQL注入/img-4.jpg)
+
+![](./SQL注入/img-5.jpg)
+
 # SQL注入问题
-SQL注入问题说的是：用户输入的信息中含有SQL语句关键字，和程序中的SQL语句进行字符串拼接，导致程序中的SQL语句改变了原意。（SQL注入问题是一种系统安全问题）
-接下来我们来演示一下SQL注入问题。以用户登录为例。使用表：t_user
-业务描述：系统启动后，给出登录页面，用户可以输入用户名和密码，用户名和密码全部正确，则登录成功，反之，则登录失败。
+
+`SQL注入问题`说的是：用户输入的信息中含有`SQL语句关键字`，和程序中的`SQL语句进行字符串拼接`，导致程序中的SQL语句改变了原意。**（`SQL注入问题是一种系统安全问题`）**
+接下来我们来演示一下SQL注入问题。以用户登录为例。使用表：`t_user`
+**业务描述：系统启动后，给出登录页面，用户可以输入用户名和密码，用户名和密码`全部正确`，则`登录成功`，反之，则`登录失败`。**
 分析一下要执行怎样的SQL语句？是不是这样的？
 
 ```sql
 select * from t_user where name = 用户输入的用户名 and password = 用户输入的密码;
 ```
-如果以上的SQL语句能够查询到结果，说明用户名和密码是正确的，则登录成功。如果查不到，说明是错误的，则登录失败。
+> 如果以上的SQL语句`能够查询到结果`，说明`用户名和密码是正确的`，则`登录成功`。如果`查不到`，说明是`错误的`，则`登录失败`。
+
+![](./SQL注入/img-6.jpg)
+
 代码实现如下：
+
 ```java
 package com.powernode.jdbc;
 
-import java.sql.*;
-import java.util.ResourceBundle;
+import com.powernode.jdbc.utils.DbUtils;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Scanner;
 
 /**
- * 用户登录案例演示SQL注入问题
+ * 实现用户登录功能
  */
-public class JDBCTest02 {
-    public static void main(String[] args) {
-        // 输出欢迎页面
-        System.out.println("欢迎使用用户管理系统，请登录！");
-        // 接收用户名和密码
+public class JDBCTest08 {
+    public static void main(String[] args){
         Scanner scanner = new Scanner(System.in);
+        // 初始化登录界面
+        System.out.println("欢迎使用用户管理系统，请登录！");
         System.out.print("用户名：");
-        String loginName = scanner.nextLine();
+        String loginName = scanner.next();
         System.out.print("密码：");
-        String loginPwd = scanner.nextLine();
-        // 读取属性配置文件，获取连接数据库的信息。
-        ResourceBundle bundle = ResourceBundle.getBundle("com.powernode.jdbc.jdbc");
-        String driver = bundle.getString("driver");
-        String url = bundle.getString("url");
-        String user = bundle.getString("user");
-        String password = bundle.getString("password");
-        // JDBC程序验证用户名和密码是否正确
+        String loginPwd = scanner.next();
+
+        // 连接数据库，验证用户名和密码是否正确
         Connection conn = null;
         Statement stmt = null;
         ResultSet rs = null;
+        boolean loginSuccess = false;
+        String realname = null;
+
         try {
-            // 1.注册驱动
-            Class.forName(driver);
-            // 2.获取连接
-            conn = DriverManager.getConnection(url, user, password);
-            // 3.获取数据库操作对象
+            // 获取连接
+            conn = DbUtils.getConnection();
+            // 获取数据库操作对象
             stmt = conn.createStatement();
-            // 4.执行SQL语句
-            String sql = "select realname from t_user where name = '"+loginName+"' and password = '"+loginPwd+"'";
+            // 执行sql语句
+            String sql = "select * from t_user where name = '"+loginName+"' and password = '"+loginPwd+"'";
+            System.out.println(sql);
             rs = stmt.executeQuery(sql);
-            // 5.处理查询结果集
-            if (rs.next()) { // 如果可以确定结果集中最多只有一条记录的话，可以使用if语句，不一定非要用while循环。
-                String realname = rs.getString("realname");
-                System.out.println("登录成功，欢迎您" + realname);
-            } else {
-                System.out.println("登录失败，用户名不存在或者密码错误。");
+
+            // 处理结果集（结果集中数据，表示登录成功，反之表示登录失败）
+            if (rs.next()) {
+               // 登录成功
+                loginSuccess = true;
+                // 获取真实的名字
+                realname = rs.getString("realname");
             }
-        } catch (ClassNotFoundException | SQLException e) {
+
+        }catch (SQLException e){
             throw new RuntimeException(e);
-        } finally {
-            // 6.释放资源
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+        }finally {
+            // 释放资源
+            DbUtils.close(conn,stmt,rs);
         }
+        System.out.println(loginSuccess ? "登录成功，欢迎" + realname : "登录失败，你的用户名不存在或者密码错误！");
     }
 }
-
 ```
 
 如果用户名和密码正确的话，执行结果如下：
-![image.png](https://cdn.nlark.com/yuque/0/2023/png/21376908/1702976483919-52a9ff26-1ded-4a07-bcc8-d2846f17a045.png#averageHue=%231f2126&clientId=u156f6b41-7663-4&from=paste&height=141&id=ub10f6c60&originHeight=141&originWidth=362&originalType=binary&ratio=1&rotation=0&showTitle=false&size=13354&status=done&style=none&taskId=u7106c062-d627-45bf-801f-95ca72438bb&title=&width=362)
+![](./SQL注入/img-7.jpg)
 
 如果用户名不存在或者密码错误的话，执行结果如下：
-![image.png](https://cdn.nlark.com/yuque/0/2023/png/21376908/1702976532157-a3d29aad-a0e8-44c9-9571-63cc3052fe5b.png#averageHue=%23202327&clientId=u156f6b41-7663-4&from=paste&height=125&id=udffad2a4&originHeight=125&originWidth=357&originalType=binary&ratio=1&rotation=0&showTitle=false&size=15356&status=done&style=none&taskId=uf2850b49-75b0-40b5-a3b3-ea7386b756d&title=&width=357)
+![](./SQL注入/img-8.jpg)
 
-接下来，见证奇迹的时刻，当我分别输入以下的用户名和密码时，系统被攻破了：
+接下来，见证奇迹的时刻，当我分别输入以下的用户名和密码时，`系统被攻破了`：
 ![image.png](https://cdn.nlark.com/yuque/0/2023/png/21376908/1702976830213-7483fb5c-6c7c-466c-b7c4-a2feb26b12bb.png#averageHue=%23202226&clientId=u156f6b41-7663-4&from=paste&height=134&id=u347825d4&originHeight=134&originWidth=325&originalType=binary&ratio=1&rotation=0&showTitle=false&size=11860&status=done&style=none&taskId=u8826f589-046f-4233-af61-95d1c099bf2&title=&width=325)
-这种现象就叫做：SQL注入。为什么会发生以上的事儿呢？原因是：用户提供的信息中有SQL语句关键字，并且和底层的SQL字符串进行了拼接，变成了一个全新的SQL语句。
+这种现象就叫做：**SQL注入**。为什么会发生以上的事儿呢？**原因是：用户提供的信息中有`SQL语句关键字`，并且和`底层的SQL字符串进行了拼接`，变成了一个`全新的SQL语句`。**
 例如：本来程序想表达的是这样的SQL：
+
 ```sql
-select realname from t_user where name = 'sunwukong' and password = '123';
+select realname from t_user where name = 'zhangsan' and password = '123';
 ```
 结果被SQL注入之后，SQL语句就变成这样了：
 ```sql
-select realname from t_user where name = 'aaa' and password = 'bbb' or '1'='1';
+select realname from t_user where name = 'fsdb' and password = 'bbb' or '1'='1';
 ```
 我们可以执行一下这条SQL，看看结果是什么？
 ![image.png](https://cdn.nlark.com/yuque/0/2023/png/21376908/1702977070115-c06f8f95-d42f-43e7-9b69-53eac3b155b2.png#averageHue=%23f0efee&clientId=u156f6b41-7663-4&from=paste&height=171&id=ue79d55bc&originHeight=171&originWidth=144&originalType=binary&ratio=1&rotation=0&showTitle=false&size=3817&status=done&style=shadow&taskId=u33810237-dd0a-4fa9-9aef-067015aad10&title=&width=144)
@@ -251,6 +403,7 @@ hiredate：2024-01-01
 sal：1000.0
 comm：500.0
 deptno：10
+
 ```java
 package com.powernode.jdbc;
 
@@ -854,6 +1007,7 @@ public class NoBatchTest {
 使用批处理，向 t_product 表中插入一万条商品信息，并记录耗时！
 **注意：启用批处理需要在URL后面添加这个的参数：rewriteBatchedStatements=true**
 ![image.png](https://cdn.nlark.com/yuque/0/2024/png/21376908/1708249622292-576aa82d-5874-4013-a9b4-d94c00cef0ce.png#averageHue=%23fefdfb&clientId=u21834790-ed4d-4&from=paste&height=177&id=u4263b9d7&originHeight=177&originWidth=1592&originalType=binary&ratio=1&rotation=0&showTitle=false&size=24176&status=done&style=shadow&taskId=u444819ae-8458-45a1-b734-bb75ab7faf4&title=&width=1592)
+
 ```java
 package com.powernode.jdbc;
 
@@ -922,80 +1076,3 @@ public class BatchTest {
 
 1.  减少了网络通信次数：JDBC 批处理会将多个 SQL 语句一次性发送给服务器，减少了客户端和服务器之间的通信次数，从而提高了数据写入的速度，特别是对于远程服务器而言，优化效果更为显著。 
 2.  减少了数据库操作次数：JDBC 批处理会将多个 SQL 语句合并成一条 SQL 语句进行执行，从而减少了数据库操作的次数，减轻了数据库的负担，大大提高了数据写入的速度。  
-
-# DbUtils工具类的封装
-JDBC编程六步中，很多代码是重复出现的，可以为这些代码封装一个工具类。让JDBC代码变的更简洁。
-```java
-package com.powernode.jdbc;
-
-import java.sql.*;
-import java.util.ResourceBundle;
-
-/**
- * ClassName: DbUtils
- * Description: JDBC工具类
- * Datetime: 2024/4/10 22:29
- * Author: 老杜@动力节点
- * Version: 1.0
- */
-public class DbUtils {
-    private static String url;
-    private static String user;
-    private static String password;
-
-    static {
-        // 读取属性资源文件
-        ResourceBundle bundle = ResourceBundle.getBundle("com.powernode.jdbc.jdbc");
-        String driver = bundle.getString("driver");
-        url = bundle.getString("url");
-        user = bundle.getString("user");
-        password = bundle.getString("password");
-        // 注册驱动
-        try {
-            Class.forName(driver);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * 获取数据库连接
-     * @return
-     * @throws SQLException
-     */
-    public static Connection getConnection() throws SQLException {
-        Connection conn = DriverManager.getConnection(url, user, password);
-        return conn;
-    }
-
-    /**
-     * 释放资源
-     * @param conn 连接对象
-     * @param stmt 数据库操作对象
-     * @param rs 结果集对象
-     */
-    public static void close(Connection conn, Statement stmt, ResultSet rs){
-        if (rs != null) {
-            try {
-                rs.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        if (stmt != null) {
-            try {
-                stmt.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        if (conn != null) {
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-}
-```
