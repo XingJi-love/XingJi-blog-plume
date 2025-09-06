@@ -9,7 +9,8 @@ cover: /JDBC.jpg
 
 ![JDBC | JDBC的查询](./JDBC.jpg)
 
-# JDBC的查询操作
+## JDBC的查询操作
+
 `ResultSet` 是 `JDBC （Java 数据库连接） API 提供的接口`，它用于表示 SQL 查询的结果集。ResultSet 对象中包含了查询结果的所有行，可以通过 `next() 方法`逐行地获取并处理每一行的数据。它最常用于执行 `SELECT 语句查询出来`的`结果集`。
 
 ResultSet 的遍历是基于 JDBC 的流式处理机制的，即`一行一行地获取结果`，**避免将所有结果全部取出后再进行处理导致`内存溢出`问题**。
@@ -18,14 +19,15 @@ ResultSet 的遍历是基于 JDBC 的流式处理机制的，即`一行一行地
 
 1. 执行 SQL 查询，获取 `ResultSet` 对象。
 2. 使用 `ResultSet 的 next() 方法`移动游标指向结果集的下一行，判断是否有更多的数据行。
-3. 如果有更多的数据行，则使用 ResultSet 对象提供的 `getXXX() 方法`获取当前行的各个字段（`XXX 表示不同的数据类型`）。例如，`getLong("id") 方法`用于获取当前行的` id 列`对应的 `Long 类型`的值。
+3. xxxxxxxxxx package com.powernode.jdbc.dao;​import com.powernode.jdbc.utils.DbUtils;​import java.lang.reflect.Field;import java.sql.*;import java.util.ArrayList;import java.util.List;​/** * ClassName: BaseDao * Description: 最基础的Dao，所有的Dao应该去继承该BaseDao * Datetime: 2024/4/15 11:08 * Author: 老杜@动力节点 * Version: 1.0 */public class BaseDao {​    /**     * 这是一个通用的执行insert delete update语句的方法。     * @param sql     * @param params     * @return     */    public int executeUpdate(String sql, Object... params) {        Connection conn = null;        PreparedStatement ps = null;        int count = 0;        try {            // 获取连接            conn = DbUtils.getConnection();            // 获取预编译的数据库操作对象            ps = conn.prepareStatement(sql);            // 给 ? 占位符传值            if(params != null && params.length > 0){                // 有占位符 ?                for (int i = 0; i < params.length; i++) {                    ps.setObject(i + 1, params[i]);                }            }            // 执行SQL语句            count = ps.executeUpdate();        } catch (SQLException e) {            throw new RuntimeException(e);        } finally {            DbUtils.close(conn, ps, null);        }        return count;    }​    /**     * 这是一个通用的查询语句     * @param clazz     * @param sql     * @param params     * @return     * @param <T>     */    public <T> List<T> executeQuery(Class<T> clazz, String sql, Object... params){        List<T> list = new ArrayList<>();        Connection conn = null;        PreparedStatement ps = null;        ResultSet rs = null;        try {            // 获取连接            conn = DbUtils.getConnection();            // 获取预编译的数据库操作对象            ps = conn.prepareStatement(sql);            // 给?传值            if(params != null && params.length > 0){                for (int i = 0; i < params.length; i++) {                    ps.setObject(i + 1, params[i]);                }            }            // 执行SQL语句            rs = ps.executeQuery();​            // 获取查询结果集元数据            ResultSetMetaData rsmd = rs.getMetaData();​            // 获取列数            int columnCount = rsmd.getColumnCount();​            // 处理查询结果集            while(rs.next()){                // 封装bean对象                T obj = clazz.newInstance();                // 给bean对象属性赋值                /*                比如现在有一张表：t_user，然后表中有两个字段，一个是 user_id，一个是user_name                现在javabean是User类，该类中的属性名是：userId,username                执行这样的SQL语句：select user_id as userId, user_name as username from t_user;                 */                for (int i = 1; i <= columnCount; i++) {                    // 获取查询结果集中的列的名字                    // 这个列的名字是通过as关键字进行了起别名，这个列名就是bean的属性名。                    String fieldName = rsmd.getColumnLabel(i);                    // 获取属性Field对象                    Field declaredField = clazz.getDeclaredField(fieldName);                    // 打破封装                    declaredField.setAccessible(true);                    // 给属性赋值                    declaredField.set(obj, rs.getObject(i));                }​                // 将对象添加到List集合                list.add(obj);            }        } catch (Exception e) {            throw new RuntimeException(e);        } finally {            DbUtils.close(conn, ps, rs);        }        // 返回List集合        return list;    }​​    /**     *     * @param clazz     * @param sql     * @param params     * @return     * @param <T>     */    public <T> T queryOne(Class<T> clazz, String sql, Object... params){        List<T> list = executeQuery(clazz, sql, params);        if(list == null || list.size() == 0){            return null;        }        return list.get(0);    }​}java
 4. 处理当前行的数据，例如将其存入 Java 对象中。
 5. 重复执行步骤 2~4，直到结果集中的所有行都被遍历完毕。
 6. 调用 `ResultSet 的 close() 方法`释放资源。
 
 需要注意的是，在使用完 ResultSet 对象之后，需要及时关闭它，以释放数据库资源并避免潜在的内存泄漏问题。否则，如果在多个线程中打开了多个 ResultSet 对象，并且没有正确关闭它们的话，可能会导致数据库连接过多，从而影响系统的稳定性和性能。
 
-## 通过列索引获取数据（以String类型获取）
+### 通过列索引获取数据（以String类型获取）
+
 需求：获取t_user表中所有数据，在控制台打印输出每一行的数据。
 ```sql
 select realname,id,name,password from t_user;
@@ -245,7 +247,8 @@ if(conn != null){
 ```
 ResultSet最终也是需要关闭的。**先`关闭ResultSet`，再`关闭Statement`，最后`关闭Connection`**。
 
-## 通过列名获取数据（以String类型获取）
+### 通过列名获取数据（以String类型获取）
+
 获取当前行的数据，不仅可以通过列下标获取，还可以通过查询结果的列名来获取，通常这种方式是被推荐的，因为`可读性好`。
 例如这样的SQL：
 
@@ -371,7 +374,8 @@ public class JDBCTest03 {
 ![](./JDBC的查询/img-7.jpg)
 提示empno列是不存在的。所以一定是根据`查询结果中的列名来获取`，而`不是表中原始的列名`。
 
-## 以指定的类型获取数据
+### 以指定的类型获取数据
+
 前面的程序可以看到，不管数据库表中是什么数据类型，都以String类型返回。当然，也能以指定类型返回。
 使用PowerDesigner再设计一张商品表：t_product，使用Navicat for MySQL工具准备数据如下：
 
@@ -460,7 +464,8 @@ public class JDBCTest04 {
 执行结果如下：
 ![](./JDBC的查询/img-9.jpg)
 
-## 获取结果集的元数据信息（了解）
+### 获取结果集的元数据信息（了解）
+
 `ResultSetMetaData` 是一个接口，用于描述` ResultSet 中的元数据信息`，即`查询结果集的结构信息`，例如查询结果集中包含了`哪些列，每个列的数据类型、长度、标识符`等。
 
 ![](./JDBC的查询/img-10.jpg)
@@ -552,7 +557,7 @@ public class JDBCTest05 {
 
 在上面的代码中，我们首先创建了一个 `Statement 对象`，然后执行了一条 SQL 查询语句，生成了一个 `ResultSet 对象`。接下来，我们通过` ResultSet 对象`的 `getMetaData() 方法`获取了 `ResultSetMetaData 对象`，进而获取了查询结果中列的信息并进行输出。需要注意的是，在进行列信息的获取时，列的编号从 1 开始计算。该示例代码将`获取查询结果集中所有列名、数据类型以及长度`等信息。
 
-# 获取新增行的主键值
+## 获取新增行的主键值
 
 有很多表的主键字段值都是自增的，在某些特殊的业务环境下，当我们插入了新数据后，希望能够获取到这条新数据的主键值，应该如何获取呢？
 在 JDBC 中，如果要获取插入数据后的主键值，可以使用 Statement 接口的 executeUpdate() 方法的重载版本，该方法接受一个额外的参数，用于指定是否需要获取自动生成的主键值。然后，通过以下两个步骤获取插入数据后的主键值：

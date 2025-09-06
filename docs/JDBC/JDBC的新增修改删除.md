@@ -9,7 +9,8 @@ cover: /JDBC.jpg
 
 ![JDBC | JDBC的新增修改删除](./JDBC.jpg)
 
-# JDBC编程六步
+## JDBC编程六步
+
 JDBC编程的步骤是很固定的，通常包含以下六步：
 
 - 第一步：`注册驱动`
@@ -29,17 +30,21 @@ JDBC编程的步骤是很固定的，通常包含以下六步：
    - 释放资源可以避免资源的浪费。在 JDBC 编程中，每次使用完` Connection、Statement、ResultSet`**(从左往右打开，从右往左关闭)**等资源后，都需要显式地调用对应的 close() 方法来释放资源，避免资源的浪费。
    - 释放资源可以避免出现内存泄露问题。在 Java 中，当一个对象不再被引用时，会被 JVM 的垃圾回收机制进行回收。但是在 JDBC 编程中，如果不显式地释放资源，那么这些资源就不会被 JVM 的垃圾回收机制自动回收，从而导致内存泄露问题。
 
-# 数据的准备
+## 数据的准备
+
 使用PowerDesigner设计用户表t_user。
 使用Navicat for MySQL创建数据库，创建表，插入数据。
-## PowerDesigner与Navicat for MySQL的区别
+
+### PowerDesigner与Navicat for MySQL的区别
+
 Navicat for MySQL 是一款常用的 MySQL 数据库管理工具，提供了丰富的数据库管理和开发工具，可以方便地进行数据库的连接、查询、管理、模型设计等操作，是 MySQL 开发和管理的效率工具。
 
 而 PowerDesigner 工具则是一款专业的建模工具，它支持多种数据库和操作系统，可以完成数据库设计、数据建模、过程建模、企业业务建模等工作。PowerDesigner 可以帮助开发人员在数据库设计和开发过程中更好地理解和管理数据，便于协同开发和项目管理。各种数据库技术的建模形式都可以实现，有单个数据库建模到多个数据库建模和业务建模等高级功能，**非常适用于大型项目中的数据库设计和建模**。同时，PowerDesigner 还支持 UML，Java 等编程语言的建模，可以与开发语言无缝整合。
 
 因此，Navicat for MySQL 和 PowerDesigner 的功能是不同的，可以根据实际需要来选用。如果只是针对 MySQL 的数据库连接、查询、管理等操作，可以使用 Navicat for MySQL 工具，而如果需要进行更复杂的数据库设计、建模和整合等工作，可以使用 PowerDesigner 工具来实现。**如果使用 MySQL 数据库进行开发，使用 Navicat for MySQL 和 PowerDesigner 这两个工具相互配合，可以提高开发效率和数据管理质量**。
 
-## PowerDesigner工具的安装
+### PowerDesigner工具的安装
+
 来这里下载该工具：链接：[https://pan.baidu.com/s/1lRWC069K8GE-8rxr259ArQ?pwd=2009](https://pan.baidu.com/s/1lRWC069K8GE-8rxr259ArQ?pwd=2009) 提取码：2009
 双击安装包：
 ![](./JDBC的新增修改删除/img-1.jpg)
@@ -83,7 +88,8 @@ Navicat for MySQL 是一款常用的 MySQL 数据库管理工具，提供了丰�
 ![](./JDBC的新增修改删除/img-15.jpg)
 替换即可完成破解！！！！
 
-## 使用PowerDesigner进行物理数据建模
+### 使用PowerDesigner进行物理数据建模
+
 打开PowerDesigner：
 ![](./JDBC的新增修改删除/img-16.jpg)
 
@@ -123,7 +129,8 @@ Navicat for MySQL 是一款常用的 MySQL 数据库管理工具，提供了丰�
 设计完成后：
 ![](./JDBC的新增修改删除/img-25.jpg)
 
-## 使用PowerDesigner导出建表语句
+### 使用PowerDesigner导出建表语句
+
 ![](./JDBC的新增修改删除/img-26.jpg)
 
 ```sql
@@ -147,7 +154,9 @@ alter table t_user comment '用户表存储用户信息。';
 ```
 
 ## 使用Navicat for MySQL初始化数据
+
 ### 建库
+
 使用Navicat for MySQL创建一个MySQL数据库，起名：jdbc
 ![](./JDBC的新增修改删除/img-27.jpg)
 ![](./JDBC的新增修改删除/img-28.jpg)
@@ -164,12 +173,16 @@ alter table t_user comment '用户表存储用户信息。';
 
 ![](./JDBC的新增修改删除/img-32.jpg)
 
-### 注意：这里我将主键设置为了自增：auto_increment。其实这个也可以在PowerDesigner中设计时指定自增：勾选上它即可。
+**注意：这里我将主键设置为了自增：auto_increment。其实这个也可以在PowerDesigner中设计时指定自增：勾选上它即可。**
+
 ![](./JDBC的新增修改删除/img-33.jpg)
 
-# JDBC完成新增操作
+## JDBC完成新增操作
+
 新增操作就是让数据库执行insert语句。通过这个操作来学习一下JDBC编程的每一步。刚开始编写JDBC代码的时候，建议使用文本编辑器，先不借助任何IDE。
-## JDBC编程第一步：注册驱动
+
+### JDBC编程第一步：注册驱动
+
 注册驱动有两个作用：
 
 1. 将 JDBC 驱动程序从硬盘上的文件系统中加载到内存。
@@ -213,9 +226,12 @@ public class JDBCTest01 {
 **思考1：为什么以上代码中new的时候，后面类名要带上包名呢？**
 **思考2：以上代码中哪些是JDBC接口，哪些是JDBC接口的实现？**
 
-## JDBC编程第二步：获取连接
+### JDBC编程第二步：获取连接
+
 获取java.sql.Connection对象，该对象的创建标志着mysql进程和jvm进程之间的通道打开了。
-### 代码实现
+
+#### 代码实现
+
 API帮助文档：
 ![](./JDBC的新增修改删除/img-35.jpg)
 
@@ -275,7 +291,9 @@ public class JDBCTest01 {
 通过以上程序的输出结果得知：`com.mysql.cj.jdbc.ConnectionImpl`是`java.sql.Connection`接口的`实现类`，大家可以想象一下，如果换成`Oracle数据库`的话，这个实现类的类名是不是就会换一个呢？答案是肯定的。不过对于我们来说是`不需要关心具体实现类的`，因为后续的代码都是直接面向`java.sql.Connection`接口来调用方法的。面向接口编程在这里体现的淋漓尽致。确实`降低了耦合度`。
 
 以上程序中演示了连接数据库需要提供三个信息：`url，用户名，密码`。其中`用户名和密码`容易理解。**url是什么**？
-### 什么是URL
+
+#### 什么是URL
+
 URL 是`统一资源定位符 (Uniform Resource Locator)` 的缩写，是互联网上`标识、定位、访问资源`的`字符串`。它可以用来指定互联网上各种类型的资源的位置，如网页、图片、视频等。
 
 URL 通常由`协议、服务器名、服务器端口、路径和查询字符串`组成。其中：
@@ -289,7 +307,9 @@ URL 通常由`协议、服务器名、服务器端口、路径和查询字符串
 URL 在互联网中广泛应用，比如在浏览器中输入 URL 来访问网页或下载文件，在网站开发中使用 URL 来访问 API 接口或文件，在移动应用和桌面应用中使用 URL 来访问应用内部的页面或功能，在搜索引擎中使用 URL 来爬取网页内容等等。
 
 总之，URL 是互联网上所有资源的唯一识别标识，是互联网通信的基础和核心技术之一。
-### JDBC连接MySQL时的URL格式
+
+#### JDBC连接MySQL时的URL格式
+
 JDBC URL 是在使用 JDBC 连接数据库时的一个 URL 字符串，它用来标识要连接的数据库的位置、认证信息和其他配置参数等。JDBC URL 的格式可以因数据库类型而异，但通常包括以下几个部分：
 
 - 协议：表示要使用的数据库管理系统（DBMS）的类型，如 `jdbc:mysql` 表示要`使用 MySQL 数据库`，`jdbc:postgresql` 表示要`使用 PostgreSQL 数据库`。
@@ -321,7 +341,8 @@ jdbc:mysql://localhost:3306/jdbc
 `3306`是MySQL数据库的端口号
 `jdbc`是数据库实例名
 
-### MySQL URL中的其它常用配置
+#### MySQL URL中的其它常用配置
+
 在 JDBC MySQL URL 中，常用的配置参数有：
 
 - `serverTimezone`：MySQL 服务器时区，默认为 `UTC`，可以通过该参数来`指定客户端和服务器的时区`；
@@ -373,7 +394,8 @@ jdbc:mysql://localhost:3306/jdbc?useUnicode=true&serverTimezone=Asia/Shanghai&us
 ```
 这里演示的是使用本地 MySQL 数据库，使用Unicode编码进行数据传输，服务器时区为 Asia/Shanghai，启用 SSL 连接，服务器接收到数据后使用 UTF-8 编码。
 
-## JDBC编程第三步：获取数据库操作对象
+### JDBC编程第三步：获取数据库操作对象
+
 数据库操作对象是这个接口：`java.sql.Statement`。这个对象负责将SQL语句发送给数据库服务器，服务器接收到SQL后进行编译，然后执行SQL。
 
 API帮助文档如下：
@@ -497,7 +519,8 @@ public class JDBCTest01 {
 执行结果：
 ![](./JDBC的新增修改删除/img-39.jpg)
 
-## JDBC编程第四步：执行SQL
+### JDBC编程第四步：执行SQL
+
 当获取到Statement对象后，调用这个接口中的相关方法即可执行SQL语句。
 
 API帮助文档如下：
@@ -579,11 +602,16 @@ public class JDBCTest01 {
 数据库表变化了：
 ![](./JDBC的新增修改删除/img-42.jpg)
 
-## JDBC编程第六步：释放资源
+### JDBC编程第六步：释放资源
+
 第五步去哪里了？第五步是处理查询结果集，以上操作不是select语句，所以第五步直接跳过，直接先看一下第六步释放资源。【后面学习查询语句的时候，再详细看第五步】
-### 为什么要释放资源
+
+#### 为什么要释放资源
+
 在 JDBC 编程中，建立数据库连接、创建 Statement 对象等操作都需要申请系统资源，例如打开网络端口、申请内存等。为了避免占用过多的系统资源和避免出现内存泄漏等问题，我们需要在使用完资源后及时释放它们。
-### 释放资源的原则
+
+#### 释放资源的原则
+
 原则1：在finally语句块中释放
 
 - 建议在finally语句块中释放，因为程序执行过程中如果出现了异常，finally语句块中的代码是一定会执行的。也就是说：我们需要保证程序在执行过程中，不管是否出现了异常，最后的关闭是一定要执行的。当然了，也可以使用Java7的新特性：Try-with-resources。Try-with-resources 是 Java 7 引入的新特性。它简化了资源管理的代码实现，可以自动释放资源，减少了代码出错的可能性，同时也可以提供更好的代码可读性和可维护性。
@@ -596,7 +624,8 @@ public class JDBCTest01 {
 
 - 关闭的时候调用close()方法，该方法有异常需要处理，建议分别对齐try...catch...进行异常捕获。如果只编写一个try...catch...进行一块捕获，在关闭过程中，如果某个关闭失败，会影响下一个资源的关闭。
 
-### 代码如何实现
+#### 代码如何实现
+
 ```java
 /*
    使用JDBC程序向jdbc.t_user表中插入一条数据
@@ -681,7 +710,8 @@ public class JDBCTest01 {
 }
 ```
 
-# JDBC完成修改操作
+## JDBC完成修改操作
+
 修改操作就是执行update语句。仍然调用Statement接口的executeUpdate(sql)方法即可。
 业务要求：将name是wangwu的所有信息进行修改。
 修改前的数据：
@@ -747,7 +777,8 @@ public class JDBCTest02 {
 更新后的数据：
 ![](./JDBC的新增修改删除/img-45.jpg)
 
-# JDBC完成删除操作
+## JDBC完成删除操作
+
 删除操作就是执行delete语句。仍然调用Statement接口的executeUpdate(sql)方法即可。
 业务要求：将name是wuwang的数据删除。
 删除前的数据：
@@ -812,7 +843,7 @@ public class JDBCTest03 {
 删除后的数据：
 ![](./JDBC的新增修改删除/img-47.jpg)
 
-# 注册驱动的常用方式
+## 注册驱动的常用方式
 
 上面在注册驱动的时候，执行了这样的代码：
 ```java
@@ -878,7 +909,8 @@ public class JDBCTest04 {
 */
 ```
 
-# JDBC 4.0后不用手动注册驱动（了解）
+## JDBC 4.0后不用手动注册驱动（了解）
+
 从JDBC 4.0（**也就是Java6**）版本开始，驱动的注册不需要再手动完成，由系统自动完成。
 ```java
 import java.sql.DriverManager;
@@ -931,8 +963,10 @@ public class JDBCTest03 {
 
 **注意：虽然大部分情况下不需要进行手动注册驱动了，但在实际的开发中有些数据库驱动程序不支持自动发现功能，仍然需要手动注册。所以建议大家还是别省略了。**
 
-# 使用IDEA工具编写JDBC程序
-## 创建空的工程并设置JDK
+## 使用IDEA工具编写JDBC程序
+
+### 创建空的工程并设置JDK
+
 创建一个空的工程：jdbc
 ![](./JDBC的新增修改删除/img-51.jpg)
 
@@ -942,9 +976,12 @@ public class JDBCTest03 {
 设置JDK以及编译器版本：
 ![](./JDBC的新增修改删除/img-53.jpg)
 
-## 创建一个模块
+### 创建一个模块
+
 ![](./JDBC的新增修改删除/img-54.jpg)
-## 将驱动加入到CLASSPATH
+
+### 将驱动加入到CLASSPATH
+
 在模块jdbc下创建一个目录：lib
 ![](./JDBC的新增修改删除/img-55.jpg)
 ![](./JDBC的新增修改删除/img-56.jpg)
@@ -957,7 +994,8 @@ public class JDBCTest03 {
 ![](./JDBC的新增修改删除/img-59.jpg)
 ![](./JDBC的新增修改删除/img-60.jpg)
 
-## 编写JDBC程序
+### 编写JDBC程序
+
 新建软件包：com.powernode.jdbc
 ![](./JDBC的新增修改删除/img-61.jpg)
 
@@ -1004,7 +1042,8 @@ public class JDBCTest01 {
 }
 ```
 
-# 动态配置连接数据库的信息
+## 动态配置连接数据库的信息
+
 为了程序的通用性，为了切换数据库的时候不需要修改Java程序，为了符合OCP开闭原则，建议将连接数据库的信息配置到属性文件jdbc.properties中，例如：
 ```properties
 driver=com.mysql.cj.jdbc.Driver
@@ -1058,7 +1097,8 @@ public class JDBCTest01 {
 }
 ```
 
-# 获取连接的其他方式（了解）
+## 获取连接的其他方式（了解）
+
 上面我们讲到了第一种获取连接的方式：
 ```java
 Connection conn = DriverManager.getConnection(url, user, password);
@@ -1068,6 +1108,7 @@ Connection conn = DriverManager.getConnection(url, user, password);
 ![](./JDBC的新增修改删除/img-63.jpg)
 
 ## getConnection(String url)
+
 这种方式参数只有一个url，那用户名和密码放在哪里呢？可以放到url当中，代码如下：
 ```java
 package com.powernode.jdbc;
@@ -1095,6 +1136,7 @@ public class JDBCTest02 {
 ![](./JDBC的新增修改删除/img-64.jpg)
 
 ## getConnection(String url, Properties info)
+
 这种方式有两个参数，一个是url，一个是Properties对象。
 
 - url：可以`单纯提供一个url地址`

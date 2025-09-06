@@ -619,12 +619,12 @@ pstmt.setString(1, "O");
 
 > 对于MySQL来说，通用的分页SQL语句：
 >
-> 假设每页`显示3条记录`：`pageSize = 3`
-> 第1页：limit 0, 3
-> 第2页：limit 3, 3
-> 第3页：limit 6, 3
+> + 假设每页`显示3条记录`：`pageSize = 3`
+>   第1页：limit 0, 3
+>   第2页：limit 3, 3
+>   第3页：limit 6, 3
 >
-> **第pageNo页：limit (pageNo - 1)*pageSize, pageSize**
+> + **第pageNo页：limit (pageNo - 1)*pageSize, pageSize**
 >
 > **需求：查询`所有员工姓名`，每页`显示3条(pageSize)`，显示`第2页(pageNo)`。**
 
@@ -680,19 +680,23 @@ public class JDBCTest14 {
 ![](./SQL注入/img-20.jpg)
 
 ## blob数据的插入和读取
-准备一张表：t_img，三个字段，一个id主键，一个图片名字name，一个img。
-建表语句如下：
+> 准备一张表：`t_img`，三个字段，一个`id主键`，一个图片名字`name`，一个`img`。
+> 建表语句如下：
+>
+> ```sql
+> create table `t_img` (
+>   `id` bigint primary key auto_increment,
+>   `name` varchar(255),
+>   `img` blob
+> ) engine=innodb;
+> ```
+>
+> 准备一张图片：
+>
+> ![](./SQL注入/dog.jpg)
 
-```sql
-create table `t_img` (
-  `id` bigint primary key auto_increment,
-  `name` varchar(255),
-  `img` blob
-) engine=innodb;
-```
 
-准备一张图片：
-![](./SQL注入/dog.jpg)
+
 
 > **需求1：向`t_img 表`中`插入一张图片`。**
 >
@@ -800,7 +804,7 @@ public class JDBCTest16 {
 ```
 > 执行完毕之后，查看一下图片大小是否和原图片相同，打开看看是否可以正常显示。
 >
-> ![](./SQL注入/img-25.gif)
+> <!--![](./SQL注入/img-25.gif)-->
 >
 > ![](https://image.dooo.ng/c/2025/09/05/68bad90aed6bc.gif)
 
@@ -808,153 +812,121 @@ public class JDBCTest16 {
 
 ## JDBC批处理操作
 
-准备一张商品表：t_product
-建表语句如下：
+> 准备一张`商品表`：`t_product`
+> 建表语句如下：
+>
+> ```sql
+> create table t_product(
+>   id bigint primary key,
+>   name varchar(255)
+> );
+> ```
 
-```sql
-create table t_product(
-  id bigint primary key,
-  name varchar(255)
-);
-```
 ### 不使用批处理
 
-不使用批处理，向 t_product 表中插入一万条商品信息，并记录耗时！
+> **`不使用批处理`，向 t_product 表中`插入一万条商品信息`，并记录耗时！**
+
 ```java
 package com.powernode.jdbc;
 
+import com.powernode.jdbc.utils.DbUtils;
+
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
 
-public class NoBatchTest {
+/**
+ * 不使用批处理操作，向t_batch表中插入一万条记录，并且记录耗时。
+ */
+public class JDBCTest17 {
     public static void main(String[] args) {
-        ResourceBundle bundle = ResourceBundle.getBundle("com.powernode.jdbc.jdbc");
-        String driver = bundle.getString("driver");
-        String url = bundle.getString("url");
-        String user = bundle.getString("user");
-        String password = bundle.getString("password");
-
         long begin = System.currentTimeMillis();
         Connection conn = null;
-        PreparedStatement pstmt = null;
-        try {
-            // 1. 注册驱动
-            Class.forName(driver);
-            // 2. 获取连接
-            conn = DriverManager.getConnection(url, user, password);
-            // 3. 获取预编译的数据操作对象
-            String sql = "insert into t_product(id, name) values (?, ?)";
-            pstmt = conn.prepareStatement(sql);
+        PreparedStatement ps = null;
+
+        try{
+            conn = DbUtils.getConnection();
+            String sql = "insert into t_batch(id,name) values(?,?)";
+            ps = conn.prepareStatement(sql);
             int count = 0;
-            for (int i = 1; i <= 10000; i++) {
-                pstmt.setInt(1, i);
-                pstmt.setString(2, "product" + i);
-                // 4. 执行SQL语句
-                count += pstmt.executeUpdate();
+            for(int i = 1; i <= 10000; i++){
+                ps.setLong(1,i);
+                ps.setString(2,"batch" + i);
+                count += ps.executeUpdate();
             }
             System.out.println("插入了" + count + "条记录");
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            // 6. 释放资源
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+        }catch(SQLException e){
+            throw  new RuntimeException(e);
+        }finally {
+            DbUtils.close(conn,ps,null);
         }
         long end = System.currentTimeMillis();
         System.out.println("总耗时" + (end - begin) + "毫秒");
     }
 }
-
 ```
 执行结果如下：
-![image.png](https://cdn.nlark.com/yuque/0/2024/png/21376908/1708249553654-263146be-a485-4313-831f-892a776abd1d.png#averageHue=%23edeceb&clientId=u21834790-ed4d-4&from=paste&height=67&id=u376a8236&originHeight=67&originWidth=175&originalType=binary&ratio=1&rotation=0&showTitle=false&size=2603&status=done&style=shadow&taskId=u9b065934-65ea-4ab2-8bd0-0a29936bbb8&title=&width=175)
+![](./SQL注入/img-26.jpg)
 
 ### 使用批处理
 
-使用批处理，向 t_product 表中插入一万条商品信息，并记录耗时！
-**注意：启用批处理需要在URL后面添加这个的参数：rewriteBatchedStatements=true**
-![image.png](https://cdn.nlark.com/yuque/0/2024/png/21376908/1708249622292-576aa82d-5874-4013-a9b4-d94c00cef0ce.png#averageHue=%23fefdfb&clientId=u21834790-ed4d-4&from=paste&height=177&id=u4263b9d7&originHeight=177&originWidth=1592&originalType=binary&ratio=1&rotation=0&showTitle=false&size=24176&status=done&style=shadow&taskId=u444819ae-8458-45a1-b734-bb75ab7faf4&title=&width=1592)
+> `使用批处理`，向` t_product 表`中插入`一万条商品信息`，并记录耗时！
+> **注意：启用批处理需要在URL后面添加这个的参数：`rewriteBatchedStatements=true`**
+> ![](./SQL注入/img-27.jpg)
 
 ```java
 package com.powernode.jdbc;
 
+import com.powernode.jdbc.utils.DbUtils;
+
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
 
-public class BatchTest {
+/**
+ *使用批处理，向t_product 表中插入一万条商品信息，并记录耗时！
+ */
+public class JDBCTest18 {
     public static void main(String[] args) {
-        ResourceBundle bundle = ResourceBundle.getBundle("com.powernode.jdbc.jdbc");
-        String driver = bundle.getString("driver");
-        String url = bundle.getString("url");
-        String user = bundle.getString("user");
-        String password = bundle.getString("password");
-
         long begin = System.currentTimeMillis();
         Connection conn = null;
-        PreparedStatement pstmt = null;
-        try {
-            // 1. 注册驱动
-            Class.forName(driver);
-            // 2. 获取连接
-            conn = DriverManager.getConnection(url, user, password);
-            // 3. 获取预编译的数据操作对象
-            String sql = "insert into t_product(id, name) values (?, ?)";
-            pstmt = conn.prepareStatement(sql);
+        PreparedStatement ps = null;
+
+        try{
+            conn = DbUtils.getConnection();
+            String sql = "insert into t_batch(id,name) values(?,?)";
+            ps = conn.prepareStatement(sql);
             int count = 0;
-            for (int i = 1; i <= 10000; i++) {
-                pstmt.setInt(1, i);
-                pstmt.setString(2, "product" + i);
-                pstmt.addBatch();
+            for(int i = 1; i <= 10000; i++){
+                ps.setLong(1,i);
+                ps.setString(2,"batch" + i);
+                // count += ps.executeUpdate();
+                // 打包
+                ps.addBatch();
+                // 如果打包够500个，执行一次（则磁盘IO一次）
+                if(i % 500 ==0){
+                    count += ps.executeBatch().length;
+                }
             }
-            count += pstmt.executeBatch().length;
+            // 循环结束之后，再次执行批量处理，防止数据丢失
+            count += ps.executeBatch().length;
+            
             System.out.println("插入了" + count + "条记录");
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            // 6. 释放资源
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+        }catch(SQLException e){
+            throw  new RuntimeException(e);
+        }finally {
+            DbUtils.close(conn,ps,null);
         }
         long end = System.currentTimeMillis();
         System.out.println("总耗时" + (end - begin) + "毫秒");
     }
 }
-
 ```
 执行结果如下：
-![image.png](https://cdn.nlark.com/yuque/0/2024/png/21376908/1708249131242-0bf6746b-86f7-4bc9-966b-00d22994e177.png#averageHue=%23ecebea&clientId=u21834790-ed4d-4&from=paste&height=62&id=u8650f4b7&originHeight=62&originWidth=176&originalType=binary&ratio=1&rotation=0&showTitle=false&size=2142&status=done&style=shadow&taskId=u5e5c9eb2-21df-410b-bafb-e9edb16ccb3&title=&width=176)
+![](./SQL注入/img-28.jpg)
 
-在进行大数据量插入时，批处理为什么可以提高程序的执行效率？
-
-1.  减少了网络通信次数：JDBC 批处理会将多个 SQL 语句一次性发送给服务器，减少了客户端和服务器之间的通信次数，从而提高了数据写入的速度，特别是对于远程服务器而言，优化效果更为显著。 
-2.  减少了数据库操作次数：JDBC 批处理会将多个 SQL 语句合并成一条 SQL 语句进行执行，从而减少了数据库操作的次数，减轻了数据库的负担，大大提高了数据写入的速度。  
+> **在进行大数据量插入时，批处理为什么可以提高程序的执行效率？**
+>
+> 1. `减少了网络通信次数`：JDBC 批处理会将多个 SQL 语句一次性发送给服务器，减少了客户端和服务器之间的通信次数，从而提高了数据写入的速度，特别是对于远程服务器而言，优化效果更为显著。 
+>
+> 2. `减少了数据库操作次数`：JDBC 批处理会将多个 SQL 语句合并成一条 SQL 语句进行执行，从而减少了数据库操作的次数，减轻了数据库的负担，大大提高了数据写入的速度。  

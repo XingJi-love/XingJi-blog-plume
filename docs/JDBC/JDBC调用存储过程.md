@@ -9,7 +9,8 @@ cover: /JDBC.jpg
 
 ![JDBC | JDBC调用存储过程](./JDBC.jpg)
 
-# 在MySQL中创建存储过程
+## 在MySQL中创建存储过程
+
 ```sql
 create procedure mypro(in n int, out sum int)
 begin 
@@ -24,7 +25,8 @@ begin
 end;
 ```
 
-# 使用JDBC代码调用存储过程
+## 使用JDBC代码调用存储过程
+
 ```java
 package com.powernode.jdbc;
 
