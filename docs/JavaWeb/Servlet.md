@@ -129,7 +129,7 @@ public class UserServlet  extends HttpServlet {
 
 > 步骤4 开发一个form表单,向servlet发送一个get请求并携带username参数
 
-```html
+```html title="html"
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1041,7 +1041,7 @@ http://localhost:8080/web03_war_exploded/servletA?username=atguigu
 
 > 当前视图文件的字符集通过<meta charset="UTF-8"> 来告知浏览器通过什么字符集来解析当前文件
 
-``` html
+```html title="html"
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1250,7 +1250,7 @@ http://localhost:8080/web03_war_exploded/servletA?username=atguigu
 + index.html中定义的了    : `<img src="static/img/logo.png"/>`
 + 寻找方式就是在当前资源所在路径(http://localhost:8080/web03_war_exploded/)后拼接src属性值(static/img/logo.png),正好是目标资源正常获取的url(http://localhost:8080/web03_war_exploded/static/img/logo.png)
 
-``` html
+```html title="html"
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1275,7 +1275,7 @@ http://localhost:8080/web03_war_exploded/servletA?username=atguigu
 + test.html中定义的了       : `<img src="../../../static/img/logo.png"/>`
 + 寻找方式就是在当前资源所在路径(http://localhost:8080/web03_war_exploded/a/b/c/)后拼接src属性值(../../../static/img/logo.png),其中 ../可以抵消一层路径,正好是目标资源正常获取的url(http://localhost:8080/web03_war_exploded/static/img/logo.png)
 
-``` html
+```html title="html"
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1311,7 +1311,7 @@ public class View1Servlet extends HttpServlet {
 + view1.html中定义的了    : `<img src="static/img/logo.png"/>`
 + 寻找方式就是在当前资源所在路径(http://localhost:8080/web03_war_exploded/)后拼接src属性值(static/img/logo.png),正好是目标资源正常获取的url(http://localhost:8080/web03_war_exploded/static/img/logo.png)
 
-``` html
+```html title="html"
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1334,7 +1334,7 @@ public class View1Servlet extends HttpServlet {
 + index.html中定义的了    : `<img src="/web03_war_exploded/static/img/logo.png"/>`
 + 寻找方式就是在基准路径(http://localhost:8080)后面拼接src属性值(/web03_war_exploded/static/img/logo.png),得到的正是目标资源访问的正确路径
 
-``` html
+```html title="html"
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1358,7 +1358,7 @@ public class View1Servlet extends HttpServlet {
 + test.html中定义的了    : `<img src="/web03_war_exploded/static/img/logo.png"/>`
 + 寻找方式就是在基准路径(http://localhost:8080)后面拼接src属性值(/web03_war_exploded/static/img/logo.png),得到的正是目标资源访问的正确路径
 
-``` html
+```html title="html"
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1393,7 +1393,7 @@ public class View1Servlet extends HttpServlet {
 + view1.html中定义的了    : `<img src="/web03_war_exploded/static/img/logo.png"/>`
 + 寻找方式就是在基准路径(http://localhost:8080)后面拼接src属性值(/static/img/logo.png),得到的正是目标资源访问的正确路径
 
-``` html
+```html title="html"
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1417,7 +1417,7 @@ public class View1Servlet extends HttpServlet {
 
 > index.html 和a/b/c/test.html 以及view1Servlet 中的路径处理
 
-```html
+```html title="html"
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1556,7 +1556,7 @@ public class ServletB extends HttpServlet {
 
 + 在项目上下文路径为缺省值时,也无需改变,直接以/开头即可
 
-    ```java
+    ```java title="java"
     @WebServlet("/x/y/servletB")
     public class ServletB extends HttpServlet {
         @Override
@@ -1573,7 +1573,7 @@ public class ServletB extends HttpServlet {
 
 + 那么此时 test.html资源的所在路径就是http://localhost:8080/web03_war_exploded/x/y/所以test.html中相对路径要基于该路径编写,如果使用绝对路径则不用考虑
 
-    ``` html
+    ```html title="html"
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -2056,7 +2056,7 @@ public interface SysScheduleService {
 
 + 实现类
 
-```java
+```java title="java"
 //------------------------------------------------------------------------------
 package com.atguigu.schedule.service.impl;
 import com.atguigu.schedule.service.SysUserService;
@@ -2230,7 +2230,7 @@ public class SysUserController  extends BaseContoller {
 
 + service
 
-```java
+```java title="java"
 package com.atguigu.schedule.service;
 
 import com.atguigu.schedule.pojo.SysUser;
@@ -2360,7 +2360,7 @@ public class SysUserController  extends BaseContoller {
 
 + service
 
-```java
+```java title="java"
 package com.atguigu.schedule.service;
 
 import com.atguigu.schedule.pojo.SysUser;

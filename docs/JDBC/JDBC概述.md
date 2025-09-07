@@ -42,7 +42,7 @@ Java中接口的作用主要有以下几个方面：
 
 **接口的制定者**：SUN公司负责制定的
 
-```java
+```java title="java"
 // SUN公司负责制定JDBC接口
 public interface JDBC {
     // 负责连接数据库的方法
@@ -53,7 +53,7 @@ public interface JDBC {
 **接口的实现者**：各大数据库厂商分别对`JDBC接口进行实现`，实现类被称为**驱动**
 `MySQL数据库厂商`对JDBC接口的实现：`MySQL驱动`
 
-```java
+```java title="java"
 public class MySQLDriver implements JDBC{
     public void getConnection(){
         System.out.println("与MySQL数据库连接建立成功，您正在操作MySQL数据库");
@@ -62,7 +62,7 @@ public class MySQLDriver implements JDBC{
 ```
 `Oracle数据库厂商`对JDBC接口的实现：`Oracle驱动`
 
-```java
+```java title="java"
 public class OracleDriver implements JDBC{
     public void getConnection(){
         System.out.println("与Oracle数据库连接建立成功，您正在操作Oracle数据库");
@@ -72,7 +72,7 @@ public class OracleDriver implements JDBC{
 
 **接口的调用者**：要操作数据库的`Java程序员`（我们）
 
-```java
+```java title="java"
 public class Client{
     public static void main(String[] args){
         
@@ -84,7 +84,7 @@ public class Client{
 }
 ```
 以上是操作MySQL数据库，如果要操作Oracle数据库的话，需要new OracleDriver()：
-```java
+```java title="java"
 public class Client{
     public static void main(String[] args){
         
@@ -102,7 +102,7 @@ public class Client{
 driver=MySQLDriver
 ```
 Java代码如下：
-```java
+```java title="java"
 import java.util.ResourceBundle;
 
 public class Client{

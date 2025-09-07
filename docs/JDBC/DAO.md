@@ -21,7 +21,7 @@ DAO是：Data Access Object，翻译为：数据访问对象。
 ### 定义Employee封装数据
 
 Employee类是一个Java Bean，专门用来封装员工的信息：
-```java
+```java title="java"
 package com.powernode.jdbc.beans;
 
 /**
@@ -115,7 +115,7 @@ public class Employee {
 ### 定义EmployeeDao
 
 定义五个方法，分别完成五个功能：新增，修改，删除，查看一个，查看所有。
-```java
+```java title="java"
 package com.powernode.jdbc.dao;
 
 import com.powernode.jdbc.beans.Employee;
@@ -282,7 +282,7 @@ public class EmployeeDao {
 ```
 ## BaseDao的封装
 
-```java
+```java title="java"
 package com.powernode.jdbc.dao;
 
 import com.powernode.jdbc.utils.DbUtils;

@@ -36,7 +36,7 @@ select realname,id,name,password from t_user;
 ![](./JDBC的查询/img-1.jpg)
 代码如下（重点关注第4步 第5步 第6步)：
 
-```java
+```java title="java"
 package com.powernode.jdbc;
 
 import java.sql.Connection;
@@ -189,7 +189,7 @@ public class JDBCTest03 {
 ![](./JDBC的查询/img-2.jpg)
 
 代码解读：
-```java
+```java title="java"
 // 4.执行SQL
 String sql = "select realname,id,name,password from t_user";
 rs = stmt.executeQuery(sql);
@@ -198,7 +198,7 @@ rs = stmt.executeQuery(sql);
 执行`select语句`的时候，**调用`Statement接口的executeQuery()`方法**。执行select语句后返回结果集对象：ResultSet。
 
 代码解读：
-```java
+```java title="java"
 // 5. 处理查询结果集（这里的处理方式就是：遍历所有数据并输出）
 while (rs.next()) {
     // 取出光标指向的当前行的数据
@@ -221,7 +221,7 @@ while (rs.next()) {
 - **rs.getString(...) 方法在执行时，不管底层数据库中的数据类型是什么，统一以字符串String类型来获取。**
 
 代码解读：
-```java
+```java title="java"
 // 6. 释放资源
 if(rs != null){
     try{
@@ -261,7 +261,7 @@ select empno a,ename b,sal c from emp;
 ![](./JDBC的查询/img-5.jpg)
 **注意：是根据`查询结果的列名`，而`不是表中的列名`。以上查询的时候将字段empno 起别名为a, ename起别名为b,sal起别名为c，所以要根据a,b,c来获取，而不能再根据empno,ename,sal来获取了。**
 
-```java
+```java title="java"
 package com.powernode.jdbc;
 
 import java.sql.Connection;
@@ -383,7 +383,7 @@ public class JDBCTest03 {
 
 `id`以`long类型获取`，`name`以`String类型获取`，`price`以`double类型获取`，`create_time`以`java.sql.Date类型获取`，代码如下：
 
-```java
+```java title="java"
 package com.powernode.jdbc;
 
 import java.sql.DriverManager;
@@ -472,7 +472,7 @@ public class JDBCTest04 {
 
 `ResultSetMetaData` 可以通过 `ResultSet` 接口的 `getMetaData() `方法获取，一般在对 ResultSet 进行元数据信息处理时使用。例如，可以使用 ResultSetMetaData 对象获取查询结果中列的信息，如`列名、列的类型、列的长度`等。通过 `ResultSetMetaData接口`的方法，可以实现对查询结果的基本描述信息操作，例如获取查询结果集中有多少列、列的类型、列的标识符等。以下是一段通过 ResultSetMetaData 获取查询结果中列的信息的示例代码：
 
-```java
+```java title="java"
 package com.powernode.jdbc;
 
 import java.sql.DriverManager;
@@ -568,7 +568,7 @@ public class JDBCTest05 {
 2.  调用 `Statement `对象的 `getGeneratedKeys() `方法，返回一个包含`插入的主键值`的 `ResultSet 对象`。 
 
 
-```java
+```java title="java"
 package com.powernode.jdbc;
 
 import java.sql.DriverManager;

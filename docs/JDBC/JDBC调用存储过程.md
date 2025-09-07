@@ -27,7 +27,7 @@ end;
 
 ## 使用JDBC代码调用存储过程
 
-```java
+```java title="java"
 package com.powernode.jdbc;
 
 import com.powernode.jdbc.utils.DbUtils;

@@ -120,25 +120,25 @@ Schema约束要求我们一个XML文档中，所有标签，所有属性都必�
 
 1.创建SAXReader对象
 
-```java
+```java title="java"
 SAXReader saxReader = new SAXReader();
 ```
 
 &#x20;2. 解析XML获取Document对象: 需要传入要解析的XML文件的字节输入流
 
-```java
+```java title="java"
 Document document = reader.read(inputStream);
 ```
 
 &#x20;3\. 获取文档的根标签
 
-```java
+```java title="java"
 Element rootElement = documen.getRootElement()
 ```
 
 &#x20;4\. 获取标签的子标签
 
-```java
+```java title="java"
 //获取所有子标签
 List<Element> sonElementList = rootElement.elements();
 //获取指定标签名的子标签
@@ -147,13 +147,13 @@ List<Element> sonElementList = rootElement.elements("标签名");
 
 &#x20;5\. 获取标签体内的文本
 
-```java
+```java title="java"
 String text = element.getText();
 ```
 
 &#x20;6\. 获取标签的某个属性的值
 
-```java
+```java title="java"
 String value = element.attributeValue("属性名");
 ```
 
@@ -278,7 +278,7 @@ String value = element.attributeValue("属性名");
 
     - tomcat-users.xml：存储tomcat用户的文件，这里保存的是tomcat的用户名及密码，以及用户的角色信息。可以按着该文件中的注释信息添加tomcat用户，然后就可以在Tomcat主页中进入Tomcat Manager页面了；
 
-        ``` html
+        ```html title="html"
         <tomcat-users xmlns="http://tomcat.apache.org/xml"
                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                       xsi:schemaLocation="http://tomcat.apache.org/xml tomcat-users.xsd"
@@ -804,7 +804,7 @@ Date: Mon, 13 Aug 2018 02:47:57 GMT  响应的时间，这可能会有8小时的
 
 + 响应体
 
-``` html
+```html title="html"
 <!--需要浏览器解析使用的内容[如果响应的是html页面，最终响应体内容会被浏览器显示到页面中]-->
 
 <!DOCTYPE html>

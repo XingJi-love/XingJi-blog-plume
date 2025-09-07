@@ -192,7 +192,7 @@ API帮助文档：
 ![](./JDBC的新增修改删除/img-34.jpg)
 
 代码如下：
-```java
+```java title="java"
 /*
    使用JDBC程序向jdbc.t_user表中插入一条数据
  */
@@ -236,7 +236,7 @@ API帮助文档：
 ![](./JDBC的新增修改删除/img-35.jpg)
 
 代码如下：
-```java
+```java title="java"
 /*
    使用JDBC程序向jdbc.t_user表中插入一条数据
  */
@@ -402,7 +402,7 @@ API帮助文档如下：
 ![](./JDBC的新增修改删除/img-37.jpg)
 
 获取数据库操作对象代码如下：
-```java
+```java title="java"
 /*
    使用JDBC程序向jdbc.t_user表中插入一条数据
  */
@@ -462,7 +462,7 @@ public class JDBCTest01 {
 同样可以看到：`java.sql.Statement`接口在MySQL驱动中的实现类是：`com.mysql.cj.jdbc.StatementImpl`。不过我们同样是不需要关心这个具体的实现类。因为后续的代码仍然是`面向Statement接口`写代码的。
 
 另外，要知道的是通过一个Connection对象是可以创建多个Statement对象的：
-```java
+```java title="java"
 /*
    使用JDBC程序向jdbc.t_user表中插入一条数据
  */
@@ -531,7 +531,7 @@ API帮助文档如下：
 **该方法适合执行的SQL语句是`DML`，包括：`insert delete update`。**
 
 代码实现如下：
-```java
+```java title="java"
 /*
    使用JDBC程序向jdbc.t_user表中插入一条数据
  */
@@ -626,7 +626,7 @@ public class JDBCTest01 {
 
 #### 代码如何实现
 
-```java
+```java title="java"
 /*
    使用JDBC程序向jdbc.t_user表中插入一条数据
  */
@@ -718,7 +718,7 @@ public class JDBCTest01 {
 ![](./JDBC的新增修改删除/img-43.jpg)
 
 代码如下：
-```java
+```java title="java"
 /*
 	修改所有的wangwu
 */
@@ -785,7 +785,7 @@ public class JDBCTest02 {
 ![](./JDBC的新增修改删除/img-45.jpg)
 
 代码如下：
-```java
+```java title="java"
 /*
 	删除所有的wangwu
 */
@@ -846,13 +846,13 @@ public class JDBCTest03 {
 ## 注册驱动的常用方式
 
 上面在注册驱动的时候，执行了这样的代码：
-```java
+```java title="java"
 java.sql.Driver driver = new com.mysql.cj.jdbc.Driver();
 java.sql.DriverManager.registerDriver(driver);
 ```
 
 这种方式是自己new驱动对象，然后调用DriverManager的registerDriver()方法来完成驱动注册，还有另一种方式，并且这种方式是常用的：
-```java
+```java title="java"
 Class.forName("com.mysql.cj.jdbc.Driver");
 ```
 
@@ -869,7 +869,7 @@ Class.forName("com.mysql.cj.jdbc.Driver");
 通过源码不难发现，在`com.mysql.cj.jdbc.Driver`类中有一个`静态代码块`，在这个静态代码块中调用了`java.sql.DriverManager.registerDriver(new Driver());`完成了`驱动的注册`。而`Class.forName("com.mysql.cj.jdbc.Driver");`代码的作用就是让`com.mysql.cj.jdbc.Driver`类完成加载，执行它的`静态代码块`。
 
 编写代码测试一下：
-```java
+```java title="java"
 /*
    注册驱动的第二种方式：常用的
  */
@@ -912,7 +912,7 @@ public class JDBCTest04 {
 ## JDBC 4.0后不用手动注册驱动（了解）
 
 从JDBC 4.0（**也就是Java6**）版本开始，驱动的注册不需要再手动完成，由系统自动完成。
-```java
+```java title="java"
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Connection;
@@ -1003,7 +1003,7 @@ public class JDBCTest03 {
 ![](./JDBC的新增修改删除/img-62.jpg)
 
 在JDBCTest01类中编写main方法，main方法中编写JDBC代码：
-```java
+```java title="java"
 package com.powernode.jdbc;
 
 import java.sql.Connection;
@@ -1053,7 +1053,7 @@ password=1225
 ```
 
 然后使用IO流读取属性文件，动态获取连接数据库的信息：
-```java
+```java title="java"
 package com.powernode.jdbc;
 
 import java.sql.Connection;
@@ -1100,7 +1100,7 @@ public class JDBCTest01 {
 ## 获取连接的其他方式（了解）
 
 上面我们讲到了第一种获取连接的方式：
-```java
+```java title="java"
 Connection conn = DriverManager.getConnection(url, user, password);
 ```
 
@@ -1110,7 +1110,7 @@ Connection conn = DriverManager.getConnection(url, user, password);
 ## getConnection(String url)
 
 这种方式参数只有一个url，那用户名和密码放在哪里呢？可以放到url当中，代码如下：
-```java
+```java title="java"
 package com.powernode.jdbc;
 
 import java.sql.Connection;
@@ -1143,7 +1143,7 @@ public class JDBCTest02 {
 - info：可以将`url的参数`存放到该`对象`中
 
 代码如下：
-```java
+```java title="java"
 package com.powernode.jdbc;
 
 import java.sql.Connection;

@@ -12,7 +12,7 @@ cover: /JDBC.jpg
 ## DbUtils工具类的封装
 
 JDBC编程六步中，很多`代码是重复出现`的，可以为这些代码`封装一个工具类`。让`JDBC代码变的更简洁`。
-```java
+```java title="java"
 package com.powernode.jdbc.utils;
 
 import java.sql.*;
@@ -121,7 +121,7 @@ public class DbUtils {
 
 ### 实际应用
 
-```java
+```java title="java"
 package com.powernode.jdbc;
 
 import com.powernode.jdbc.utils.DbUtils;
@@ -190,7 +190,7 @@ select * from t_user where name = 用户输入的用户名 and password = 用户
 
 代码实现如下：
 
-```java
+```java title="java"
 package com.powernode.jdbc;
 
 import com.powernode.jdbc.utils.DbUtils;
@@ -293,7 +293,7 @@ select * from t_user where name = 'fdsa' and password = 'gfds' or 'a'='a';
 **`PreparedStatement`执行原理是：先对`SQL语句进行预先的编译`，然后`再向SQL语句指定的位置传值`，也就是说：用户提供的信息中即使`含有SQL语句的关键字`，那么这个信息也只会被当做一个值传递给SQL语句，`用户提供的信息`不再参与`SQL语句的编译`了，这样就解决了`SQL注入问题`。**
 
 使用PreparedStatement解决SQL注入问题：
-```java
+```java title="java"
 package com.powernode.jdbc;
 
 import com.powernode.jdbc.utils.DbUtils;
@@ -410,7 +410,7 @@ public class JDBCTest09 {
 > comm：500.0
 > deptno：10**
 
-```java
+```java title="java"
 package com.powernode.jdbc;
 
 import com.powernode.jdbc.utils.DbUtils;
@@ -477,7 +477,7 @@ public class JDBCTest10 {
 
 > **需求：将`员工编号为8888`的员工，`姓名`修改为`李四`，`岗位`修改为`产品经理`，`月薪`修改为`5000.0`，其他不变。**
 
-```java
+```java title="java"
 package com.powernode.jdbc;
 
 import com.powernode.jdbc.utils.DbUtils;
@@ -524,7 +524,7 @@ public class JDBCTest11 {
 
 > **需求：将`员工编号为8888的删除`。**
 
-```java
+```java title="java"
 package com.powernode.jdbc;
 
 import com.powernode.jdbc.utils.DbUtils;
@@ -561,7 +561,7 @@ public class JDBCTest12 {
 
 > **需求：`查询员工名字`中`第二个字母是 O` 的。**
 
-```java
+```java title="java"
 package com.powernode.jdbc;
 
 import com.powernode.jdbc.utils.DbUtils;
@@ -609,7 +609,7 @@ public class JDBCTest13 {
 ![](./SQL注入/img-19.jpg)
 通过这个例子主要告诉大家，程序不能这样写：
 
-```java
+```java title="java"
 String sql = "select ename from emp where ename like '_?%'";
 pstmt.setString(1, "O");
 ```
@@ -628,7 +628,7 @@ pstmt.setString(1, "O");
 >
 > **需求：查询`所有员工姓名`，每页`显示3条(pageSize)`，显示`第2页(pageNo)`。**
 
-```java
+```java title="java"
 package com.powernode.jdbc;
 
 import com.powernode.jdbc.utils.DbUtils;
@@ -702,7 +702,7 @@ public class JDBCTest14 {
 >
 > ![](./SQL注入/img-23.jpg)
 
-```java
+```java title="java"
 package com.powernode.jdbc;
 
 import com.powernode.jdbc.utils.DbUtils;
@@ -755,7 +755,7 @@ public class JDBCTest15 {
 >
 > ![](./SQL注入/img-24.jpg)
 
-```java
+```java title="java"
 package com.powernode.jdbc;
 
 import com.powernode.jdbc.utils.DbUtils;
@@ -826,7 +826,7 @@ public class JDBCTest16 {
 
 > **`不使用批处理`，向 t_product 表中`插入一万条商品信息`，并记录耗时！**
 
-```java
+```java title="java"
 package com.powernode.jdbc;
 
 import com.powernode.jdbc.utils.DbUtils;
@@ -874,7 +874,7 @@ public class JDBCTest17 {
 > **注意：启用批处理需要在URL后面添加这个的参数：`rewriteBatchedStatements=true`**
 > ![](./SQL注入/img-27.jpg)
 
-```java
+```java title="java"
 package com.powernode.jdbc;
 
 import com.powernode.jdbc.utils.DbUtils;

@@ -22,7 +22,7 @@ cover: /JDBC.jpg
 
 ### 实现转账功能
 
-```java
+```java title="java"
 package com.powernode.jdbc;
 
 import com.powernode.jdbc.utils.DbUtils;
@@ -100,24 +100,24 @@ public class JDBCTest19 {
 
 > **第一步：将JDBC事务的`自动提交机制`修改为`手动提交（即开启事务）`**
 >
-> ```java
+> ```java title="java"
 > conn.setAutoCommit(false);
 > ```
 
 > **第二步：`当整个业务完整结束后`，`手动提交事务（即提交事务，事务结束）`**
 >
-> ```java
+> ```java title="java"
 > conn.commit();
 > ```
 
 > **第三步：在处理业务过程中，如果`发生异常`，则`进入catch语句块进行异常处理`，`手动回滚事务（即回滚事务，事务结束）`**
 >
-> ```java
+> ```java title="java"
 > conn.rollback();
 > ```
 
 代码如下：
-```java
+```java title="java"
 package com.powernode.jdbc;
 
 import com.powernode.jdbc.utils.DbUtils;
@@ -201,7 +201,7 @@ public class JDBCTest19 {
 ## 设置JDBC事务隔离级别
 
 设置事务的隔离级别也是比较重要的，在JDBC程序中应该如何设置事务的隔离级别呢？代码如下：
-```java
+```java title="java"
 package com.powernode.jdbc;
 
 import com.powernode.jdbc.utils.DbUtils;
