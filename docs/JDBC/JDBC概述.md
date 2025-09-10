@@ -98,7 +98,7 @@ public class Client{
 可能你会说，最终还是修改了java代码，不符合OCP原则呀，如果你想达到OCP，那可以将创建对象的任务交给反射机制，将类名配置到文件中，例如：
 配置文件如下：
 
-```properties
+```properties title="properties"
 driver=MySQLDriver
 ```
 Java代码如下：

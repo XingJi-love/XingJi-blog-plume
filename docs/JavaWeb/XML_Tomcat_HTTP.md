@@ -51,7 +51,7 @@ atguigu.jdbc.password=root
 
 > 示例
 
-```xml
+```xml title="XML"
 <?xml version="1.0" encoding="UTF-8"?>
 <students>
     <student>
@@ -71,7 +71,7 @@ atguigu.jdbc.password=root
 
 -   XML文档声明 这部分基本上就是固定格式，要注意的是文档声明一定要从第一行第一列开始写
 
-```xml
+```xml title="XML"
 <?xml version="1.0" encoding="UTF-8"?>
 ```
 
@@ -99,7 +99,7 @@ Schema约束要求我们一个XML文档中，所有标签，所有属性都必�
 
 下面我们以web.xml的约束声明为例来做个说明：
 
-```xml
+```xml title="XML"
 <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
@@ -278,7 +278,7 @@ String value = element.attributeValue("属性名");
 
     - tomcat-users.xml：存储tomcat用户的文件，这里保存的是tomcat的用户名及密码，以及用户的角色信息。可以按着该文件中的注释信息添加tomcat用户，然后就可以在Tomcat主页中进入Tomcat Manager页面了；
 
-        ```html title="html"
+        ```html title="HTML"
         <tomcat-users xmlns="http://tomcat.apache.org/xml"
                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                       xsi:schemaLocation="http://tomcat.apache.org/xml tomcat-users.xsd"
@@ -346,7 +346,7 @@ String value = element.attributeValue("属性名");
 
 + 在tomcat的conf下创建Catalina/localhost目录,并在该目录下准备一个app.xml文件
 
-``` xml
+```xml
 <!-- 
 	path: 项目的访问路径,也是项目的上下文路径,就是在浏览器中,输入的项目名称
     docBase: 项目在磁盘中的实际路径
@@ -685,7 +685,7 @@ String value = element.attributeValue("属性名");
     + 访问服务器的资源路径?参数1=值1&参数2=值2 ... ...
     + 协议及版本 HTTP/1.1
 
-``` http
+```http title="http"
 GET /05_web_tomcat/login_success.html?username=admin&password=123213 HTTP/1.1
 ```
 
@@ -735,7 +735,7 @@ Accept-Language: zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7
     + 访问服务器的资源路径?参数1=值1&参数2=值2 ... ...
     + 协议及版本 HTTP/1.1
 
-``` http
+```http title="http"
 POST /05_web_tomcat/login_success.html HTTP/1.1
 ```
 
@@ -761,7 +761,7 @@ Cookie:JSESSIONID-
 
 + 请求体:浏览器提交给服务器的数据
 
-``` http
+```http title="http"
 username=admin&password=1232131
 ```
 
@@ -785,14 +785,14 @@ username=admin&password=1232131
     + 响应状态码 200
     + 状态描述   OK  (缺省)
 
-``` http
+```http title="http"
 HTTP/1.1 200 OK
 说明：响应协议为HTTP1.1，响应状态码为200，表示请求成功； 
 ```
 
 + 响应头
 
-``` http
+```http title="http"
 Server: Apache-Coyote/1.1   服务器的版本信息
 Accept-Ranges: bytes
 ETag: W/"157-1534126125811"
@@ -804,7 +804,7 @@ Date: Mon, 13 Aug 2018 02:47:57 GMT  响应的时间，这可能会有8小时的
 
 + 响应体
 
-```html title="html"
+```html title="HTML"
 <!--需要浏览器解析使用的内容[如果响应的是html页面，最终响应体内容会被浏览器显示到页面中]-->
 
 <!DOCTYPE html>

@@ -1045,7 +1045,7 @@ public class JDBCTest01 {
 ## 动态配置连接数据库的信息
 
 为了程序的通用性，为了切换数据库的时候不需要修改Java程序，为了符合OCP开闭原则，建议将连接数据库的信息配置到属性文件jdbc.properties中，例如：
-```properties
+```properties title="properties"
 driver=com.mysql.cj.jdbc.Driver
 url=jdbc:mysql://localhost:3306/jdbc?useUnicode=true&serverTimezone=Asia/Shanghai&useSSL=true&characterEncoding=utf-8
 user=root

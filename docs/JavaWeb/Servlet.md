@@ -57,7 +57,7 @@ cover: /JavaWeb.jpg
 
 > 步骤2 开发一个UserServlet
 
-``` java
+```java title="Java"
 public class UserServlet  extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -83,7 +83,7 @@ public class UserServlet  extends HttpServlet {
 
 > 步骤3 在web.xml为UseServlet配置请求的映射路径
 
-``` xml
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -129,7 +129,7 @@ public class UserServlet  extends HttpServlet {
 
 > 步骤4 开发一个form表单,向servlet发送一个get请求并携带username参数
 
-```html title="html"
+```html title="HTML"
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -168,7 +168,7 @@ public class UserServlet  extends HttpServlet {
 
 + @WebServlet注解的源码阅读
 
-``` java
+```java title="Java"
 
 
 package jakarta.servlet.annotation;
@@ -267,7 +267,7 @@ public @interface WebServlet {
 
 > 使用@WebServlet注解替换Servlet配置
 
-``` java
+```java title="Java"
 @WebServlet(
         name = "userServlet",
         //value = "/user",
@@ -322,7 +322,7 @@ public class UserServlet  extends HttpServlet {
 
 > 开发servlet代码
 
-``` java
+```java title="Java"
 package com.atguigu.servlet;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -356,7 +356,7 @@ public class ServletLifeCycle  extends HttpServlet {
 
 > 配置Servlet
 
-``` xml
+```xml
   
     <servlet>
         <servlet-name>servletLifeCycle</servlet-name>
@@ -512,7 +512,7 @@ public class ServletLifeCycle  extends HttpServlet {
 
 > ServletConfig是一个接口,定义了如下API
 
-``` java
+```java title="Java"
 package jakarta.servlet;
 import java.util.Enumeration;
 public interface ServletConfig {
@@ -534,7 +534,7 @@ public interface ServletConfig {
 
 + 定义Servlet
 
-``` java
+```java title="Java"
 public class ServletA extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -574,7 +574,7 @@ public class ServletB extends HttpServlet {
 
 + 配置Servlet
 
-``` xml
+```xml
   <servlet>
        <servlet-name>ServletA</servlet-name>
        <servlet-class>com.atguigu.servlet.ServletA</servlet-class>
@@ -633,7 +633,7 @@ public class ServletB extends HttpServlet {
 
 + 配置ServletContext参数
 
-``` xml
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -653,7 +653,7 @@ public class ServletB extends HttpServlet {
 
 + 在Servlet中获取ServletContext并获取参数
 
-``` java
+```java title="Java"
 package com.atguigu.servlet;
 
 import jakarta.servlet.ServletConfig;
@@ -689,7 +689,7 @@ public class ServletA extends HttpServlet {
 
 > 获取资源的真实路径
 
-``` java
+```java title="Java"
 String realPath = servletContext.getRealPath("资源在web目录中的路径");
 ```
 
@@ -697,7 +697,7 @@ String realPath = servletContext.getRealPath("资源在web目录中的路径");
 
 > 获取项目的上下文路径
 
-``` java
+```java title="Java"
 String contextPath = servletContext.getContextPath();
 ```
 
@@ -876,7 +876,7 @@ String contextPath = servletContext.getContextPath();
 
 + ServletA
 
-``` java
+```java title="Java"
 @WebServlet("/servletA")
 public class ServletA extends HttpServlet {
     @Override
@@ -905,7 +905,7 @@ public class ServletA extends HttpServlet {
 
 + ServletB
 
-``` java
+```java title="Java"
 @WebServlet("/servletB")
 public class ServletB extends HttpServlet {
     @Override
@@ -926,7 +926,7 @@ public class ServletB extends HttpServlet {
 
 + 打开浏览器,输入以下url测试
 
-``` http
+```http title="http"
 http://localhost:8080/web03_war_exploded/servletA?username=atguigu
 ```
 
@@ -955,7 +955,7 @@ http://localhost:8080/web03_war_exploded/servletA?username=atguigu
 
 + ServletA
 
-``` java
+```java title="Java"
 
 @WebServlet("/servletA")
 public class ServletA extends HttpServlet {
@@ -981,7 +981,7 @@ public class ServletA extends HttpServlet {
 
 + ServletB
 
-``` java
+```java title="Java"
 @WebServlet("/servletB")
 public class ServletB extends HttpServlet {
     @Override
@@ -1041,7 +1041,7 @@ http://localhost:8080/web03_war_exploded/servletA?username=atguigu
 
 > 当前视图文件的字符集通过<meta charset="UTF-8"> 来告知浏览器通过什么字符集来解析当前文件
 
-```html title="html"
+```html title="HTML"
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1250,7 +1250,7 @@ http://localhost:8080/web03_war_exploded/servletA?username=atguigu
 + index.html中定义的了    : `<img src="static/img/logo.png"/>`
 + 寻找方式就是在当前资源所在路径(http://localhost:8080/web03_war_exploded/)后拼接src属性值(static/img/logo.png),正好是目标资源正常获取的url(http://localhost:8080/web03_war_exploded/static/img/logo.png)
 
-```html title="html"
+```html title="HTML"
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1275,7 +1275,7 @@ http://localhost:8080/web03_war_exploded/servletA?username=atguigu
 + test.html中定义的了       : `<img src="../../../static/img/logo.png"/>`
 + 寻找方式就是在当前资源所在路径(http://localhost:8080/web03_war_exploded/a/b/c/)后拼接src属性值(../../../static/img/logo.png),其中 ../可以抵消一层路径,正好是目标资源正常获取的url(http://localhost:8080/web03_war_exploded/static/img/logo.png)
 
-```html title="html"
+```html title="HTML"
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1293,7 +1293,7 @@ http://localhost:8080/web03_war_exploded/servletA?username=atguigu
 
 + view1.html在WEB-INF下,需要通过Servlet请求转发获得
 
-``` java
+```java title="Java"
 @WebServlet("/view1Servlet")
 public class View1Servlet extends HttpServlet {
     @Override
@@ -1311,7 +1311,7 @@ public class View1Servlet extends HttpServlet {
 + view1.html中定义的了    : `<img src="static/img/logo.png"/>`
 + 寻找方式就是在当前资源所在路径(http://localhost:8080/web03_war_exploded/)后拼接src属性值(static/img/logo.png),正好是目标资源正常获取的url(http://localhost:8080/web03_war_exploded/static/img/logo.png)
 
-```html title="html"
+```html title="HTML"
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1334,7 +1334,7 @@ public class View1Servlet extends HttpServlet {
 + index.html中定义的了    : `<img src="/web03_war_exploded/static/img/logo.png"/>`
 + 寻找方式就是在基准路径(http://localhost:8080)后面拼接src属性值(/web03_war_exploded/static/img/logo.png),得到的正是目标资源访问的正确路径
 
-```html title="html"
+```html title="HTML"
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1358,7 +1358,7 @@ public class View1Servlet extends HttpServlet {
 + test.html中定义的了    : `<img src="/web03_war_exploded/static/img/logo.png"/>`
 + 寻找方式就是在基准路径(http://localhost:8080)后面拼接src属性值(/web03_war_exploded/static/img/logo.png),得到的正是目标资源访问的正确路径
 
-```html title="html"
+```html title="HTML"
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1376,7 +1376,7 @@ public class View1Servlet extends HttpServlet {
 
 + view1.html在WEB-INF下,需要通过Servlet请求转发获得
 
-``` java
+```java title="Java"
 @WebServlet("/view1Servlet")
 public class View1Servlet extends HttpServlet {
     @Override
@@ -1393,7 +1393,7 @@ public class View1Servlet extends HttpServlet {
 + view1.html中定义的了    : `<img src="/web03_war_exploded/static/img/logo.png"/>`
 + 寻找方式就是在基准路径(http://localhost:8080)后面拼接src属性值(/static/img/logo.png),得到的正是目标资源访问的正确路径
 
-```html title="html"
+```html title="HTML"
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1417,7 +1417,7 @@ public class View1Servlet extends HttpServlet {
 
 > index.html 和a/b/c/test.html 以及view1Servlet 中的路径处理
 
-```html title="html"
+```html title="HTML"
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1448,7 +1448,7 @@ public class View1Servlet extends HttpServlet {
 
 > 目标 :由/x/y/z/servletA重定向到a/b/c/test.html
 
-``` java
+```java title="Java"
 @WebServlet("/x/y/z/servletA")
 public class ServletA extends HttpServlet {
     @Override
@@ -1468,7 +1468,7 @@ public class ServletA extends HttpServlet {
 + ServletA重定向的路径    :  ../../../a/b/c/test/html
 + 寻找方式就是在当前资源所在路径(http://localhost:8080/web03_war_exploded/x/y/z/)后拼接(../../../a/b/c/test/html),形成(http://localhost:8080/web03_war_exploded/x/y/z/../../../a/b/c/test/html)每个../抵消一层目录,正好是目标资源正常获取的url(http://localhost:8080/web03_war_exploded/a/b/c/test/html)
 
-``` java
+```java title="Java"
 @WebServlet("/x/y/z/servletA")
 public class ServletA extends HttpServlet {
     @Override
@@ -1496,7 +1496,7 @@ public class ServletA extends HttpServlet {
     + 可以通过 ServletContext的getContextPath()获取上下文路径
     + 可以将项目上下文路径定义为 / 缺省路径,那么路径中直接以/开头即可
 
-    ``` java
+    ```java title="Java"
     //绝对路径中,要写项目上下文路径
     //resp.sendRedirect("/web03_war_exploded/a/b/c/test.html");
     // 通过ServletContext对象动态获取项目上下文路径
@@ -1511,7 +1511,7 @@ public class ServletA extends HttpServlet {
 
 > 目标 :由x/y/servletB请求转发到a/b/c/test.html
 
-``` java
+```java title="Java"
 @WebServlet("/x/y/servletB")
 public class ServletB extends HttpServlet {
     @Override
@@ -1535,7 +1535,7 @@ public class ServletB extends HttpServlet {
 
 + 寻找方式就是在当前资源所在路径(http://localhost:8080/web03_war_exploded/x/y/)后拼接(../../a/b/c/test/html),形成(http://localhost:8080/web03_war_exploded/x/y/../../a/b/c/test/html)每个../抵消一层目录,正好是目标资源正常获取的url(http://localhost:8080/web03_war_exploded/a/b/c/test/html)
 
-    ``` java
+    ```java title="Java"
     @WebServlet("/x/y/servletB")
     public class ServletB extends HttpServlet {
         @Override
@@ -1573,7 +1573,7 @@ public class ServletB extends HttpServlet {
 
 + 那么此时 test.html资源的所在路径就是http://localhost:8080/web03_war_exploded/x/y/所以test.html中相对路径要基于该路径编写,如果使用绝对路径则不用考虑
 
-    ```html title="html"
+    ```html title="HTML"
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -1719,7 +1719,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 >  使用lombok处理getter setter equals hashcode 构造器 
 
-``` java
+```java title="Java"
 //-----------------------------------------------------
 package com.atguigu.schedule.pojo;
 
@@ -1759,7 +1759,7 @@ public class SysSchedule implements Serializable {
 
 导入JDBCUtil连接池工具类并准备jdbc.properties配置文件
 
-``` java
+```java title="Java"
 package com.atguigu.schedule.util;
 
 
@@ -1835,7 +1835,7 @@ public class JDBCUtil {
 
 ```
 
-``` properties
+```properties title="properties"
 driverClassName=com.mysql.cj.jdbc.Driver
 url=jdbc:mysql://localhost:3306/schedule_system
 username=root
@@ -1847,7 +1847,7 @@ maxWait=1000
 
 + 创建BaseDao对象并复制如下代码
 
-``` java
+```java title="Java"
 package com.atguigu.schedule.dao;
 
 
@@ -2007,7 +2007,7 @@ public class BaseDao {
 
 + dao层所有接口
 
-``` java
+```java title="Java"
 //---------------------------------------------------
 package com.atguigu.schedule.dao;
 public interface SysUserDao {
@@ -2021,7 +2021,7 @@ public interface SysScheduleDao {
 
 + dao层所有实现类
 
-``` java
+```java title="Java"
 //------------------------------------------------------------------------------
 package com.atguigu.schedule.dao.impl;
 import com.atguigu.schedule.dao.BaseDao;
@@ -2042,7 +2042,7 @@ public class SysScheduleDaoImpl extends BaseDao implements SysScheduleDao {
 
 + 接口
 
-``` java
+```java title="Java"
 //------------------------------------------------------------------------------
 package com.atguigu.schedule.service;
 public interface SysUserService {
@@ -2076,7 +2076,7 @@ public class SysScheduleServiceImpl implements SysScheduleService {
 
 + BaseController处理请求路径问题
 
-``` java
+```java title="Java"
 package com.atguigu.schedule.controller;
 
 import jakarta.servlet.ServletException;
@@ -2139,7 +2139,7 @@ public class SysScheduleController  extends BaseController{
 
 + 导入MD5Util工具类
 
-``` java
+```java title="Java"
 package com.atguigu.schedule.util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -2183,7 +2183,7 @@ public final class MD5Util {
 
 + controller
 
-``` java 
+```java title="Java" 
 package com.atguigu.schedule.controller;
 
 import com.atguigu.schedule.pojo.SysUser;
@@ -2247,7 +2247,7 @@ public interface SysUserService {
 
 
 
-``` java
+```java title="Java"
 package com.atguigu.schedule.service.impl;
 
 import com.atguigu.schedule.dao.SysUserDao;
@@ -2271,7 +2271,7 @@ public class SysUserServiceImpl  implements SysUserService {
 
 + dao
 
-``` java
+```java title="Java"
 package com.atguigu.schedule.dao;
 
 import com.atguigu.schedule.pojo.SysUser;
@@ -2290,7 +2290,7 @@ public interface SysUserDao {
 
 
 
-``` java
+```java title="Java"
 package com.atguigu.schedule.dao.impl;
 
 import com.atguigu.schedule.dao.BaseDao;
@@ -2311,7 +2311,7 @@ public class SysUserDaoImpl extends BaseDao implements SysUserDao {
 
 + controller
 
-``` java 
+```java title="Java" 
 package com.atguigu.schedule.controller;
 
 import com.atguigu.schedule.pojo.SysUser;
@@ -2375,7 +2375,7 @@ public interface SysUserService {
 }
 ```
 
-``` java
+```java title="Java"
 
 package com.atguigu.schedule.service.impl;
 
@@ -2400,7 +2400,7 @@ public class SysUserServiceImpl implements SysUserService {
 
 + dao
 
-``` java
+```java title="Java"
 package com.atguigu.schedule.dao;
 
 import com.atguigu.schedule.pojo.SysUser;
@@ -2415,7 +2415,7 @@ public interface SysUserDao {
 }
 ```
 
-``` java 
+```java title="Java" 
 
 import com.atguigu.schedule.dao.BaseDao;
 import com.atguigu.schedule.dao.SysUserDao;

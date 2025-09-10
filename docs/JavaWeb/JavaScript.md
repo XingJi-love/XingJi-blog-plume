@@ -99,7 +99,7 @@ cover: /JavaWeb.jpg
 
 + 代码
 
-```html title="html"
+```html title="HTML"
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -151,7 +151,7 @@ cover: /JavaWeb.jpg
 
 + 在html文件中,通过script标签引入外部脚本文件
 
-```html title="html"
+```html title="HTML"
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -272,7 +272,7 @@ cover: /JavaWeb.jpg
 
 + 代码
 
-```javascript title="javascript"
+```javascript title="JavaScript"
 if('false'){// 非空字符串 if判断为true
     console.log(true)
 }else{
@@ -305,7 +305,7 @@ if(0){
 
 + 代码
 
-```javascript title="javascript"
+```javascript title="JavaScript"
 var monthStr=prompt("请输入月份","例如:10 ");
 var month= Number.parseInt(monthStr)
 switch(month){
@@ -372,7 +372,7 @@ while(i <= 9){
 
 + 代码
 
-```javascript title="javascript"
+```javascript title="JavaScript"
 /* 打印99 乘法表 */
 for(  var i = 1;i <= 9; i++){
     for(var j = 1;j <= i;j++){
@@ -394,7 +394,7 @@ for(  var i = 1;i <= 9; i++){
 
 + 代码
 
-```javascript title="javascript"
+```javascript title="JavaScript"
 var cities =["北京","上海","深圳","武汉","西安","成都"]
 document.write("<ul>")
 for(var index in  cities){
@@ -420,7 +420,7 @@ document.write("</ul>")
     + J函数没有异常列表
 + 代码
 
-```javascript title="javascript"
+```javascript title="JavaScript"
 /* 
 语法1 
     function 函数名 (参数列表){函数体}
@@ -456,7 +456,7 @@ console.log(result);
 
 + 代码
 
-```javascript title="javascript"
+```javascript title="JavaScript"
 var person =new Object();
 // 给对象添加属性并赋值
 person.name="张小明";
@@ -487,7 +487,7 @@ person.eat();
 + 语法为  var person ={"属性名":"属性值","属性名","属性值","函数名":函数}
 + 代码
 
-```javascript title="javascript"
+```javascript title="JavaScript"
 var person ={
     "name":"张小明",
     "age":10,
@@ -528,7 +528,7 @@ person.eat();
 
 + 代码
 
-```javascript title="javascript"
+```javascript title="JavaScript"
 /* 定义一个JSON串 */
 var personStr ='{"name":"张小明","age":20,"girlFriend":{"name":"铁铃","age":23},"foods":["苹果","香蕉","橘子","葡萄"],"pets":[{"petName":"大黄","petType":"dog"},{"petName":"小花","petType":"cat"}]}'
 console.log(personStr)
@@ -548,7 +548,7 @@ console.log(person.pets[1].petType)
 
 
 
-```javascript title="javascript"
+```javascript title="JavaScript"
 /* 定义一个对象 */
 var person={
     'name':'张小明',
@@ -833,7 +833,7 @@ console.log(typeof personStr)
 
 + 代码
 
-```html title="html"
+```html title="HTML"
     <head>
         <meta charset="UTF-8">
         <title>小标题</title>
@@ -891,7 +891,7 @@ console.log(typeof personStr)
 
 > 通过DOM编程绑定
 
-```html title="html"
+```html title="HTML"
     <head>
         <meta charset="UTF-8">
         <title>小标题</title>
@@ -927,7 +927,7 @@ console.log(typeof personStr)
 
 + 代码
 
-```html title="html"
+```html title="HTML"
     <head>
         <meta charset="UTF-8">
         <title>小标题</title>
@@ -1054,7 +1054,7 @@ console.log(typeof personStr)
 
 >  三种弹窗方式
 
-```html title="html"
+```html title="HTML"
     <head>
         <meta charset="UTF-8">
         <title>小标题</title>
@@ -1090,7 +1090,7 @@ console.log(typeof personStr)
 
 >  页面跳转
 
-```html title="html"
+```html title="HTML"
     <head>
         <meta charset="UTF-8">
         <title>小标题</title>
@@ -1118,7 +1118,7 @@ console.log(typeof personStr)
 + 持久级数据 : 磁盘型数据,是浏览器在磁盘上持久存储的数据,浏览器关闭后,数据仍在,通过window的localStorge实现
 + 可以用于将来存储一些服务端响应回来的数据,比如:token令牌,或者一些其他功能数据,根据数据的业务范围我们可以选择数据存储的会话/持久 级别
 
-```html title="html"
+```html title="HTML"
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1224,7 +1224,7 @@ console.log(typeof personStr)
 | 查找前一个兄弟标签 | node.previousElementSibling | 标签对象 |
 | 查找后一个兄弟标签 | node.nextElementSibling     | 标签对象 |
 
-```html title="html"
+```html title="HTML"
 
 <!DOCTYPE html>
 <html lang="en">
@@ -1351,7 +1351,7 @@ console.log(typeof personStr)
 | 获取或者设置标签体的文本内容 | element.innerText |
 | 获取或者设置标签体的内容     | element.innerHTML |
 
-```html title="html"
+```html title="HTML"
 
 <!DOCTYPE html>
 <html lang="en">
@@ -1447,7 +1447,7 @@ console.log(typeof personStr)
 | parentEle.replaceChild(newEle, oldEle)   | 用新节点替换原有的旧子节点                 |
 | element.remove()                         | 删除某个标签                               |
 
-```html title="html"
+```html title="HTML"
 
 <!DOCTYPE html>
 <html lang="en">
@@ -1581,7 +1581,7 @@ console.log(typeof personStr)
 
 + 语法 
 
-```javascript title="javascript"
+```javascript title="JavaScript"
 var patt=new RegExp(pattern,modifiers);
 或者更简单的方式:
 var patt=/pattern/modifiers; 
@@ -1671,7 +1671,7 @@ var patt=/pattern/modifiers;
 
 **注意**：这里是使用**正则表达式对象**来**调用**方法。
 
-```javascript title="javascript"
+```javascript title="JavaScript"
 // 创建一个最简单的正则表达式对象
 var reg = /o/;
 // 创建一个字符串对象作为目标字符串
@@ -1682,7 +1682,7 @@ console.log("/o/.test('Hello World!')="+reg.test(str));
 
 #### 匹配
 
-```javascript title="javascript"
+```javascript title="JavaScript"
 // 创建一个最简单的正则表达式对象
 var reg = /o/;
 // 创建一个字符串对象作为目标字符串
@@ -1700,7 +1700,7 @@ console.log("resultArr[0]="+resultArr[0]);
 
 **注意**：这里是使用**字符串对象**来**调用**方法。
 
-```javascript title="javascript"
+```javascript title="JavaScript"
 // 创建一个最简单的正则表达式对象
 var reg = /o/;
 // 创建一个字符串对象作为目标字符串
@@ -1717,7 +1717,7 @@ console.log("str="+str);//str=Hello World!
 
 如果不使用g对正则表达式对象进行修饰，则使用正则表达式进行查找时，仅返回第一个匹配；使用g后，返回所有匹配。
 
-```javascript title="javascript"
+```javascript title="JavaScript"
 // 目标字符串
 var targetStr = 'Hello World!';
 
@@ -1735,7 +1735,7 @@ for(var i = 0; i < resultArr.length; i++){
 
 对比
 
-```javascript title="javascript"
+```javascript title="JavaScript"
 // 目标字符串
 var targetStr = 'Hello World!';
 // 使用了全局匹配的正则表达式
@@ -1752,7 +1752,7 @@ for(var i = 0; i < resultArr.length; i++){
 
 #### 忽略大小写
 
-```javascript title="javascript"
+```javascript title="JavaScript"
 //目标字符串
 var targetStr = 'Hello WORLD!';
 
@@ -1770,7 +1770,7 @@ for(var i = 0; i < resultArr.length; i++){
 
 对比
 
-```javascript title="javascript"
+```javascript title="JavaScript"
 //目标字符串
 var targetStr = 'Hello WORLD!';
 //使用了忽略大小写的正则表达式
@@ -1787,7 +1787,7 @@ for(var i = 0; i < resultArr.length; i++){
 
 #### 元字符使用
 
-```javascript title="javascript"
+```javascript title="JavaScript"
 var str01 = 'I love Java';
 var str02 = 'Java love me';
 // 匹配以Java开头
@@ -1797,7 +1797,7 @@ console.log("<br />");
 console.log('reg.test(str02)='+reg.test(str02)); // true
 ```
 
-```javascript title="javascript"
+```javascript title="JavaScript"
 var str01 = 'I love Java';
 var str02 = 'Java love me';
 // 匹配以Java结尾
@@ -1809,7 +1809,7 @@ console.log('reg.test(str02)='+reg.test(str02)); // false
 
 #### 字符集合的使用
 
-```javascript title="javascript"
+```javascript title="JavaScript"
 //n位数字的正则
 var targetStr="123456789";
 var reg=/^[0-9]{0,}$/;
@@ -1817,7 +1817,7 @@ var reg=/^[0-9]{0,}$/;
 var b = reg.test(targetStr);//true
 ```
 
-```javascript title="javascript"
+```javascript title="JavaScript"
 //数字+字母+下划线，6-16位
 var targetStr="HelloWorld";
 var reg=/^[a-z0-9A-Z_]{6,16}$/;
@@ -1840,7 +1840,7 @@ var b = reg.test(targetStr);//true
 
 ![1690507542637](images/1690507542637.png)
 
-```html title="html"
+```html title="HTML"
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1976,7 +1976,7 @@ var b = reg.test(targetStr);//true
 
 ![1690507600043](images/1690507600043.png)
 
-```html title="html"
+```html title="HTML"
 <!DOCTYPE html>
 <html lang="en">
 <head>

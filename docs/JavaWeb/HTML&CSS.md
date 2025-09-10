@@ -41,7 +41,7 @@ HTML5 是 **HyperText Markup Language 5 的缩写，HTML5** 技术结合了 HTML
 
 -   双标签:标签是通过一组尖括号+标签名的方式来定义的：
 
-```html title="html"
+```html title="HTML"
 <p>HTML is a very popular fore-end technology.</p>
 ```
 
@@ -49,13 +49,13 @@ HTML5 是 **HyperText Markup Language 5 的缩写，HTML5** 技术结合了 HTML
 
 -   单标签
 
-```html title="html"
+```html title="HTML"
 <input type="text" name="username" />
 ```
 
 -   属性
 
-```html title="html"
+```html title="HTML"
 <a href="http://www.xxx.com">show detail</a>
 ```
 
@@ -68,14 +68,14 @@ href="网址" 就是属性，href是属性名，"网址"是属性值
 + HTML文件中第一行的内容，用来告诉浏览器当前HTML文档的基本信息，其中最重要的就是当前HTML文档遵循的语法标准。这里我们只需要知道HTML有4和5这两个大的版本
 + HTML4版本的文档类型声明是：
 
-```html title="html"
+```html title="HTML"
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 ```
 
 + HTML5版本的文档类型声明是：
 
-```html title="html"
+```html title="HTML"
 <!DOCTYPE html>
 ```
 
@@ -83,7 +83,7 @@ href="网址" 就是属性，href是属性名，"网址"是属性值
 
 > 2根标签
 >
-> ```html title="html"
+> ```html title="HTML"
 > <html></html> 所有的其他标签都要在这个标签中间
 > ```
 
@@ -91,7 +91,7 @@ href="网址" 就是属性，href是属性名，"网址"是属性值
 
 > 3头部元素
 >
-> ```html title="html"
+> ```html title="HTML"
 > <head></head> 头标签 定义那些不直接展示在主体上，但是又很重要的内容
 >               1.字符集 <meta charset="UTF-8"> 告诉浏览器用什么字符集对文件解码
 >               2.css引入
@@ -103,7 +103,7 @@ href="网址" 就是属性，href是属性名，"网址"是属性值
 
 > 4主体元素
 >
-> ```html title="html"
+> ```html title="HTML"
 > <body></body> 体标签
 >               1.定义要展示到页面主体的标签
 > ```
@@ -112,7 +112,7 @@ href="网址" 就是属性，href是属性名，"网址"是属性值
 
 > 5注释
 >
-> ```html title="html"
+> ```html title="HTML"
 > <!--
 > 1. html文件的根标签 <html> </html> 所有的其他标签都要在这个标签中间
 > 
@@ -152,7 +152,7 @@ href="网址" 就是属性，href是属性名，"网址"是属性值
 
 + HTML注释的写法是
 
-```html title="html"
+```html title="HTML"
 <!-- 注释内容 -->
 ```
 
@@ -166,7 +166,7 @@ href="网址" 就是属性，href是属性名，"网址"是属性值
 
 > 第二步  使用记事本打开网页,在网页内开发代码
 
-```html title="html"
+```html title="HTML"
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -187,7 +187,7 @@ href="网址" 就是属性，href是属性名，"网址"是属性值
 
 > 标签
 >
-> ```html title="html"
+> ```html title="HTML"
 > 标签 tag  页面的一对<>: <meta charset="UTF-8">
 > ```
 
@@ -195,7 +195,7 @@ href="网址" 就是属性，href是属性名，"网址"是属性值
 
 > 属性
 >
-> ```html title="html"
+> ```html title="HTML"
 > 属性 attribute    对标签特征进行设置的一种方式，属性一般在开始标签中定义: <input type="password">
 > ```
 
@@ -203,7 +203,7 @@ href="网址" 就是属性，href是属性名，"网址"是属性值
 
 > 文本
 >
-> ```html title="html"
+> ```html title="HTML"
 > 文本 text         双标签中间的文字: <h1>杭州亚运会|精彩亚运盛会，他们共同期待</h1> 中的 "杭州亚运会|精彩亚运盛会，他们共同期待"
 > ```
 
@@ -211,7 +211,7 @@ href="网址" 就是属性，href是属性名，"网址"是属性值
 
 > 元素
 >
-> ```html title="html"
+> ```html title="HTML"
 > 元素 element      开始标签 + 属性 + 文本 + 结束标签 称之为一个元素: <title>第一个页面</title>
 > ```
 
@@ -219,7 +219,7 @@ href="网址" 就是属性，href是属性名，"网址"是属性值
 
 ### HTML的语法规则
 
-```html title="html"
+```html title="HTML"
 1. 根标签有且只能有一个 <html></html>: 只能有一对
 
 2. 无论是双标签还是单标签都需要正确关闭 <title>第一个页面</title>: /是正确关闭
@@ -336,7 +336,7 @@ http://www.w3school.com.cn
 
 + 代码
 
-```html title="html"
+```html title="HTML"
 <body>
     <h1>一级标题</h1>
     <h2>二级标题</h2>
@@ -357,7 +357,7 @@ http://www.w3school.com.cn
 
 + 代码
 
-```html title="html"
+```html title="HTML"
 <body>
     <p>
         记者从工信部了解到，近年来我国算力产业规模快速增长，年增长率近30%，算力规模排名全球第二。
@@ -384,7 +384,7 @@ http://www.w3school.com.cn
 
 + 代码
 
-```html title="html"
+```html title="HTML"
 <body>
         工信部统计显示，截至去年底，我国算力总规模达到180百亿亿次浮点运算/秒，存力总规模超过1000EB（1万亿GB）。
     <br>
@@ -406,7 +406,7 @@ http://www.w3school.com.cn
 + 列表项标签 li
 + 代码
 
-```html title="html"
+```html title="HTML"
 <ol>
     <li>JAVA</li>
     <li>前端</li>
@@ -426,7 +426,7 @@ http://www.w3school.com.cn
 + 列表项标签 li
 + 代码
 
-```html title="html"
+```html title="HTML"
 <ul>
     <li>JAVASE</li>
     <li>JAVAEE</li>
@@ -442,7 +442,7 @@ http://www.w3school.com.cn
 
 + 代码
 
-```html title="html"
+```html title="HTML"
 <ol>
     <li>
         JAVA
@@ -478,7 +478,7 @@ http://www.w3school.com.cn
 
 + 代码
 
-```html title="html"
+```html title="HTML"
 <body>
     <!-- 
         href属性用于定义连接
@@ -508,7 +508,7 @@ http://www.w3school.com.cn
 
 + 代码
 
-```html title="html"
+```html title="HTML"
 <!-- 
 src
 	用于定义图片的连接
@@ -536,7 +536,7 @@ alt
 
 + 代码
 
-```html title="html"
+```html title="HTML"
    <!-- 
     src
         用于定义目标声音资源
@@ -558,7 +558,7 @@ alt
 
 + 代码
 
-```html title="html"
+```html title="HTML"
 <body>
    <!-- 
     src
@@ -598,7 +598,7 @@ alt
 
 + 代码
 
-```html title="html"
+```html title="HTML"
     <h3 style="text-align: center;">员工技能竞赛评分表</h3>
     <table  border="1px" style="width: 400px; margin: 0px auto;">
         <tr>
@@ -636,7 +636,7 @@ alt
 
 + 代码
 
-```html title="html"
+```html title="HTML"
     <h3 style="text-align: center;">员工技能竞赛评分表</h3>
     <table  border="1px" style="width: 400px; margin: 0px auto;">
         <tr>
@@ -676,7 +676,7 @@ alt
 
 + 代码
 
-```html title="html"
+```html title="HTML"
     <h3 style="text-align: center;">员工技能竞赛评分表</h3>
     <table  border="1px" style="width: 400px; margin: 0px auto;">
         <tr>
@@ -742,7 +742,7 @@ alt
 
 + 代码
 
-```html title="html"
+```html title="HTML"
    <form action="http://www.atguigu.com" method="get">
         用户名 <input type="text" name="username" /> <br>
         密&nbsp;&nbsp;&nbsp;码 <input type="password" name="password" /> <br>
@@ -761,7 +761,7 @@ alt
 
 + 代码
 
-```html title="html"
+```html title="HTML"
 个性签名：<input type="text" name="signal"/><br/>
 ```
 
@@ -775,7 +775,7 @@ alt
 
 + 代码
 
-```html title="html"
+```html title="HTML"
 密码：<input type="password" name="secret"/><br/>
 ```
 
@@ -789,7 +789,7 @@ alt
 
 + 代码
 
-```html title="html" 
+```html title="HTML" 
 你的性别是：
 <input type="radio" name="sex" value="spring" />男
 <input type="radio" name="sex" value="summer" checked="checked" />女
@@ -809,7 +809,7 @@ alt
 
 + 代码
 
-```html title="html"
+```html title="HTML"
 你喜欢的球队是：
 <input type="checkbox" name="team" value="Brazil"/>巴西
 <input type="checkbox" name="team" value="German" checked/>德国
@@ -829,7 +829,7 @@ alt
 
 + 代码
 
-```html title="html"
+```html title="HTML"
 你喜欢的运动是：
 <select name="interesting">
     <option value="swimming">游泳</option>
@@ -853,7 +853,7 @@ alt
 
 + 代码
 
-```html title="html"
+```html title="HTML"
 <button type="button">普通按钮</button>或<input type="button" value="普通按钮"/>
 <button type="reset">重置按钮</button>或<input type="reset" value="重置按钮"/>
 <button type="submit">提交按钮</button>或<input type="submit" value="提交按钮"/>
@@ -874,7 +874,7 @@ alt
 
 + 代码
 
-```html title="html"
+```html title="HTML"
 <input type="hidden" name="userId" value="2233"/>
 ```
 
@@ -885,7 +885,7 @@ alt
 
 + 代码
 
-```html title="html"
+```html title="HTML"
 自我介绍：<textarea name="desc"></textarea>
 ```
 
@@ -902,7 +902,7 @@ alt
 
 + 代码
 
-```html title="html"
+```html title="HTML"
 头像:<input type="file" name="file"/>
 ```
 
@@ -921,7 +921,7 @@ alt
 
 + 代码
 
-```html title="html"
+```html title="HTML"
     <div style="width: 500px; height: 400px;background-color: cadetblue;">
         <div style="width: 400px; height: 100px;background-color: beige;margin: 10px auto;">
             <span style="color: blueviolet;">页面开头部分</span>
@@ -959,7 +959,7 @@ alt
 
 + 代码
 
-```html title="html"
+```html title="HTML"
     &lt;span&gt;  <br>
     &lt;a href="http://www.atguigu.com"&gt;尚&nbsp;硅&nbsp;谷&lt;/a&gt; <br>
     &amp;amp;  
@@ -979,7 +979,7 @@ alt
 
 + 代码
 
-```html title="html"
+```html title="HTML"
     <input 
         type="button" 
         value="按钮"
@@ -1009,7 +1009,7 @@ alt
 
 + 代码
 
-```html title="html"
+```html title="HTML"
 <head>
     <meta charset="UTF-8">
     <style>
@@ -1061,7 +1061,7 @@ alt
 
 + 在head标签中,通过link标签引入外部CSS样式即可
 
-```html title="html"
+```html title="HTML"
 <head>
     <meta charset="UTF-8">
     <link href="css/buttons.css" rel="stylesheet" type="text/css"/>
@@ -1084,7 +1084,7 @@ alt
 
 + 代码
 
-```html title="html"
+```html title="HTML"
 <head>
     <meta charset="UTF-8">
    <style>
@@ -1125,7 +1125,7 @@ alt
 
 + 代码
 
-```html title="html"
+```html title="HTML"
 <head>
     <meta charset="UTF-8">
    <style>
@@ -1166,7 +1166,7 @@ alt
 
 + 代码
 
-```html title="html"
+```html title="HTML"
 <head>
     <meta charset="UTF-8">
    <style>
@@ -1244,7 +1244,7 @@ alt
 
 + 代码
 
-```html title="html"
+```html title="HTML"
 <head>
     <meta charset="UTF-8">
    <style>
@@ -1303,7 +1303,7 @@ alt
     + 不设置的时候的默认值就是static，静态定位，没有定位，元素出现在该出现的位置，块级元素垂直排列，行内元素水平排列
 + 代码
 
-```html title="html"
+```html title="HTML"
 <head>
     <meta charset="UTF-8">
     <style>
@@ -1346,7 +1346,7 @@ alt
 
 + 代码
 
-```html title="html"
+```html title="HTML"
 <head>
     <meta charset="UTF-8">
     <style>
@@ -1389,7 +1389,7 @@ alt
 
 + 代码
 
-```html title="html"
+```html title="HTML"
 <head>
     <meta charset="UTF-8">
     <style>
@@ -1433,7 +1433,7 @@ alt
     + 元素定位后会让出原来的位置,其他元素可以占用
 + 代码
 
-```html title="html"
+```html title="HTML"
 <head>
     <meta charset="UTF-8">
     <style>
@@ -1485,7 +1485,7 @@ xxxxxxxxxx package com.atguigu.headline.dao.impl;​import com.atguigu.headline
 
 + 代码
 
-```html title="html"
+```html title="HTML"
     <head>
         <meta charset="UTF-8">
        <style>
