@@ -100,10 +100,12 @@ Schema约束要求我们一个XML文档中，所有标签，所有属性都必�
 下面我们以web.xml的约束声明为例来做个说明：
 
 ```xml title="XML"
+<?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+</web-app>
 ```
 
 ### DOM4J进行XML解析
@@ -545,7 +547,9 @@ String value = element.attributeValue("属性名");
 + idea启动tomcat时,是让本地tomcat程序按照tomcat副本里的配置文件运行
 + idea的tomcat副本部署项目的模式是通过conf/Catalina/localhost/*.xml配置文件的形式实现项目部署的
 
-![1681521240438](images/1681521240438.png)
+![Tomcat运行原理](images/1681521240438.png)
+
+![Tomcat运行原理](images/img-1.jpg)
 
 
 
