@@ -461,16 +461,17 @@ console.log(result);
 + 代码
 
 ```javascript
-var person = {
-    person name: "张小明",
-personage: 10,
-    "foods": ["苹果", "香蕉", "橘子", "葡萄"],
-    "eat": function() {
-        console.log(this.age + "岁的" + this.name + "喜欢吃:")
-        for(var i = 0; i < this.foods.length; i++) {
-            console.log(this.foods[i])
-        } 
-    }
+var person =new Object();
+// 给对象添加属性并赋值
+person.name="张小明";
+person.age=10;
+person.foods=["苹果","橘子","香蕉","葡萄"];
+// 给对象添加功能函数
+person.eat= function (){
+    console.log(this.age+"岁的"+this.name+"喜欢吃:")
+    for(var i = 0;i<this.foods.length;i++){
+        console.log(this.foods[i])
+    } 
 }
 //获得对象属性值
 console.log(person.name)
@@ -491,17 +492,16 @@ person.eat();
 + 代码
 
 ```javascript
-var person =new Object();
-// 给对象添加属性并赋值
-person.name="张小明";
-person.age=10;
-person.foods=["苹果","橘子","香蕉","葡萄"];
-// 给对象添加功能函数
-person.eat= function (){
-    console.log(this.age+"岁的"+this.name+"喜欢吃:")
-    for(var i = 0;i<this.foods.length;i++){
-        console.log(this.foods[i])
-    } 
+var person ={
+    "name":"张小明",
+    "age":10,
+    "foods":["苹果","香蕉","橘子","葡萄"],
+    "eat":function (){
+        console.log(this.age+"岁的"+this.name+"喜欢吃:")
+        for(var i = 0;i<this.foods.length;i++){
+            console.log(this.foods[i])
+        } 
+    }
 }
 //获得对象属性值
 console.log(person.name)
