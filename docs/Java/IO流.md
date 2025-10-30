@@ -904,7 +904,7 @@ public class FileInputStreamTest01 {
 
 
 
-### 读取-1的问题
+#### 读取-1的问题
 
 ```java
 每个文件末尾都会有一个"结束标记",这个"结束标记"我们看不见,摸不着
@@ -918,14 +918,637 @@ public class FileInputStreamTest01 {
 
 
 
-### 一次读取多个字节
+
+
+#### 一次读取一个字节数组
 
 ```java
 int read(byte[] b); 一次最多可以读到b.length个字节(只要文件内容足够多)。返回值是读取到的字节数量。如果这一次没有读取到任何数据，则返回 -1
 ```
 
 ```java
+package com.powernode.javase.io;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+/**
+ * 测试：int read(byte[] b); 一次最多可以读到b.length个字节(只要文件内容足够多)。返回值是读取到的字节数量。如果这一次没有读取到任何数据，则返回 -1
+ */
+public class FileInputStreamTest02 {
+    public static void main(String[] args) {
+        FileInputStream fis = null;
+
+        try {
+            fis = new FileInputStream("D:\\0-JavaSE\\powernode-java\\file1.txt");
+
+            // 开始读
+            // 提前准备一个byte[]数组(一次最多读取4个字节)
+            byte[] bytes = new byte[4];
+
+            // 第一次读
+           /* int readCount = fis.read(bytes);
+            System.out.println("第一次读取到的字节数量：" + readCount); // 第一次读取到的字节数量：4*/
+
+            // 将byte数组转换成字符串
+           /* String s1 = new String(bytes);
+            System.out.println(s1); // abcd*/
+           /* String s1 = new String(bytes, 0, readCount);
+            System.out.println(s1); // abcd*/
+
+            // 第二次读
+           /* readCount = fis.read(bytes);
+            System.out.println("第二次读取到的字节数量：" + readCount); // 第二次读取到的字节数量：2*/
+
+            // 将byte数组转换成字符串
+            /*String s2 = new String(bytes);
+            System.out.println(s2); // efcd*/
+           /* String s2 = new String(bytes, 0, readCount);
+            System.out.println(s2); // ef*/
+
+            // 第三次读
+            /*readCount = fis.read(bytes);
+            System.out.println("第三次读取到的字节数量：" + readCount); // 第三次读取到的字节数量：-1
+*/
+            // 第四次读
+            /*readCount = fis.read(bytes);
+            System.out.println("第四次读取到的字节数量：" + readCount); // 第四次读取到的字节数量：-1*/
+
+            // 循环
+            /*while(true){
+                int readCount = fis.read(bytes);
+                if(readCount==-1) break;
+                String s = new String(bytes,0,readCount);
+                System.out.print(s); // abcdef
+            }*/
+
+            // 优化循环
+            int readCount = 0;
+            while ((readCount = fis.read(bytes)) != -1) {
+                System.out.print(new String(bytes, 0, readCount)); // abcdef
+            }
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+}
 ```
+
+
+
+
+
+#### 一次读取字节数组一部分
+
+```java
+int read(byte[] b, int off, int len);
+         b:写的数组
+         off:从数组的哪个索引开始写
+         len:写多少个
+一次读取len个字节。将读到的数据从byte数组的off位置开始放。
+    
+long skip(long n); 跳过n个字节。
+    
+int available(); 获取流中剩余的估计字节数。
+```
+
+```java
+package com.powernode.javase.io;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+/**
+ * 测试：
+ * int read(byte[] b, int off, int len); 一次读取len个字节。将读到的数据从byte数组的off位置开始放。
+ * long skip(long n); 跳过n个字节。
+ * int available(); 获取流中剩余的估计字节数。
+ */
+public class FileInputStreamTest03 {
+    public static void main(String[] args) {
+        FileInputStream fis = null;
+
+        try {
+            fis = new FileInputStream("D:\\0-JavaSE\\powernode-java\\file1.txt");
+
+            /*byte[] bytes = new byte[10];
+
+            int readCount = fis.read(bytes, 2, 5);
+            System.out.println("读取到了多少个字节：" + readCount); // 读取到了多少个字节：5
+
+            // 遍历
+            for (byte b : bytes) {
+                System.out.println(b);
+                *//*
+                0
+                0
+                97
+                98
+                99
+                100
+                101
+                0
+                0
+                0
+                 *//*
+            }*/
+
+           /* int readByte = fis.read();
+            System.out.println(readByte); // 97*/
+
+            // 跳过两个
+            fis.skip(2);
+
+            readByte = fis.read();
+            System.out.println(readByte); // 100
+
+            System.out.println("还剩几个字节没有读取？" + fis.available()); // 还剩几个字节没有读取？2
+
+            // 简化步骤
+            byte[] bytes = new byte[fis.available()];
+            int readCount = fis.read(bytes);
+            System.out.println(new String(bytes, 0, readCount)); // abcdef
+
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+}
+```
+
+
+
+
+
+
+
+### FileOutputStream
+
+#### 概述
+
+```java
+java.io.FileOutputStream
+1. 文件字节输出流，负责写。
+
+2. 常用构造方法：
+
+FileOutputStream(String name)
+	创建一个文件字节输出流对象，这个流在使用的时候，最开始会将原文件内容全部清空，然后写入。
+         
+FileOutputStream(String name, boolean append)
+	创建一个文件字节输出流对象，当append是true的时候，不会清空原文件的内容，在原文件的末尾追加写入。
+	创建一个文件字节输出流对象，当append是false的时候，会清空原文件的内容，然后写入。
+
+注意：
+	append==true表示：不会清空原文件内容，在原文件内容后面追加。
+	append==false表示：清空原文件内容，在文件中写入。
+
+3. 常用方法：
+	void close();
+	void flush();
+	void write(int b); 写一个字节
+	void write(byte[] b); 将整个byte字节数组写出
+	void write(byte[] b, int off, int len) 将byte字节数组的一部分写出。
+```
+
+
+
+
+
+### 常用构造方法
+
+```java
+常用构造方法：
+
+FileOutputStream(String name)
+	创建一个文件字节输出流对象，这个流在使用的时候，最开始会将原文件内容全部清空，然后写入。
+         
+FileOutputStream(String name, boolean append)
+	创建一个文件字节输出流对象，当append是true的时候，不会清空原文件的内容，在原文件的末尾追加写入。
+	创建一个文件字节输出流对象，当append是false的时候，会清空原文件的内容，然后写入。
+```
+
+
+
+#### append==true
+
+```java
+append==true表示：不会清空原文件内容，在原文件内容后面追加。
+(out = new FileOutputStream("E:\\powernode\\02-JavaSE\\code\\file2.txt", true);)
+```
+
+![FileOutputStream](./IO流/img-8.jpg)
+
+
+
+#### append==false
+
+```java
+append==false表示：清空原文件内容，在文件中写入。
+(以下两行代码一样:
+out = new FileOutputStream("E:\\powernode\\02-JavaSE\\code\\file2.txt");
+out = new FileOutputStream("E:\\powernode\\02-JavaSE\\code\\file2.txt", false);)
+```
+
+![FileOutputStream](./IO流/img-7.jpg)
+
+![FileOutputStream](./IO流/img-9.jpg)
+
+
+
+
+
+### 常用方法
+
+```java
+常用方法：
+	void close();
+	void flush();
+	void write(int b); 写一个字节
+	void write(byte[] b); 将整个byte字节数组写出
+	void write(byte[] b, int off, int len) 将byte字节数组的一部分写出。
+```
+
+![FileOutputStream](./IO流/img-10.jpg)
+
+> **测试示例：**
+>
+> ```java
+> package com.powernode.javase.io;
+> 
+> import java.io.FileNotFoundException;
+> import java.io.FileOutputStream;
+> import java.io.IOException;
+> 
+> public class FileOutputStreamTest01 {
+>     public static void main(String[] args) {
+>         // 创建文件字节输出流对象
+>         FileOutputStream out = null;
+>         try {
+>             // out = new FileOutputStream("D:\\0-JavaSE\\powernode-java\\file2.txt", true);
+> 
+>             // 以下两行代码一样。
+>             /*out = new FileOutputStream("E:\\powernode\\02-JavaSE\\code\\file2.txt");
+>             out = new FileOutputStream("E:\\powernode\\02-JavaSE\\code\\file2.txt", false);*/
+> 
+>             out = new FileOutputStream("D:\\0-JavaSE\\powernode-java\\file2.txt");
+> 
+>             // 开始写
+>             /*out.write(97);
+>             out.write(98);
+>             out.write(99);
+>             out.write(100);*/
+> 
+>             // 开始写
+>             byte[] bytes = {97,98,99,100};
+>             out.write(bytes); // abcd
+> 
+>             out.write(bytes,0,2); // ab
+> 
+>             byte[] bs = "动力节点，一家只教授Java的培训机构".getBytes();
+>             out.write(bs); // 动力节点，一家只教授Java的培训机构
+> 
+>             // 记着刷新
+>             out.flush();
+>         } catch (FileNotFoundException e) {
+>             throw  new RuntimeException(e);
+>         }catch (IOException e) {
+>             throw  new RuntimeException(e);
+>         }finally {
+>             // 关闭资源
+>             if (out != null) {
+>                 try {
+>                     out.close();
+>                 } catch (IOException e) {
+>                     throw new RuntimeException(e);
+>                 }
+>             }
+>         }
+>     }
+> }
+> ```
+
+
+
+
+
+### 字节流完成文件的复制
+
+
+
+#### 分析
+
+![字节流完成文件的复制](./IO流/img-11.jpg)
+
+
+
+#### 实现
+
+```java
+package com.powernode.javase.io;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+/**
+ * 文件拷贝，实现原理：
+ * 使用FileInputStream读文件，使用FileOutputStream写文件。
+ * 一边读一边写。
+ */
+public class FileInputOutputStreamCopy {
+    public static void main(String[] args) {
+        // 输入流
+        FileInputStream in = null;
+        // 输出流
+        FileOutputStream out = null;
+
+        try {
+            in = new FileInputStream("D:\\0-JavaSE\\powernode-java\\文件一\\Maven.png");
+            out = new FileOutputStream("D:\\0-JavaSE\\powernode-java\\文件二\\Maven.png");
+
+
+            // 一次至少拷贝1KB
+            byte[] bytes = new byte[1024];
+            // 边读边写
+            int readCount = 0;
+            while ((readCount = in.read(bytes)) != -1) {
+                out.write(bytes, 0, readCount);
+            }
+
+            // 刷新
+            out.flush();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            // 关闭（分别try..catch..）
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
+}
+```
+
+> **测试效果：**
+>
+> `图片原始位置：`
+>
+> ![字节流完成文件的复制](./IO流/img-12.jpg)
+>
+> `图片复制目标位置：`
+>
+> ![字节流完成文件的复制](./IO流/img-13.jpg)
+>
+> **程序运行后图片复制目标位置：**
+>
+> ![字节流完成文件的复制](./IO流/img-14.jpg)
+
+
+
+
+
+
+
+## Java7的新特性：try-with-resources(io异常处理方式,资源自动关闭)
+
+```java
+Java7的新特性：try-with-resources(资源自动关闭)
+凡是实现了AutoCloseable接口的流都可以使用try-with-resources。都会自动关闭
+
+try-with-resources语法格式：
+         try(
+             声明流;
+             声明流;
+             声明流;
+             声明流;
+             声明流;
+        ){
+             
+	   }catch(Exception e){
+        
+       }
+```
+
+> **示例1:**
+
+```java
+package com.powernode.javase.io;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class TryWithResources {
+    public static void main(String[] args) {
+        // 测试try-with-resources语法
+        FileInputStream in2 = null;
+        try(FileInputStream in = new FileInputStream("D:\\0-JavaSE\\powernode-java\\file1.txt")){
+
+            in2 = in;
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            System.out.println(in2.read());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+> **测试：**
+>
+> ![字节流完成文件的复制](./IO流/img-15.jpg)
+
+
+
+> **示例2：**
+
+```java
+package com.powernode.javase.io;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class TryWithResources {
+    public static void main(String[] args) {
+        // 测试try-with-resources语法
+        try(FileInputStream in = new FileInputStream("D:\\0-JavaSE\\powernode-java\\file1.txt");
+            FileOutputStream out = new FileOutputStream("D:\\0-JavaSE\\powernode-java\\文件二\\file1.txt")){
+
+            byte[] bytes = new byte[1024];
+            int readCount = 0;
+            while ((readCount = in.read(bytes)) != -1) {
+                out.write(bytes, 0, readCount);
+            }
+
+        }catch (FileNotFoundException e){
+            throw new  RuntimeException(e);
+        }catch (IOException e){
+            throw new  RuntimeException(e);
+        }
+    }
+}
+```
+
+> **测试：**
+>
+> ![字节流完成文件的复制](./IO流/img-16.jpg)
+
+
+
+
+
+
+
+## 字符流
+
+
+
+### 字节流读取中文的问题
+
+```java
+1.注意:
+  字节流是万能流,更侧重于文件复制,但是尽量不要边读边看
+      
+2.原因:
+  UTF-8:一个汉字占3个字节
+  GBK:一个中文占2个字节
+      
+  如果按照字节读取,每次读取的字节没有构成一个汉字的字节数,就直接输出,汉字是显示不了的
+      
+3.解决: 
+  将文本文档中的内容,按照字符去操作
+```
+
+> **话说回来:**
+>
+> 1.**按照字符去操作编码也要一致,如果不一致,照样会乱码**
+>
+> 2.**按照字节流去操作即使编码一致,边读边看,也有可能乱码**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
