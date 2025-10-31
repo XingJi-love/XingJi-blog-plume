@@ -1476,6 +1476,265 @@ public class TryWithResources {
 
 
 
+### FileReader
+
+> **字符流`专门操作文本文档的`,但是`复制操作`不要用`字符流`,要用`字节流`**
+
+```java
+1.概述:字符输入流 -> Reader -> 是一个抽象类
+      子类:FileReader
+2.作用:将文本文档中的内容读取到内存中来
+3.构造:
+  FileReader(File file)
+  FileReader(String fileName)
+4.方法:
+  int read() -> 一次读取一个字符,返回的是读取字符对应的int值 
+  int read(char[] cbuf) -> 一次读取一个字符数组,返回的是读取个数  
+  int read(char[] cbuf, int off, int len) -> 一次读取一个字符数组一部分,返回的是读取个数
+           cbuf:读取的数组
+           off:从数组的哪个索引开始读
+           len:读多少个
+  void close() -> 关闭资源 
+  long skip(long n); 跳过n个字节
+```
+
+```java
+package com.powernode.javase.io;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+/**
+ * 文件字符输入流。读。以字符的形式读文件。一次至少读取一个完整的字符。
+ */
+public class FileReaderTest01 {
+    public static void main(String[] args) {
+        try(FileReader reader = new FileReader("D:\\0-JavaSE\\powernode-java\\file1.txt")){
+
+            // 开始读
+            char[] chars = new char[3];
+            int readCount = 0;
+            while((readCount = reader.read(chars)) != -1){
+                System.out.print(new String(chars,0,readCount)); // abcdef
+            }
+
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+
+
+
+
+
+
+### FileWriter
+
+```java
+1.概述:字符输出流 -> Writer -> 抽象类
+  子类:FileWriter
+2.作用:将数据写到文件中
+3.构造:
+  FileWriter(File file) 
+  FileWriter(String fileName)     
+  FileWriter(String fileName, boolean append) -> 追加,续写 
+4.方法:
+  void write(int c) -> 一次写一个字符 
+  void write(char[] cbuf) 一次写一个字符数组 
+  void write(char[] cbuf, int off, int len) 一次写一个字符数组一部分  
+  void write(String str) 直接写一个字符串
+  void write(String str, int off, int len); 一次写一个字符数组一部分
+  void flush()  将缓冲区中的数据刷到文件中 // 将缓冲区中的数据刷到文件中,后续流对象还能继续使用    
+  void close()  关流 // 先刷新后关闭,后续流对象不能使用了  
+  Writer append(CharSequence csq, int start, int end) -> 追加,续写
+      
+5.注意:FileWriterr底层自带一个缓冲区,我们写的数据会先保存到缓冲区中,所以我们需要将缓冲区中的数据刷到文件中
+```
+
+```java
+package com.powernode.javase.io;
+
+import java.io.FileWriter;
+import java.io.IOException;
+
+/**
+ * 文件字符输出流。写。（写普通文本用的。）
+ */
+public class FileWriterTest01 {
+    public static void main(String[] args) {
+        try(FileWriter writer = new FileWriter("D:\\0-JavaSE\\powernode-java\\file3.txt")){
+            // 开始写
+            writer.write("hello world");
+            writer.append("\n");
+            writer.write("张三李四王五赵六",2,2);
+            writer.append("\n");
+            writer.write("张三李四王五".toCharArray());
+            writer.append("\n");
+            writer.write("张三李四王五".toCharArray(),2,2);
+            writer.append("\n");
+
+            writer.append("a");
+            writer.append("b");
+            writer.append("c");
+            writer.append("d");
+
+
+            // 建议手动刷新
+            writer.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+> **测试:**
+>
+> ![FileWriter](./IO流/img-17.jpg)
+
+
+
+
+
+### 字符流完成文件的复制(普通文本文件)
+
+> **提示：使用文件字符输入输出流进行文件复制，但是这种方式`只能复制普通文本文件`。**
+>
+> ![字符流完成文件的复制](./IO流/img-18.jpg)
+>
+> **注意:复制非文本文件以外的`文件将无法正常打开`**
+
+#### 分析
+
+```mermaid
+graph TD
+    A[开始文件复制] --> B[创建FileReader对象]
+    A --> C[创建FileWriter对象]
+    
+    B --> D[读取源文件 24.jpg]
+    C --> E[写入目标文件]
+    
+    D --> F[读取数据到缓冲区]
+    E --> G[从缓冲区写入数据]
+    
+    F --> H{是否读取完毕?}
+    H -->|否| F
+    H -->|是| I[关闭FileReader]
+    
+    G --> J[关闭FileWriter]
+    
+    I --> K[复制完成]
+    J --> K
+    
+    %% 样式匹配图片风格
+    classDef box fill:#f0f0f0,stroke:#333,stroke-width:1px
+    classDef process fill:#e6f3ff,stroke:#0066cc,stroke-width:1px
+    classDef decision fill:#fff0cc,stroke:#ff9900,stroke-width:1px
+    
+    class A,B,C,D,E,F,G,H,I,J,K box
+    class B,C,D,E,F,G,I,J process
+    class H decision
+```
+
+
+
+#### 实现
+
+```java
+package com.powernode.javase.io;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
+/**
+ * 使用文件字符输入输出流进行文件复制，但是这种方式只能复制普通文本文件。
+ */
+public class FileReaderFileWriterCopy {
+    public static void main(String[] args) {
+        try(FileReader reader = new FileReader("D:\\0-JavaSE\\powernode-java\\file3.txt");
+            FileWriter writer = new FileWriter("D:\\0-JavaSE\\powernode-java\\文件二\\file3.txt")){
+
+            // 一边读一边写
+            char[] chars = new char[3];
+            int readCount = 0;
+            while ((readCount = reader.read(chars)) != -1) {
+                writer.write(chars, 0, readCount);
+            }
+
+            // 刷新
+            writer.flush();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+> **测试:**
+>
+> ![字符流完成文件的复制](./IO流/img-19.jpg)
+
+
+
+
+
+
+
+## 文件的路径问题
+
+```java
+package com.powernode.javase.io;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+
+/**
+ * 关于IO流中读写文件时，文件的路径问题。
+ */
+public class AboutFilePath {
+    public static void main(String[] args)throws IOException {
+       FileInputStream in = new FileInputStream("D:\\0-JavaSE\\powernode-java\\file1.txt"); // 注意：这种写法需要两个反斜杠。
+       FileInputStream in = new FileInputStream("D:/0-JavaSE/powernode-java/file1.txt"); // 当然，也可以使用一个正斜杠。
+
+
+        // 我们尝试使用相对路径
+        // 相对路径一定要搞清楚当前路径是哪里？相对路径一定是从当前所在的路径开始。
+        // 在IDEA工具中，默认的当前路径是 project 的根。（项目的根就是当前路径）
+        FileInputStream in = new  FileInputStream("log");
+
+
+        // 读log2文件
+        FileInputStream in = new FileInputStream("chapter08/src/log2");
+
+
+        // 新的内容
+        // 以下讲解内容有一些代码是和线程有关系的。大致理解一下。
+        // 或者说这个代码死记硬背也是可以的。
+        // 从类路径当中加载资源。
+        // Thread.currentThread() 获取当前线程
+        // Thread.currentThread().getContextClassLoader() 获取当前线程的类加载器
+        // getResource()方法就表示从类的根路径下开始加载资源
+        // 注意：这种方式只能从类路径当中加载资源。如果这个资源是放在类路径之外的，这种方式不合适。
+        // 如果你代码是以下这种写法的，表示当前路径就是类的根路径。自动从类的根路径下开始加载资源。
+        // 这种方式的优点：通用，在进行系统移植的时候，这种方式仍然是通用的。适应性强。
+        // 这种方式的缺点：资源必须放在类路径当中。没有在类路径下，是无法加载到的。
+        String path = Thread.currentThread().getContextClassLoader().getResource("test/file").getPath();
+        System.out.println(path);
+
+        FileInputStream in = new FileInputStream(path);
+    }
+}
+```
 
 
 
@@ -1485,6 +1744,218 @@ public class TryWithResources {
 
 
 
+## 缓冲流
+
+### 概述
+
+* 缓冲流就是对基本流进行了一层封装，额外增加了一些新的功能，如：基本流操作效率太慢，给它们增加缓冲区。
+
+```mermaid
+classDiagram
+    IO 流体系 <|-- 字节流 
+    IO 流体系 <|-- 字符流 
+    字节流 <|-- InputStream 
+    字节流 <|-- OutputStream 
+    字符流 <|-- Reader 
+    字符流 <|-- Writer 
+    InputStream <|-- FileInputStream :extends
+    note for FileInputStream "基本流" 
+    InputStream <|-- BufferedInputStream :extends
+    note for BufferedInputStream "高级流" 
+    OutputStream <|-- FileOutputStream :extends
+    note for FileOutputStream "基本流" 
+    OutputStream <|-- BufferedOutputStream :extends
+    note for BufferedOutputStream "高级流" 
+    Reader <|-- FileReader :extends
+    note for FileReader "基本流" 
+    Reader <|-- BufferedReader :extends
+    note for BufferedReader "高级流"
+    Writer <|-- FileWriter :extends
+    note for FileWriter "基本流" 
+    Writer <|-- BufferedWriter :extends
+    note for BufferedReader "高级流"
+    class InputStream{
+        <<Abstract>>
+    }
+    class OutputStream{
+        <<Abstract>>
+    }
+    class Reader{
+        <<Abstract>>
+    }
+    class Writer{
+        <<Abstract>>
+    }
+
+```
+
+* `字节流`的`基本流`是没有缓冲区的，而`字节流`的`缓冲流`提供了缓冲区，所以效率提升的很明显。
+* `字符流`的`基本流`本来就有缓冲区，所以`字符流`的`缓冲流`的效率提升的并不是很明显；但是，字符流的缓冲流提供了几个好用的方法。
+
+
+
+### 字节缓冲流
+
+
+
+#### BufferedInputStream
+
+![字节缓冲流](./IO流/img-20.jpg)
+
+```java
+1. java.io.BufferedInputStream的用法和FileInputStream用法相同。
+
+2. 他们的不同点是：
+     FileInputStream是节点流。
+     BufferedInputStream是缓冲流(包装流/处理流)。这个流的效率高。自带缓冲区。并且自己维护这个缓冲区。读大文件的时候建议采用这个缓冲流来读取。
+
+3. BufferedInputStream对 FileInputStream 进行了功能增强。增加了一个缓冲区的功能。
+
+4. 怎么创建一个BufferedInputStream对象呢？构造方法：
+      BufferedInputStream(InputStream in)
+```
+
+```java
+package com.powernode.javase.io;
+
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+
+public class BufferedInputStreamTest01 {
+    public static void main(String[] args) {
+        BufferedInputStream bis = null;
+        try {
+            // 创建节点流
+            //FileInputStream in = new FileInputStream("file.txt");
+            // 创建包装流
+            //bis = new BufferedInputStream(in);
+
+            // 组合起来写
+            bis = new BufferedInputStream(new FileInputStream("D:\\0-JavaSE\\powernode-java\\file3.txt"));
+
+            // 读，和FileInputStream用法完全相同
+            byte[] bytes = new byte[1024];
+            int readCount = 0;
+            while ((readCount = bis.read(bytes)) != -1) {
+                System.out.println(new String(bytes, 0, readCount));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            // 包装流以及节点流，你只需要关闭最外层的那个包装流即可。节点流不需要手动关闭。
+            if (bis != null) {
+                try {
+                    bis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+}
+```
+
+> **测试:**
+>
+> ![字节缓冲流](./IO流/img-21.jpg)
+
+
+
+
+
+#### BufferedOutputStream
+
+```java
+1. java.io.BufferedOutputStream也是一个缓冲流。属于输出流。
+    
+2. 怎么创建BufferedOutputStream对象？
+     BufferedOutputStream(OutputStream out)
+    
+3. FileOutputStream是节点流。 BufferedOutputStream是包装流。
+```
+
+```java
+package com.powernode.javase.io;
+
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class BufferedOutputStreamTest01 {
+    public static void main(String[] args) {
+        BufferedOutputStream bos = null;
+        try {
+            bos = new BufferedOutputStream(new FileOutputStream("D:\\0-JavaSE\\powernode-java\\file3.txt"));
+
+            bos.write("动力节点".getBytes());
+
+            // 缓冲流需要手动刷新。
+            bos.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            if (bos != null) {
+                try {
+                    // 只需要关闭最外层的包装流即可。
+                    bos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+}
+```
+
+> **测试:**
+>
+> ![字节缓冲流](./IO流/img-22.jpg)
+
+
+
+
+
+#### 字节缓冲流完成文件的复制
+
+```java
+package com.powernode.javase.io;
+
+import java.io.*;
+
+/**
+ * 使用BufferedInputStream BufferedOutputStream完成文件的复制。
+ */
+public class BufferedInputOutputStreamCopy {
+    public static void main(String[] args) {
+
+        long begin = System.currentTimeMillis();
+
+        try(BufferedInputStream bis = new BufferedInputStream(new FileInputStream("E:\\powernode\\02-JavaSE\\video\\上\\012-第一章Java的加载与执行原理.avi"));
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream("E:/012-第一章Java的加载与执行原理.avi"))){
+
+            // 一边读一边写
+            byte[] bytes = new byte[1024];
+            int readCount = 0;
+            while((readCount = bis.read(bytes)) != -1){
+                bos.write(bytes, 0, readCount);
+            }
+
+            // 手动刷新
+            bos.flush();
+
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        long end = System.currentTimeMillis();
+        System.out.println("带有缓冲区的拷贝耗时"+(end - begin)+"毫秒"); // 671
+    }
+}
+```
 
 
 
@@ -1492,37 +1963,7 @@ public class TryWithResources {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+### 字符缓冲流
 
 
 
