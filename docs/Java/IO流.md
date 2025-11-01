@@ -1792,6 +1792,36 @@ classDiagram
 * `字节流`的`基本流`是没有缓冲区的，而`字节流`的`缓冲流`提供了缓冲区，所以效率提升的很明显。
 * `字符流`的`基本流`本来就有缓冲区，所以`字符流`的`缓冲流`的效率提升的并不是很明显；但是，字符流的缓冲流提供了几个好用的方法。
 
+```java
+1. BufferedInputStream、BufferedOutputStream（适合读写非普通文本文件）
+
+2. BufferedReader、BufferedWriter（适合读写普通文本文件。）
+
+3. 缓冲流的读写速度快，原理是：在内存中准备了一个缓存。读的时候从缓存中读。写的时候将缓存中的数据一次写出。都是在减少和磁盘的交互次数。如何理解缓冲区？家里盖房子，有一堆砖头要搬在工地100米外，单字节的读取就好比你一个人每次搬一块砖头，从堆砖头的地方搬到工地，这样肯定效率低下。然而聪明的人类会用小推车，每次先搬砖头搬到小车上，再利用小推车运到工地上去，这样你再从小推车上取砖头是不是方便多了呀！这样效率就会大大提高，缓冲流就好比我们的小推车，给数据暂时提供一个可存放的空间。
+    
+4.缓冲流都是处理流/包装流。FileInputStream/FileOutputStream是节点流。
+
+5.关闭流只需要关闭最外层的处理流即可，通过源码就可以看到，当关闭处理流时，底层节点流也会关闭。
+    
+6. 输出效率是如何提高的？
+    在缓冲区中先将字符数据存储起来，当缓冲区达到一定大小或者需要刷新缓冲区时，再将数据一次性输出到目标设备。
+
+7. 输入效率是如何提高的？ 
+    read()方法从缓冲区中读取数据。当缓冲区中的数据不足时，它会自动从底层输入流中读取一定大小的数据，并将数据存储到缓冲区中。大部分情况下，我们调用read()方法时，都是从缓冲区中读取，而不需要和硬盘交互。
+    
+8. 可以编写拷贝的程序测试一下缓冲流的效率是否提高了！
+    
+9. 缓冲流的特有方法（输入流）：以下两个方法的作用是允许我们在读取数据流时回退到原来的位置（重复读取数据时用）
+
+    void mark(int readAheadLimit); 标记位置（在Java21版本中，参数无意义。低版本JDK中参数表示在标记处最多可以读取的字符数量，如果你读取的字符数超出的上限值，则调用reset()方法时出现IOException。）
+
+    void reset(); 重新回到上一次标记的位置
+
+    这两个方法有先后顺序：先mark再reset，另外这两个方法不是在所有流中都能用。有些流中有这个方法，但是不能用。
+```
+
+
+
 
 
 ### 字节缓冲流
@@ -1932,19 +1962,18 @@ public class BufferedInputOutputStreamCopy {
 
         long begin = System.currentTimeMillis();
 
-        try(BufferedInputStream bis = new BufferedInputStream(new FileInputStream("E:\\powernode\\02-JavaSE\\video\\上\\012-第一章Java的加载与执行原理.avi"));
-            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream("E:/012-第一章Java的加载与执行原理.avi"))){
+        try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream("D:\\0-JavaSE\\powernode-java\\文件一\\Maven.png"));
+             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream("D:\\0-JavaSE\\powernode-java\\文件二\\Maven.png"))) {
 
             // 一边读一边写
             byte[] bytes = new byte[1024];
             int readCount = 0;
-            while((readCount = bis.read(bytes)) != -1){
+            while ((readCount = bis.read(bytes)) != -1) {
                 bos.write(bytes, 0, readCount);
             }
 
             // 手动刷新
             bos.flush();
-
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
@@ -1952,7 +1981,265 @@ public class BufferedInputOutputStreamCopy {
         }
 
         long end = System.currentTimeMillis();
-        System.out.println("带有缓冲区的拷贝耗时"+(end - begin)+"毫秒"); // 671
+        System.out.println("带有缓冲区的拷贝耗时"+(end - begin)+"毫秒"); // 5毫秒
+    }
+}
+```
+
+> **测试:**
+>
+> ![字节缓冲流](./IO流/img-23.jpg)
+
+
+
+### 字符缓冲流
+
+
+
+#### BufferedReader
+
+```java
+package com.powernode.javase.io;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+
+/**
+ * 带有缓冲区的字符输入流。
+ */
+public class BufferedReaderTest01 {
+    public static void main(String[] args) throws Exception {
+
+        // BufferedWriter bw = new BufferedWriter(new FileWriter(""));
+
+        // 创建带有缓冲区的字符输入流对象
+        BufferedReader br = new BufferedReader(new FileReader("D:\\0-JavaSE\\powernode-java\\file3.txt"));
+
+        // 开始读（br.readLine()方法每次读取一行，如果读取不到任何数据，则返回null。）
+        String s = null;
+        while ((s = br.readLine()) != null) {
+            System.out.println(s); // 动力节点
+        }
+
+        br.close();
+    }
+}
+```
+
+> **测试:**
+>
+> ![字符缓冲流](./IO流/img-24.jpg)
+
+
+
+##### 缓冲流(输入流)特有方法
+
+```java
+BufferedReader/BufferedInputStream的两个方法：
+      1. mark方法：在当前的位置上打标记
+      2. reset方法：回到上一次打标记的位置
+    
+这两个方法的调用顺序是：
+     1. 先调用mark，再调用reset。
+     2. 这两个方法组合起来完成的任务是：某段内容重复读取。
+```
+
+![字符缓冲流](./IO流/img-25.jpg)
+
+```java
+package com.powernode.javase.io;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+
+/**
+ * BufferedReader/BufferedInputStream的两个方法：
+ *      1. mark方法：在当前的位置上打标记
+ *      2. reset方法：回到上一次打标记的位置
+ *
+ *      这两个方法的调用顺序是：
+ *          先调用mark，再调用reset。
+ *      这两个方法组合起来完成的任务是：某段内容重复读取。
+ */
+public class BufferedReaderMarkTest {
+    public static void main(String[] args) throws Exception {
+        // 创建文件字符输入流（这个看起来像节点流，其实不是，为什么？一会再说！！！！）
+        //FileReader reader = new FileReader("E:\\powernode\\02-JavaSE\\code\\file1.txt");
+        // 创建带有缓冲区的字符输入流（一般把BufferedReader叫做处理流/包装流）
+        //BufferedReader br = new BufferedReader(reader);
+
+        BufferedReader br = new BufferedReader(new FileReader("D:\\0-JavaSE\\powernode-java\\file1.txt"));
+
+        // 开始读
+        System.out.println(br.read()); // 97
+        System.out.println(br.read()); // 98
+        System.out.println(br.read()); // 99
+
+        // 标记
+        br.mark(3);
+
+        System.out.println(br.read()); // 100
+        System.out.println(br.read()); // 101
+
+        // 回到上一次打标记的位置上
+        br.reset();
+
+        // 重新读刚才的内容
+        System.out.println(br.read()); // 100
+        System.out.println(br.read()); // 101
+
+        // 再次回到上一次打标记的位置上
+        br.reset();
+
+        System.out.println(br.read()); // 100
+        System.out.println(br.read()); // 101
+
+        // 关闭流
+        br.close();
+    }
+}
+```
+
+> **测试:**
+>
+> ![字符缓冲流](./IO流/img-26.jpg)
+
+
+
+
+
+
+
+## 转换流
+
+
+
+### 概述
+
+* `转换流`也是一种`高级流`，其是用来包装基本流的，并且转换流也有输入和输出之分。
+
+```mermaid
+classDiagram
+    字符流 <|-- Reader
+    字符流 <|-- Writer
+    Reader <|-- InputStreamReader :extends
+    note for InputStreamReader "转换输入流"
+    Writer <|-- OutputStreamWriter :extends
+    note for OutputStreamWriter "转换输出流"
+```
+
+* 当我们创建转换流对象用来读取数据时，如下所示：
+
+```java
+InputStreamReader reader = new InputStreamReader(new FileInputStream("?"));
+```
+
+* 其底层是将字节输入流转换为字符输入流（解码）。
+
+> [!NOTE]
+>
+> * ① 读取数据不会乱码。
+> * ② 可以根据指定的字符集一次读取多个字节。
+
+![](./IO流/img-27.svg)
+
+* 当我们创建转换流对象用来写出数据时，如下所示：
+
+```java
+OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream("?"));
+```
+
+* 其底层是将字符输出流转换为字节输出流（编码）。
+
+> [!NOTE]
+>
+> * ① 写出数据不会乱码。
+> * ② 可以根据指定的字符集一次写出多个字节。
+
+![](./IO流/img-28.svg)
+
+* 其实，字符流的基本流 FileReader 和 FileWriter 的底层就是转换流：
+
+```java [FileReader.java]
+public class FileReader extends InputStreamReader {
+    ...
+}
+```
+
+```java [FileWriter.java]
+public class FileWriter extends OutputStreamWriter {
+    ...
+}
+```
+
+
+
+### 应用场景
+
+* 转换流的应用场景：
+  * ① 指定字符集进行读写。
+  * ② 字节流想要使用字符流中的方法。
+
+> [!NOTE]
+>
+> 转化流的作用已经不是那么重要了，有如下的几个方面：
+>
+> * ① 在实际开发中，我们会统一使用 UTF-8 编码来进行开发，如：Tomcat（早期有过一段时间使用 ISO8859-1 编码；但是，现在都统一为 UTF-8 编码）、SpringBoot 等。
+> * ② 在 JDK11 的时候，FileReader 和 FileWriter 也增加了指定字符集来进行读写的功能。
+> * ③ 在 JDK18 的时候，FileReader 和 FileWriter 不再使用本地字符集（Windows 简体中文，默认是 GBK）来进行读写，而统一采取 UTF-8 来进行读写。
+
+
+
+
+
+### InputStreamReader（主要解决读的乱码问题）
+
+![InputStreamReader（主要解决读的乱码问题）](./IO流/img-33.jpg)
+
+```java
+package com.powernode.javase.io;
+
+import java.io.FileReader;
+import java.nio.charset.Charset;
+
+/**
+ * 使用InputStreamReader时，可以指定解码的字符集。用来解决读过程中的乱码问题。
+ * InputStreamReader是一个字符流。是一个转换流。
+ * InputStreamReader是一个输入的过程。
+ * InputStreamReader是一个解码的过程。
+ *
+ * InputStreamReader常用的构造方法：
+ *      InputStreamReader(InputStream in) 采用平台默认的字符集进行解码。
+ *      InputStreamReader(InputStream in, String charsetName) 采用指定的字符集进行解码。
+ *
+ * FileReader实际上是InputStreamReader的子类。
+ * FileReader也是一个包装流，不是节点流。
+ */
+public class InputStreamReaderDecodingTest {
+    public static void main(String[] args) throws Exception {
+        // 创建一个转换流对象（输入流）
+        // 节点流
+        //FileInputStream in = new FileInputStream("D:\0-JavaSE\powernode-java\file3.txt");
+        // 包装流
+        //InputStreamReader isr = new InputStreamReader(in);
+
+        // 合并节点流和包装流
+        //InputStreamReader isr = new InputStreamReader(new FileInputStream("D:\\0-JavaSE\\powernode-java\\file3.txt"),"GBK");
+
+        // 以上代码太长了。在IO流的继承体系结构中，IO流又给InputStreamReader提供了一个子类：FileReader
+        // 代码可以这样写了：
+        //FileReader isr = new FileReader("D:\0-JavaSE\powernode-java\file3.txt", Charset.defaultCharset());
+        FileReader isr = new FileReader("D:\\0-JavaSE\\powernode-java\\file3.txt", Charset.forName("GBK"));
+
+        // 开始读
+        char[] chars = new char[1024];
+        int readCount = 0;
+        while((readCount = isr.read(chars)) != -1){
+            System.out.println(new String(chars,0,readCount)); // 来动力节点学Java
+        }
+
+        // 关闭流
+        isr.close();
     }
 }
 ```
@@ -1963,41 +2250,10 @@ public class BufferedInputOutputStreamCopy {
 
 
 
-### 字符缓冲流
+### OutputStreamWriter（主要解决写的乱码问题）
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```java
+```
 
 
 
