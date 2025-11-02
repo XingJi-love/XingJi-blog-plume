@@ -2194,6 +2194,29 @@ public class FileWriter extends OutputStreamWriter {
 
 ### InputStreamReader（主要解决读的乱码问题）
 
+```java
+1.使用InputStreamReader时，可以指定解码的字符集。用来解决读过程中的乱码问题。
+ 	InputStreamReader是一个字符流。是一个转换流。
+ 	InputStreamReader是一个输入的过程。
+ 	InputStreamReader是一个解码的过程。
+ 
+2.InputStreamReader常用的构造方法：
+       InputStreamReader(InputStream in) 采用平台默认的字符集进行解码。
+       InputStreamReader(InputStream in, String charsetName) 采用指定的字符集进行解码。
+    
+3. FileReader实际上是InputStreamReader的子类。
+    
+Reader reader = new InputStreamReader(new FileInputStream(“file.txt”)); //采用平台默认字符集
+Reader reader = new FileReader(“file.txt”); //采用平台默认字符集
+因此FileReader的出现简化了代码的编写。
+
+以下代码本质上也是一样的：
+Reader reader = new InputStreamReader(new FileInputStream(“file.txt”), “GBK”);
+Reader reader = new FileReader("e:/file1.txt", Charset.forName("GBK"));
+    
+4. FileReader也是一个包装流，不是节点流。
+```
+
 ![InputStreamReader（主要解决读的乱码问题）](./IO流/img-33.jpg)
 
 ```java
@@ -2202,19 +2225,6 @@ package com.powernode.javase.io;
 import java.io.FileReader;
 import java.nio.charset.Charset;
 
-/**
- * 使用InputStreamReader时，可以指定解码的字符集。用来解决读过程中的乱码问题。
- * InputStreamReader是一个字符流。是一个转换流。
- * InputStreamReader是一个输入的过程。
- * InputStreamReader是一个解码的过程。
- *
- * InputStreamReader常用的构造方法：
- *      InputStreamReader(InputStream in) 采用平台默认的字符集进行解码。
- *      InputStreamReader(InputStream in, String charsetName) 采用指定的字符集进行解码。
- *
- * FileReader实际上是InputStreamReader的子类。
- * FileReader也是一个包装流，不是节点流。
- */
 public class InputStreamReaderDecodingTest {
     public static void main(String[] args) throws Exception {
         // 创建一个转换流对象（输入流）
@@ -2244,7 +2254,11 @@ public class InputStreamReaderDecodingTest {
 }
 ```
 
-
+> **测试:**
+>
+> ![InputStreamReader（主要解决读的乱码问题）](./IO流/img-35.jpg)
+>
+> ![InputStreamReader（主要解决读的乱码问题）](./IO流/img-36.jpg)
 
 
 
@@ -2253,7 +2267,729 @@ public class InputStreamReaderDecodingTest {
 ### OutputStreamWriter（主要解决写的乱码问题）
 
 ```java
+1.使用OutputStreamWriter时，可以指定解码的字符集。用来解决读过程中的乱码问题。
+	OutputStreamWriter也是一个字符流。也是一个转换流。
+	OutputStreamWriter是一个编码的过程。
+	如果OutputStreamWriter在编码的过程中使用的字符集和文件的字符集不一致时会出现乱码。
+
+2.OutputStreamWriter常用的构造方法：
+       OutputStreamWriter(OutputStream in) 采用平台默认的字符集进行解码。
+       OutputStreamWriter(OutputStream in, String charsetName) 采用指定的字符集进行解码。
+
+3. FileWriter是OutputStreamWriter的子类。
+
+Writer writer = new OutputStreamWriter(new FileOutputStream(“file1.txt”)); // 采用平台默认字符集
+Writer writer = new FileWriter(“file1.txt”); // 采用平台默认字符集
+因此FileWriter的出现，简化了代码。
+
+以下代码本质上也是一样的：
+Writer writer = new OutputStreamWriter(new FileOutputStream(“file1.txt”), “GBK”);
+Writer writer = new FileWriter(“file1.txt”, Charset.forName(“GBK”));
+
+4. FileWriter是一个包装流，不是节点流。
 ```
+
+![OutputStreamWriter（主要解决写的乱码问题）](./IO流/img-33.jpg)
+
+```java
+package com.powernode.javase.io;
+
+import java.io.FileWriter;
+import java.nio.charset.Charset;
+
+public class OutputStreamWriterEncodingTest {
+    public static void main(String[] args) throws Exception {
+        // 创建转换流对象OutputStreamWriter
+        // 以下代码采用的是UTF-8的字符集进行编码。（采用平台默认的字符集）
+        // 注意：以下代码中输出流以覆盖的方式输出/写。
+        //OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream("D:\\0-JavaSE\\powernode-java\\file4.txt"));
+
+        //OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream("D:\\0-JavaSE\\powernode-java\\file4.txt"),"GBK");
+
+        //OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream("D:\\0-JavaSE\\powernode-java\\file4.txt",true),"GBK");
+
+        // OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream("D:\\0-JavaSE\\powernode-java\\file4.txt",true));
+
+        //OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream("D:\\0-JavaSE\\powernode-java\\file4.txt", true), "GBK");
+
+        FileWriter osw = new FileWriter("D:\\0-JavaSE\\powernode-java\\file4.txt", Charset.forName("UTF-8"),true);
+
+        // 开始写
+        osw.write("来动力节点学Java");
+
+        // 刷新流
+        osw.flush();
+
+        // 关闭流
+        osw.close();
+    }
+}
+```
+
+> **测试:**
+>
+> ![OutputStreamWriter（主要解决写的乱码问题）](./IO流/img-37.jpg)
+>
+> ![OutputStreamWriter（主要解决写的乱码问题）](./IO流/img-38.jpg)
+
+
+
+
+
+
+
+
+
+## 数据流
+
+```java
+1. 这两个流都是包装流，读写数据专用的流。
+
+2.DataOutputStream直接将程序中的数据写入文件，不需要转码，效率高。程序中是什么样子，原封不动的写出去。写完后，文件是打不开的。即使打开也是乱码，文件中直接存储的是二进制。
+
+3.使用DataOutputStream写的文件，只能使用DataInputStream去读取。并且读取的顺序需要和写入的顺序一致，这样才能保证数据恢复原样。
+
+4.构造方法：
+DataInputStream(InputStream in)
+
+DataOutputStream(OutputStream out)
+
+5.写的方法：
+writeByte()、writeShort()、writeInt()、writeLong()、writeFloat()、writeDouble()、writeBoolean()、writeChar()、writeUTF(String)
+
+6.读的方法：
+readByte()、readShort()、readInt()、readLong()、readFloat()、readDouble()、readBoolean()、readChar()、readUTF()
+```
+
+
+
+
+
+### DataOutputStream
+
+```java
+java.io.DataOutputStream：数据流（数据字节输出流）
+  作用：将java程序中的数据直接写入到文件，写到文件中就是二进制。
+  DataOutputStream写的效率很高，原因是：写的过程不需要转码。
+  DataOutputStream写到文件中的数据，只能由DataInputStream来读取。
+```
+
+```java
+package com.powernode.javase.io;
+
+import java.io.DataOutputStream;
+import java.io.FileOutputStream;
+
+public class DataOutputStreamTest {
+    public static void main(String[] args) throws Exception {
+        // 节点流
+        //OutputStream os = new FileOutputStream("D:\\0-JavaSE\\powernode-java\\file4.txt");
+        // 包装流
+        //DataOutputStream dos = new DataOutputStream(os);
+
+        DataOutputStream dos = new DataOutputStream(new FileOutputStream("data"));
+
+        // 准备数据
+        byte b = -127;
+        short s = 32767;
+        int i = 2147483647;
+        long l = 1111111111L;
+        float f = 3.0F;
+        double d = 3.14;
+        boolean flag = false;
+        char c = '国';
+        String str = "动力节点";
+
+        // 开始写
+        dos.writeByte(b);
+        dos.writeShort(s);
+        dos.writeInt(i);
+        dos.writeLong(l);
+        dos.writeFloat(f);
+        dos.writeDouble(d);
+        dos.writeBoolean(flag);
+        dos.writeChar(c);
+        dos.writeUTF(str);
+
+
+        // 刷新
+        dos.flush();
+
+        // 关闭流
+        dos.close();
+    }
+}
+```
+
+> **测试:**
+>
+> ![DataOutputStream](./IO流/img-39.jpg)
+
+
+
+### DataInputStream
+
+```java
+java.io.DataInputStream：数据流（数据字节输入流）
+ 	作用：专门用来读取使用DataOutputStream流写入的文件。
+ 	注意：读取的顺序要和写入的顺序一致。（要不然无法恢复原样。）
+```
+
+```java
+package com.powernode.javase.io;
+
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+
+public class DataInputStreamTest {
+    public static void main(String[] args) throws Exception{
+        // 创建数据字节输入流对象
+        DataInputStream dis = new DataInputStream(new FileInputStream("data"));
+
+        //System.out.println(dis.readBoolean()); // true
+
+        // 开始读
+        byte b = dis.readByte();
+        short s = dis.readShort();
+        int i = dis.readInt();
+        long l = dis.readLong();
+        float f = dis.readFloat();
+        double d = dis.readDouble();
+        boolean flag = dis.readBoolean();
+        char c = dis.readChar();
+        String str = dis.readUTF();
+
+        System.out.println(b);
+        System.out.println(s);
+        System.out.println(i);
+        System.out.println(l);
+        System.out.println(f);
+        System.out.println(d);
+        System.out.println(flag);
+        System.out.println(c);
+        System.out.println(str);
+
+        // 关闭流
+        dis.close();
+
+        /*FileInputStream fis = new FileInputStream("data");
+
+        System.out.println(fis.read());
+        System.out.println(fis.read());
+        System.out.println(fis.read());
+        System.out.println(fis.read());
+
+        fis.close();*/
+
+
+    }
+}
+```
+
+> **测试:**
+>
+> ![DataOutputStream](./IO流/img-40.jpg)
+
+
+
+
+
+
+
+
+
+## 对象流(序列化流)
+
+
+
+### 概述
+
+* 序列化流也是高级流，其是用来包装基本流的，并且序列化流是字节流的一种。
+
+![对象流(序列化流)](./IO流/img-41.jpg)
+
+> [!NOTE]
+>
+> * ① 序列化流负责输出数据，即：将 Java 中的对象（内存中的数据）写出到本地文件中。
+> * ② 反序列化流负责读取数据，即：将本地文件中的数据读取为 Java 中的对象（内存中的数据）。
+
+```mermaid
+classDiagram
+    字节流 <|-- InputStream
+    字节流 <|-- OutputStream
+    InputStream <|-- ObjectInputStream :extends
+    note for ObjectInputStream "反序列化流"
+    OutputStream <|-- ObjectOutputStream :extends
+    note for ObjectOutputStream "序列化流"
+```
+
+### 序列化流
+
+#### 概述
+
+* 序列化流可以将 Java 中的对象（内存中的数据）写到本地文件中。
+
+![对象流(序列化流)](./IO流/img-42.svg)
+
+> [!NOTE]
+>
+> 实现序列化流的前提条件：JavaBean 需要实现 `java.io.Serializable` 接口。
+>
+
+
+
+#### 步骤
+
+* ① 创建序列化流对象：
+
+| 构造方法                                         | 描述                 |
+| ------------------------------------------------ | -------------------- |
+| `public ObjectOutputStream(OutputStream out) {}` | 将基本流包装成高级流 |
+
+* ② 写出数据：
+
+| 成员方法                                       | 描述                       |
+| ---------------------------------------------- | -------------------------- |
+| `public final void writeObject(Object obj){} ` | 将对象序列化后写出到文件中 |
+
+* ③ 关闭流：
+
+| 成员方法                  | 描述     |
+| ------------------------- | -------- |
+| `public void close()  {}` | 释放资源 |
+
+
+
+* 示例：
+
+```java [Student.java]
+
+```
+
+
+
+
+
+
+
+### 反序列化流
+
+#### 概述
+
+* 反序列化流可以将序列化到本地文件中的对象，读取到程序中。
+
+![对象流(序列化流)](./IO流/img-43.svg)
+
+
+
+#### 步骤
+
+* ① 创建反序列化流对象：
+
+| 构造方法                                       | 描述                 |
+| ---------------------------------------------- | -------------------- |
+| `public ObjectInputStream(InputStream in)  {}` | 将基本流包装成高级流 |
+
+* ② 写出数据：
+
+| 成员方法                              | 描述                                   |
+| ------------------------------------- | -------------------------------------- |
+| `public final Object readObject() {}` | 序列化到本地文件中的对象，读取到程序中 |
+
+* ③ 关闭流：
+
+| 成员方法                  | 描述     |
+| ------------------------- | -------- |
+| `public void close()  {}` | 释放资源 |
+
+
+
+* 示例：
+
+```java [Student.java]
+
+```
+
+
+
+### 细节
+
+#### 细节一
+
+* `JavaBean`不实现`java.io.Serializable`接口，会出现`NotSerializableException`异常。
+
+```java
+public class Student {
+
+    private String name;
+
+    private int age;
+	
+    ...
+}   
+```
+
+> [!NOTE]
+>
+> 解决方案：让`JavaBean`实现`java.io.Serializable`接口！！！
+
+* 示例：
+
+```java [Student.java]
+package com.powernode.javase.io;
+
+public class Student {
+
+    private String name;
+
+    private  int age;
+
+    private String addr;
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                '}';
+    }
+
+    public Student() {
+    }
+
+    public Student(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+}
+```
+
+```java [Test.java]
+package com.powernode.javase.io;
+
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+
+/**
+ * 序列化Student对象
+ */
+public class ObjectOutputStreamTest03 {
+    public static void main(String[] args) throws Exception {
+        // 创建流对象
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("student"));
+
+        // 创建对象
+        Student stu = new Student("zhangsan", 20);
+
+        // 写出数据
+        oos.writeObject(stu);
+
+        // 刷新
+        oos.flush();
+
+        // 释放资源
+        oos.close();
+    }
+}
+```
+
+> **测试:**
+>
+> ![对象流(序列化流)](./IO流/img-46.jpg)
+
+
+
+
+
+#### 细节二
+
+* 如果一个类实现了`Serializable`接口，就表明这个类的对象是可序列化的：
+
+```java
+public class Student implements Serializable {
+
+    private String name;
+
+    private int age;
+	
+    ...
+}   
+```
+
+* Java 在底层会根据类的信息，如：类名、包名、成员变量、静态变量、构造方法等生成一个 `serialVersionUID`，在序列化对象的时候，JVM 会将`serialVersionUID` 和类的其他元数据一同写入本地文件中，这个过程是自动的。
+
+![对象流(序列化流)](./IO流/img-44.svg)
+
+* 在反序列化的时候，Java 底层也会将本地文件中的`serialVersionUID`和当前类的字节码文件计算出来的`serialVersionUID`进行比较，如果不匹配，将会报错。
+
+![对象流(序列化流)](./IO流/img-45.svg)
+
+* 我们可以通过`serialver`命令来计算出对应的`serialVersionUID`：
+
+```bash
+serialver -classpath D:\project\java-base\out\production\day23 com.github.io.Student
+```
+
+
+
+
+
+* 我们可以通过反序列化来读取文件中的`serialVersionUID`：
+
+```java [Test.java]
+package com.github.io;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectStreamClass;
+
+public class Test {
+    public static void main(String[] args) throws Exception {
+        // 创建流对象
+        ObjectInputStream oi = new ObjectInputStream(
+            new FileInputStream("day23\\stu.txt"));
+
+        // 读取数据
+        Object obj = oi.readObject();
+
+        ObjectStreamClass lookup = ObjectStreamClass.lookup(obj.getClass());
+        System.out.println(lookup); // 6233301834653560958L
+
+        // 释放资源
+        oi.close();
+
+    }
+
+}
+```
+
+
+
+
+
+* 换言之，只要我们修改了类的信息，Java 底层就会自动计算`serialVersionUID`：
+
+
+
+* 在实际开发中，随着业务的发展，我们绝对有可能去修改类的信息，为了避免文件中的版本号和JavaBean中的版本号不匹配而引发错误，我们只需要在类中显示声明`serialVersionUID`，Java 就不会在自动计算，而使用我们自己提供的值。
+
+> [!NOTE]
+>
+> * ① 如果没有显示声明`serialVersionUID`，Java 会自动计算并存储一个`serialVersionUID`，这个值是基于类的字节码的。
+> * ② 如果已经显示声明`serialVersionUID`，Java 就不会自动计算它，只会使用我们提供的值。
+
+```java [Student.java]
+package com.github.io;
+
+import java.io.Serializable;
+
+public class Student implements Serializable {
+
+    private static final long serialVersionUID = 1L; // [!code highlight]
+
+    private String name;
+
+    private int age;
+
+    private String sex;
+
+    public Student(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                '}';
+    }
+}
+
+```
+
+
+
+* 我们可以开启快速生成`serialVersionUID` 的功能：
+
+
+
+* 这样，我们在写代码的时候，就可以让 IDEA 帮我们计算`serialVersionUID`了：
+
+
+
+
+
+### 展望
+
+* 由于以下原因，在实际开发中，我们并不建议使用 Java 内置的序列化。
+  * ① `安全性差`：Java 序列化允许任意类型反序列化，容易被攻击。
+  * ② `性能差`：序列化后的体积大，效率低。
+  * ③ `不可控、脆弱`：一个类结构稍微变动就可能导致反序列化失败。
+  * ④ `黑盒机制`：对开发者几乎是不可见的魔法，难以调试和管理。
+
+* 我们可以使用其他替代方案：
+
+| 替代方案               | 特点                                            |
+| ---------------------- | ----------------------------------------------- |
+| Jackson / Gson（JSON） | 简单、可读、安全，适合 Web 应用                 |
+| Kryo                   | 高性能二进制序列化，适用于分布式系统，如：Spark |
+| Protobuf               | Google 出品，结构清晰、高压缩率、跨语言支持强   |
+
+
+
+
+
+
+
+## 打印流
+
+
+
+### 概述
+
+* 打印流是高级流，其是用来保证基本流的；但是，打印流只能写，不能读。
+
+> [!NOTE]
+>
+> 打印流只能是输出流！！！
+
+```mermaid
+classDiagram
+    IO 流体系 <|-- 字节流 
+    IO 流体系 <|-- 字符流 
+    字节流 <|-- InputStream 
+    字节流 <|-- OutputStream 
+    字符流 <|-- Reader 
+    字符流 <|-- Writer 
+    OutputStream <|-- PrintStream
+    note for PrintStream "字节打印流"
+    Writer <|-- PrintWriter
+    note for PrintWriter "字符打印流"
+    class InputStream{
+        <<Abstract>>
+    }
+    class OutputStream{
+        <<Abstract>>
+    }
+    class Reader{
+        <<Abstract>>
+    }
+    class Writer{
+        <<Abstract>>
+    }
+
+```
+
+* 其实，我们之前经常使用的`打印语句`就是`字节打印流`：
+
+```java
+public final class System {
+    
+    public static final PrintStream out = null;
+    
+}
+```
+
+
+
+### 特点
+
+* ① 打印流只能操作文件的目的地，不能操作数据源。
+
+* ② 特有的写出方法可以实现，数据原样输出，即：print() 方法或 println() 方法。
+
+* ③ 特有的写出方法，可以实现自动刷新，自动换行，即：println() 方法
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
