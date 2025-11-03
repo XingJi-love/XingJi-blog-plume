@@ -2939,6 +2939,75 @@ public final class System {
 
 
 
+### 字节打印流(PrintStream)
+
+```java
+1.构造:
+   PrintStream(String fileName)
+       
+2.方法:
+   a.println(): 原样输出,自带换行效果
+   b.print():  原样输出,不带换行效果
+ 
+3.便捷在哪里？
+	直接输出各种数据类型
+	自动刷新和自动换行（println方法）
+	支持字符串转义
+	自动编码（自动根据环境选择合适的编码方式）
+
+4.格式化输出？调用printf方法。
+	%s 表示字符串
+	%d 表示整数
+	%f 表示小数（%.2f 这个格式就代表保留两位小数的数字。）
+	%c 表示字符
+```
+
+```java
+package com.powernode.javase.io;
+
+import java.io.PrintStream;
+
+/**
+ * 1. java.io.PrintStream：打印流（专业的负责打印的流，字节形式。）
+ * 2. PrintStream不需要手动刷新，自动刷新。
+ */
+public class PrintStreamTest {
+    public static void main(String[] args) throws Exception {
+        // 创建一个打印流对象
+        // 构造方法：PrintStream(OutputStream out)
+        // 构造方法：PrintStream(String fileName)
+        PrintStream ps = new PrintStream("log1");
+
+        // 没有这样的构造方法。
+        //PrintStream ps2 = new PrintStream(new FileWriter(""));
+
+        //PrintStream ps2 = new PrintStream(new FileOutputStream("log1"));
+
+        // 打印流可以打印各种数据类型数据。
+        ps.print(100); // 100
+        ps.println(false); // false
+        ps.println("abc"); // abc
+        ps.println('T'); // T
+        ps.println(3.14); // 3.14
+        ps.println("hell world"); // hell world
+        ps.println(200); // 200
+
+        ps.println("\"hello world!\""); // "hello world!"
+
+        String name = "张三";
+        double score = 95.5;
+
+        ps.printf("姓名：%s，考试成绩：%.2f", name, score); // 姓名：张三，考试成绩：95.50
+
+        // 关闭流
+        ps.close();
+    }
+}
+```
+
+> **测试:**
+>
+> ![字节打印流(PrintStream)](./IO流/img-47.jpg)
 
 
 
@@ -2946,6 +3015,82 @@ public final class System {
 
 
 
+### 字符打印流(PrintStream)
+
+```java
+1.PrintWriter比PrintStream多一个构造方法：
+     PrintStream构造方法：
+           PrintStream(OutputStream)
+     PrintWriter构造方法：
+           PrintWriter(OutputStream)
+           PrintWriter(Writer)
+       
+2.方法:
+   a.println(): 原样输出,自带换行效果
+   b.print():  原样输出,不带换行效果
+       
+3.打印流（字符形式）注意PrintWriter使用时需要手动调用flush()方法进行刷新。
+
+4.格式化输出？调用printf方法。
+	%s 表示字符串
+	%d 表示整数
+	%f 表示小数（%.2f 这个格式就代表保留两位小数的数字。）
+	%c 表示字符
+```
+
+```java
+package com.powernode.javase.io;
+
+import java.io.FileWriter;
+import java.io.PrintWriter;
+
+public class PrintWriterTest {
+    public static void main(String[] args) throws Exception {
+        // 创建字符打印流
+        //PrintWriter pw = new PrintWriter(new FileOutputStream("log2"));
+
+        PrintWriter pw = new PrintWriter(new FileWriter("log2"), true);
+
+        // 打印
+        pw.println("world hello!!!");
+        pw.println("zhangsan hello!!!");
+
+        // 刷新流
+        //pw.flush();
+
+        // 关闭流
+        pw.close();
+    }
+}
+```
+
+> **测试:**
+>
+> ![字符打印流(PrintStream)](./IO流/img-48.jpg)
+
+
+
+
+
+
+
+
+
+## 标准输入流&标准输出流
+
+
+
+### 标准输入流
+
+
+
+
+
+
+
+
+
+### 标准输出流
 
 
 
