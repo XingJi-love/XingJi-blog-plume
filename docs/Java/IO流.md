@@ -3082,9 +3082,147 @@ public class PrintWriterTest {
 
 ### 标准输入流
 
+```java
+标准输入流：System.in
+       1. 标准输入流怎么获取？
+           System.in
+    
+       2. 标准输入流是从哪个数据源读取数据的？
+           控制台。
+    
+       3. 普通输入流是从哪个数据源读取数据的？
+           文件或者网络或者其他.....
+    
+       4. 标准输入流是一个全局的输入流，不需要手动关闭。JVM退出的时候，JVM会负责关闭这个流。
+    
+       5. 对于标准输入流来说，也是可以改变数据源的。不让其从控制台读数据。也可以让其从文件中或网络中读取数据。
+       
+       6. 也可以使用BufferedReader对标准输入流进行包装。这样可以方便的接收用户在控制台上的输入。（这种方式太麻烦了，因此JDK中提供了更好用的Scanner。）
+
+BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+String s = br.readLine();
+
+        7. 当然，你也可以修改输入流的方向（System.setIn()）。让其指向文件。
+        // 修改标准输入流的数据源。
+        System.setIn(new FileInputStream("log2"));
+```
 
 
 
++ 控制台输入源
+
+![标准输入流](./IO流/img-49.jpg)
+
+```java
+package com.powernode.javase.io;
+
+import java.io.InputStream;
+
+public class SystemInTest {
+    public static void main(String[] args) throws Exception {
+        // 获取标准输入流对象。（直接通过系统类System中的in属性来获取标准输入流对象。）
+        InputStream in = System.in;
+
+        // 开始读
+        byte[] bytes = new byte[1024];
+        int readCount = in.read(bytes);
+
+        for (int i = 0; i < readCount; i++) {
+            System.out.println(bytes[i]);
+            /*
+            abcd
+            97
+            98
+            99
+            100
+            10(换行符的字节大小)
+             */
+        }
+    }
+}
+```
+
+
+
++ 文件输入源
+
+```java
+package com.powernode.javase.io;
+
+import java.io.FileInputStream;
+import java.io.InputStream;
+
+/**
+ * 对于标准输入流来说，也是可以改变数据源的。不让其从控制台读数据。也可以让其从文件中或网络中读取数据。
+ */
+public class SystemInTest02 {
+    public static void main(String[] args) throws Exception {
+        // 修改标准输入流的数据源。
+        System.setIn(new FileInputStream("log2"));
+
+        // 获取标准输入流
+        InputStream in = System.in;
+
+        byte[] bytes = new byte[1024];
+        int readCount = 0;
+        while ((readCount = in.read(bytes)) != -1) {
+            System.out.println(new String(bytes, 0, readCount));
+            /*
+            world hello!!!
+            zhangsan hello!!!
+             */
+        }
+    }
+}
+```
+
+> **测试:**
+>
+> ![标准输入流](./IO流/img-50.jpg)
+
+
+
++ BufferedReader包装输入流(完成从键盘接收用户的输入)
+
+```java
+package com.powernode.javase.io;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
+/**
+ * 使用BufferedReader去包装一下这个标准输入流，来完成从键盘接收用户的输入。
+ */
+public class SystemInTest03 {
+    public static void main(String[] args) throws Exception {
+        // 创建BufferedReader对象
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        /*
+        分开包装
+        InputStream in = System.in;
+        Reader reader = new InputStreamReader(in);
+        BufferedReader br = new BufferedReader(reader);*/
+
+        String s = null;
+        while ((s = br.readLine()) != null) {
+            if(s.equals("exit")){
+                break;
+            }
+            System.out.println("您输入了：" + s);
+        }
+
+        /*Scanner scanner = new Scanner(System.in);
+
+        String name = scanner.next();
+        System.out.println("您的姓名是：" + name);*/
+    }
+}
+```
+
+> **测试:**
+>
+> ![标准输入流](./IO流/img-51.jpg)
 
 
 
@@ -3092,6 +3230,73 @@ public class PrintWriterTest {
 
 ### 标准输出流
 
+```java
+标准输出流：System.out
+       1. 标准输出流怎么获取？
+           System.out
+    
+       2. 标准输出流是向哪里输出呢？
+           控制台。
+    
+       3. 普通输出流是向哪里输出呢？
+           文件或者网络或者其他.....
+    
+       4. 标准输出流是一个全局的输出流，不需要手动关闭。JVM退出的时候，JVM会负责关闭这个流。
+    
+       5. 当然，你也可以修改输出流的方向（System.setOut()）。让其指向文件。
+          // 标准输出流也是可以改变输出方向的
+          System.setOut(new PrintStream("log"));
+```
+
+```java
+package com.powernode.javase.io;
+
+import java.io.PrintStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class SystemOutTest {
+    public static void main(String[] args) throws Exception {
+        // 获取标准输出流，标准输出流默认会向控制台输出。
+        PrintStream out = System.out;
+
+        // 输出
+        out.println("hello world");
+        out.println("hello world");
+        out.println("hello world");
+        out.println("hello world");
+        out.println("hello world");
+
+        // 标准输出流也是可以改变输出方向的。
+        System.setOut(new PrintStream("log"));
+
+        System.out.println("zhangsan");
+        System.out.println("lisi");
+        System.out.println("wangwu");
+        System.out.println("zhaoliu");
+
+        // 获取系统当前时间
+        Date now = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
+        String str = sdf.format(now);
+        System.out.println(str + ": SystemOutTest's main method invoked!");
+    }
+}
+```
+
+> **测试:**
+>
+> + **标准输出流默认会向控制台输出**
+>
+> ![标准输出流](./IO流/img-52.jpg)
+>
+> + **标准输出流改变输出方向**
+>
+> ![标准输出流](./IO流/img-53.jpg)
+>
+> + **获取系统当前时间(通常用于保存日志)**
+>
+> ![标准输出流](./IO流/img-54.jpg)
 
 
 
@@ -3099,10 +3304,329 @@ public class PrintWriterTest {
 
 
 
+## File类
+
+### 概述
+
+```java
+计算机常识:
+  1.以.jpg结尾的一定是图片吗?
+    不一定,有可能是文件夹
+      
+  2.什么是文本文档?
+    用记事本打开,人能看懂的文件 -> txt  html css  
+  
+  3.E:\Idea\io\1.jpg 中的1.jpg的父路径是谁?
+    E:\Idea\io
+        
+  4.分隔符:
+    a.路径名称分隔符:
+      windows: \
+      linux: /    
+    b.路径分隔符:一个路径和其他路径之间的分隔符
+      ;
+```
+
+```java
+1.概述:文件和目录(文件夹)路径名的抽象表示   
+2.简单理解:
+  我们在创建File对象的时候,需要传递一个路径,这个路径定为到哪个文件或者文件夹上,我们的File就代表哪个对象
+  File file = new File("E:\Idea\io\1.jpg")    
+```
+
+
+
+### File的静态成员
+
+```java
+static String pathSeparator:与系统有关的路径分隔符，为了方便，它被表示为一个字符串。
+static String separator:与系统有关的默认名称分隔符，为了方便，它被表示为一个字符串。  
+```
+
+```java
+public class Demo01File {
+    public static void main(String[] args) {
+        //file01();
+        file02();
+    }
+
+    /*
+      将来写代码如何正确编写一个路径用java代码
+     */
+    private static void file02() {
+        String path1 = "E:\\Idea\\io";
+        System.out.println(path1);
+        System.out.println("==================");
+
+        //要求代码写完,一次编写,到处运行
+        String path2 = "E:"+File.separator+"Idea"+File.separator+"io";
+        System.out.println(path2);
+    }
+
+    private static void file01() {
+        //static String pathSeparator:与系统有关的路径分隔符，为了方便，它被表示为一个字符串。
+        String pathSeparator = File.pathSeparator;
+        System.out.println("pathSeparator = " + pathSeparator); //  ;
+        //static String separator:与系统有关的默认名称分隔符，为了方便，它被表示为一个字符串。
+        String separator = File.separator;
+        System.out.println("separator = " + separator); //  \
+    }
+}
+
+```
 
 
 
 
+
+### File的构造方法
+
+```java
+File(String parent, String child) 根据所填写的路径创建File对象
+     parent:父路径
+     child:子路径
+File(File parent, String child)  根据所填写的路径创建File对象
+     parent:父路径,是一个File对象
+     child:子路径
+File(String pathname)  根据所填写的路径创建File对象
+     pathname:直接指定路径   
+```
+
+```java
+public class Demo02File {
+    public static void main(String[] args) {
+        //File(String parent, String child) 根据所填写的路径创建File对象
+        //parent:父路径
+        //child:子路径
+        File file1 = new File("E:\\Idea\\io", "1.jpg");
+        System.out.println("file1 = " + file1);
+        //File(File parent, String child)  根据所填写的路径创建File对象
+        //parent:父路径,是一个File对象
+        //child:子路径
+        File parent = new File("E:\\Idea\\io");
+        File file2 = new File(parent, "1.jpg");
+        System.out.println("file2 = " + file2);
+        //File(String pathname)  根据所填写的路径创建File对象
+        //pathname:直接指定路径
+        File file3 = new File("E:\\Idea\\io\\1.jpg");
+        System.out.println("file3 = " + file3);
+    }
+}
+```
+
+> 细节:
+>
+> 我们创建File对象的时候,传递的路径可以是不存在的,但是传递不存在的路径
+
+
+
+
+
+### File的获取方法
+
+```java
+String getAbsolutePath() -> 获取File的绝对路径->带盘符的路径
+String getPath() ->获取的是封装路径->new File对象的时候写的啥路径,获取的就是啥路径
+String getName()  -> 获取的是文件或者文件夹名称
+long length() -> 获取的是文件的长度 -> 文件的字节数   
+```
+
+```java
+    private static void file01() {
+        //String getAbsolutePath() -> 获取File的绝对路径->带盘符的路径
+        File file1 = new File("1.txt");
+        System.out.println("file1.getAbsolutePath() = " + file1.getAbsolutePath());
+        //String getPath() ->获取的是封装路径->new File对象的时候写的啥路径,获取的就是啥路径
+        File file2 = new File("io\\1.txt");
+        System.out.println("file2.getPath() = " + file2.getPath());
+        //String getName()  -> 获取的是文件或者文件夹名称
+        File file3 = new File("E:\\Idea\\io\\1.jpg");
+        System.out.println("file3.getName() = " + file3.getName());
+        //long length() -> 获取的是文件的长度 -> 文件的字节数
+        File file4 = new File("E:\\Idea\\io\\1.txt");
+        System.out.println("file4.length() = " + file4.length());
+    }
+```
+
+
+
+
+
+### File的创建方法
+
+```java
+boolean createNewFile()  -> 创建文件
+        如果要创建的文件之前有,创建失败,返回false
+        如果要创建的文件之前没有,创建成功,返回true
+    
+boolean mkdirs() -> 创建文件夹(目录)既可以创建多级文件夹,还可以创建单级文件夹
+        如果要创建的文件夹之前有,创建失败,返回false
+        如果要创建的文件夹之前没有,创建成功,返回true
+```
+
+```java
+    private static void file02() throws IOException {
+        /*boolean createNewFile()  -> 创建文件
+        如果要创建的文件之前有,创建失败,返回false
+        如果要创建的文件之前没有,创建成功,返回true*/
+        File file1 = new File("E:\\Idea\\io\\1.txt");
+        System.out.println("file1.createNewFile() = " + file1.createNewFile());
+
+        /*boolean mkdirs() -> 创建文件夹(目录)既可以创建多级文件夹,还可以创建单级文件夹
+        如果要创建的文件夹之前有,创建失败,返回false
+        如果要创建的文件夹之前没有,创建成功,返回true*/
+        File file2 = new File("E:\\Idea\\io\\haha\\heihei\\hehe");
+        System.out.println("file2.mkdirs() = " + file2.mkdirs());
+    }
+```
+
+
+
+
+
+### File类的删除方法
+
+```java
+boolean delete()->删除文件或者文件夹
+
+注意:
+  1.如果删除文件,不走回收站
+  2.如果删除文件夹,必须是空文件夹,而且也不走回收站    
+```
+
+```java
+    private static void file03() {
+        //boolean delete()->删除文件或者文件夹
+        //File file1 = new File("E:\\Idea\\io\\1.txt");
+        File file1 = new File("E:\\Idea\\io\\haha");
+        System.out.println("file1.delete() = " + file1.delete());
+    }
+```
+
+
+
+
+
+### File类的判断方法
+
+```java
+boolean isDirectory() -> 判断是否为文件夹 
+boolean isFile()  -> 判断是否为文件
+boolean exists()  -> 判断文件或者文件夹是否存在    
+```
+
+```java
+    private static void file04() {
+        File file = new File("E:\\Idea\\io\\1.txt");
+        // boolean isDirectory() -> 判断是否为文件夹
+        System.out.println("file.isDirectory() = " + file.isDirectory());
+       // boolean isFile()  -> 判断是否为文件
+        System.out.println("file.isFile() = " + file.isFile());
+       // boolean exists()  -> 判断文件或者文件夹是否存在
+        System.out.println("file.exists() = " + file.exists());
+    }
+```
+
+
+
+
+
+### File的遍历方法
+
+```java
+String[] list() -> 遍历指定的文件夹,返回的是String数组 
+File[] listFiles()-> 遍历指定的文件夹,返回的是File数组 ->这个推荐使用
+    
+细节:listFiles方法底层还是list方法
+     调用list方法,遍历文件夹,返回一个Stirng数组,遍历数组,将数组中的内容一个一个封装到File对象中,然后再将File对象放到File数组中
+```
+
+```java
+    private static void file05() {
+        File file = new File("E:\\Idea\\io\\aa");
+        //String[] list() -> 遍历指定的文件夹,返回的是String数组
+        String[] list = file.list();
+        for (String s : list) {
+            System.out.println(s);
+        }
+        //File[] listFiles()-> 遍历指定的文件夹,返回的是File数组 ->这个推荐使用
+        System.out.println("==============");
+        File[] files = file.listFiles();
+        for (File file1 : files) {
+            System.out.println(file1);
+        }
+    }
+```
+
+
+
+
+
+### 练习:遍历指定文件夹下所有的.jpg文件
+
+```java
+ 1.创建File对象,指定要遍历的文件夹路径
+ 2.调用listFiles(),遍历文件夹,返回File数组
+ 3.遍历File数组,在遍历的过程中判断,如果是文件,获取文件名,判断是否以.jpg结尾的
+   如果是,输出
+ 4.否则证明是文件夹,继续调用listFiles,遍历文件夹,然后重复 2 3 4步骤 -> 递归    
+```
+
+```java
+public class Demo04File {
+    public static void main(String[] args) {
+        // 1.创建File对象,指定要遍历的文件夹路径
+        File file = new File("E:\\Idea\\io\\aa");
+        method(file);
+    }
+
+    private static void method(File file) {
+       // 2.调用listFiles(),遍历文件夹,返回File数组
+        File[] files = file.listFiles();
+        // 3.遍历File数组,在遍历的过程中判断,如果是文件,获取文件名,判断是否以.jpg结尾的 如果是,输出
+        for (File file1 : files) {
+            if (file1.isFile()){
+                String name = file1.getName();
+                if (name.endsWith(".jpg")){
+                    System.out.println(name);
+                }
+            }else {
+       // 4.否则证明是文件夹,继续调用listFiles,遍历文件夹,然后重复 2 3 4步骤 -> 递归
+               method(file1);
+            }
+        }
+    }
+}
+```
+
+![File类](./IO流/img-55.jpg)
+
+
+
+
+
+### 相对路径和绝对路径
+
+```java
+1.绝对路径:从盘符开始写的路径
+  E:\\idea\\io\\1.txt
+2.相对路径:不从盘符名开始写的路径
+    
+3.针对idea中写相对路径:
+  a.口诀:哪个路径是参照路径,哪个路径就可以省略不写,剩下的就是在idea中的相对路径写法
+        在idea中参照路径其实就是当前project的绝对路径
+      
+  b.比如:在module21下创建了一个1.txt
+    先找1.txt的绝对路径:E:\Idea\idea2022\workspace\javase\module21\1.txt
+    再找参照路径:E:\Idea\idea2022\workspace\javase
+    参照路径可以省略:module21\1.txt
+        
+4.总结:
+  在idea中写的相对路径,其实就是从模块名开始写
+      
+5.注意:
+  如果直接写一个文件名1.txt,它所在的位置默认是在当前project下
+```
 
 
 
