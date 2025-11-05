@@ -2562,11 +2562,86 @@ classDiagram
 
 * 示例：
 
-```java [Student.java]
+```java [ObjectOutputStreamTest]
+package com.powernode.javase.io;
 
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.util.Date;
+
+/**
+ * java.io.ObjectOutputStream：对象流（对象字节输出流）
+ * 1. 它的作用是完成对象的序列化过程。
+ * 2. 它可以将JVM当中的Java对象序列化到文件中/网络中。
+ * 3. 序列化：将Java对象转换为字节序列的过程。（字节序列可以在网络中传输。）
+ * 4. 序列化：serial
+ */
+public class ObjectOutputStreamTest {
+    public static void main(String[] args) throws Exception {
+        // 创建“对象字节输出流”对象
+        // 包装流
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("object"));
+
+        // 准备一个Java对象
+        Date nowTime = new Date();
+
+        // 序列化serial
+        oos.writeObject(nowTime);
+
+        // 刷新
+        oos.flush();
+
+        // 关闭流
+        oos.close();
+    }
+}
 ```
 
+```java [ObjectOutputStreamTest02]
+package com.powernode.javase.io;
 
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * 序列化对象如果是多个对象的话，一般会序列化一个集合。
+ */
+public class ObjectOutputStreamTest02 {
+    public static void main(String[] args) throws Exception {
+        
+        // 创建多个对象
+        Date date1 = new Date();
+        Date date2 = new Date();
+        Date date3 = new Date();
+        Date date4 = new Date();
+        Date date5 = new Date();
+        Date date6 = new Date();
+
+        List<Date> list = new ArrayList<>();
+
+        list.add(date1);
+        list.add(date2);
+        list.add(date3);
+        list.add(date4);
+        list.add(date5);
+        list.add(date6);
+        
+        
+        // 序列化
+        ObjectOutputStream dos = new ObjectOutputStream(new FileOutputStream("dates"));
+
+        dos.writeObject(list);
+
+        // 刷新流
+        dos.flush();
+        // 关闭流
+        dos.close();
+    }
+}
+```
 
 
 
@@ -2606,9 +2681,273 @@ classDiagram
 
 * 示例：
 
-```java [Student.java]
+```java [ObjectInputStreamTest]
+package com.powernode.javase.io;
 
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+
+/**
+ * java.io.ObjectInputStream：对象流（对象字节输入流）
+ * 1. 专门完成反序列化的。（将字节序列转换成JVM当中的java对象。）
+ */
+public class ObjectInputStreamTest {
+    public static void main(String[] args) throws Exception {
+        // 包装流
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream("object"));
+
+        // 开始读
+        Object o = ois.readObject();
+        System.out.println(o); // Sun Nov 02 17:05:17 CST 2025
+
+        // 关闭流
+        ois.close();
+    }
+}
 ```
+
+```java [ObjectInputStreamTest02]
+package com.powernode.javase.io;
+
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * 反序列化
+ */
+public class ObjectInputStreamTest02 {
+    public static void main(String[] args) throws Exception {
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream("dates"));
+
+        // 反序列化
+        List<Date> dates = (List<Date>) ois.readObject();
+
+        for(Date date : dates){
+            System.out.println(date);
+            /*
+            Sun Nov 02 17:19:21 CST 2025
+            Sun Nov 02 17:19:21 CST 2025
+            Sun Nov 02 17:19:21 CST 2025
+            Sun Nov 02 17:19:21 CST 2025
+            Sun Nov 02 17:19:21 CST 2025
+            Sun Nov 02 17:19:21 CST 2025
+             */
+        }
+
+        // 关闭流
+        ois.close();
+    }
+}
+```
+
+
+
+
+
+### 自定义类进行序列化和反序列化
+
+```java
+package com.powernode.javase.io;
+
+import java.io.Serial;
+import java.io.Serializable;
+
+/**
+ * 1. 重点：凡是参与序列化和反序列化的对象必须实现 java.io.Serializable 可序列化的接口。
+ * 2. 这个接口是一个标志接口，没有任何方法。只是起到一个标记的作用。
+ * 3. 它到底是标记什么呢？？？？？？
+ * 4. 当java程序中类实现了Serializable接口，编译器会自动给该类添加一个“序列化版本号”。
+ *      序列化版本号：serialVersionUID
+ * 5. 序列化版本号有什么用？
+ *      在Java语言中是如何区分class版本的？
+ *      首先通过类的名字，然后再通过序列化版本号进行区分的。
+ *      在java语言中，不能仅仅通过一个类的名字来进行类的区分，这样太危险了。
+ * 6. 为了保证序列化的安全，只有同一个class才能进行序列化和反序列化。在java中是如何保证同一个class的？
+ *      类名 + 序列化版本号：serialVersionUID
+ *
+ * java.io.InvalidClassException: com.powernode.javase.io.Student;
+ * local class incompatible:
+ *      stream classdesc serialVersionUID = -4936871645261081394,  （三年前的学生对象，是三年前的Student.class创建的学生对象。）
+ *      local class serialVersionUID = 5009257763737485728  （三年后，Student.class升级了。导致了版本发生了变化。）
+ */
+public class Student implements Serializable {
+
+    // 建议：不是必须的。
+    // 如果你确定这个类确实还是以前的那个类。类本身是合法的。没有问题。
+    // 建议你将序列化版本号写死！
+    @Serial
+    private static final long serialVersionUID = 1134806885454190545L;
+
+    private String name;
+
+    private transient int age; // transient关键字修饰的属性不会参与序列化。
+
+    private  String addr;
+
+    public String getAddr() {
+        return addr;
+    }
+
+    public void setAddr(String addr) {
+        this.addr = addr;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                '}';
+    }
+
+    public Student() {
+    }
+
+    public Student(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+}
+```
+
+> **例子1：**
+
+```java
+package com.powernode.javase.io;
+
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+
+/**
+ * 序列化Student对象
+ */
+public class ObjectOutputStreamTest03 {
+    public static void main(String[] args) throws Exception {
+        // 创建流对象
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("student"));
+
+        // 创建对象
+        Student stu = new Student("zhangsan", 20);
+
+        // 写出数据
+        oos.writeObject(stu);
+
+        // 刷新
+        oos.flush();
+
+        // 释放资源
+        oos.close();
+    }
+}
+```
+
+```java
+package com.powernode.javase.io;
+
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+
+/**
+ * 反序列化过程：将文件中的Student字节序列恢复到内存中，变成Student对象。
+ */
+public class ObjectInputStreamTest03 {
+    public static void main(String[] args) throws Exception {
+
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream("student"));
+
+        // 反序列化
+        System.out.println(ois.readObject()); // Student{name='zhangsan', age=20}
+
+        // 关闭流
+        ois.close();
+    }
+}
+```
+
+> **例子2：**
+
+```java
+package com.powernode.javase.io;
+
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+
+/**
+ * 序列化
+ */
+public class ObjectOutputStreamTest04 {
+    public static void main(String[] args) throws Exception {
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("student2"));
+
+
+        Student student = new Student("zhangsan", 20);
+
+        // 序列化
+        oos.writeObject(student);
+
+        // 其实ObjectOutputStream中也有这些方法，和DataOutputStream中的方法一样。
+        /*oos.writeInt(100);
+        oos.writeBoolean(false);
+        oos.writeUTF("张三");*/
+
+        // 刷新流
+        oos.flush();
+
+        // 关闭流
+        oos.close();
+    }
+}
+```
+
+```java
+package com.powernode.javase.io;
+
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+
+/**
+ * 反序列化
+ */
+public class ObjectInputStreamTest04 {
+    public static void main(String[] args) throws Exception {
+
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream("student2"));
+
+        Object o = ois.readObject();
+        // 序列化
+        System.out.println(o);
+        /*
+        参加序列化(name)：Student{name='zhangsan', age=20}
+        未参加序列化(name)：Student{name='zhangsan', age=0}
+         */
+
+        // 关闭流
+        ois.close();
+    }
+}
+```
+
+
+
+
 
 
 
@@ -3328,204 +3667,162 @@ public class SystemOutTest {
 ```
 
 ```java
-1.概述:文件和目录(文件夹)路径名的抽象表示   
-2.简单理解:
+1.java.io.File
+    1.File是路径的抽象表示形式。
+    2.File和IO流没有继承关系，父类是Object，通过File不能完成文件的读和写。
+    3.File可能是一个文件，也可能是一个目录。
+    
+2.概述:文件和目录(文件夹)路径名的抽象表示   
+    
+3.简单理解:
   我们在创建File对象的时候,需要传递一个路径,这个路径定为到哪个文件或者文件夹上,我们的File就代表哪个对象
   File file = new File("E:\Idea\io\1.jpg")    
 ```
 
 
 
-### File的静态成员
+### File的常用方法(1)
 
 ```java
-static String pathSeparator:与系统有关的路径分隔符，为了方便，它被表示为一个字符串。
-static String separator:与系统有关的默认名称分隔符，为了方便，它被表示为一个字符串。  
-```
+package com.powernode.javase.io;
 
-```java
-public class Demo01File {
-    public static void main(String[] args) {
-        //file01();
-        file02();
-    }
+import java.io.File;
 
-    /*
-      将来写代码如何正确编写一个路径用java代码
-     */
-    private static void file02() {
-        String path1 = "E:\\Idea\\io";
-        System.out.println(path1);
-        System.out.println("==================");
+public class FileTest01 {
+    public static void main(String[] args) throws Exception {
+        // 构造一个File对象
+        File file = new File("D:\\0-JavaSE\\powernode-java\\file");
 
-        //要求代码写完,一次编写,到处运行
-        String path2 = "E:"+File.separator+"Idea"+File.separator+"io";
-        System.out.println(path2);
-    }
+        // 调用File对象的相关方法
+        System.out.println(file.exists() ? "存在" : "不存在"); // 不存在
 
-    private static void file01() {
-        //static String pathSeparator:与系统有关的路径分隔符，为了方便，它被表示为一个字符串。
-        String pathSeparator = File.pathSeparator;
-        System.out.println("pathSeparator = " + pathSeparator); //  ;
-        //static String separator:与系统有关的默认名称分隔符，为了方便，它被表示为一个字符串。
-        String separator = File.separator;
-        System.out.println("separator = " + separator); //  \
-    }
-}
+        // 如果不存在则以新文件的形式创建
+        /*if(!file.exists()){
+            // 以新的文件的形式创建出来
+            file.createNewFile();
+        }*/
 
-```
+        // 如果不存在则以目录的形式新建
+        if(!file.exists()){
+            file.mkdir();
+        }
 
-
-
-
-
-### File的构造方法
-
-```java
-File(String parent, String child) 根据所填写的路径创建File对象
-     parent:父路径
-     child:子路径
-File(File parent, String child)  根据所填写的路径创建File对象
-     parent:父路径,是一个File对象
-     child:子路径
-File(String pathname)  根据所填写的路径创建File对象
-     pathname:直接指定路径   
-```
-
-```java
-public class Demo02File {
-    public static void main(String[] args) {
-        //File(String parent, String child) 根据所填写的路径创建File对象
-        //parent:父路径
-        //child:子路径
-        File file1 = new File("E:\\Idea\\io", "1.jpg");
-        System.out.println("file1 = " + file1);
-        //File(File parent, String child)  根据所填写的路径创建File对象
-        //parent:父路径,是一个File对象
-        //child:子路径
-        File parent = new File("E:\\Idea\\io");
-        File file2 = new File(parent, "1.jpg");
-        System.out.println("file2 = " + file2);
-        //File(String pathname)  根据所填写的路径创建File对象
-        //pathname:直接指定路径
-        File file3 = new File("E:\\Idea\\io\\1.jpg");
-        System.out.println("file3 = " + file3);
+        // 构造一个File对象
+        File file2 = new File("D:\\0-JavaSE\\powernode-java\\a\\b\\c\\d");
+        // 如果不存在则以目录的形式新建
+        if(!file2.exists()){
+            file2.mkdirs();
+        }
     }
 }
 ```
 
-> 细节:
+> **测试:**
 >
-> 我们创建File对象的时候,传递的路径可以是不存在的,但是传递不存在的路径
+> ![File类](./IO流/img-56.jpg)
 
 
 
 
 
-### File的获取方法
 
-```java
-String getAbsolutePath() -> 获取File的绝对路径->带盘符的路径
-String getPath() ->获取的是封装路径->new File对象的时候写的啥路径,获取的就是啥路径
-String getName()  -> 获取的是文件或者文件夹名称
-long length() -> 获取的是文件的长度 -> 文件的字节数   
-```
+
+### File的常用方法(2)
 
 ```java
-    private static void file01() {
-        //String getAbsolutePath() -> 获取File的绝对路径->带盘符的路径
-        File file1 = new File("1.txt");
-        System.out.println("file1.getAbsolutePath() = " + file1.getAbsolutePath());
-        //String getPath() ->获取的是封装路径->new File对象的时候写的啥路径,获取的就是啥路径
-        File file2 = new File("io\\1.txt");
-        System.out.println("file2.getPath() = " + file2.getPath());
-        //String getName()  -> 获取的是文件或者文件夹名称
-        File file3 = new File("E:\\Idea\\io\\1.jpg");
-        System.out.println("file3.getName() = " + file3.getName());
-        //long length() -> 获取的是文件的长度 -> 文件的字节数
-        File file4 = new File("E:\\Idea\\io\\1.txt");
-        System.out.println("file4.length() = " + file4.length());
+package com.powernode.javase.io;
+
+import java.io.File;
+
+/**
+ * File类中的其他常见方法
+ */
+public class FileTest02 {
+    public static void main(String[] args) {
+        // 构造一个File对象
+        File file1 = new File("D:\\0-JavaSE\\powernode-java\\新建文本文档.txt");
+
+        // 判断文件是否存在，如果存在则删除
+        if(file1.exists()){
+            file1.delete();
+        }
+
+        File file2 = new File("D:\\0-JavaSE\\powernode-java\\a\\b\\c\\d");
+        if(file2.exists()){
+            file2.delete();
+        }
+
+        // 创建File对象
+        File file3 = new File("log");
+
+        // 获取绝对路径
+        System.out.println("log文件的绝对路径：" + file3.getAbsolutePath()); // log文件的绝对路径：D:\0-JavaSE\powernode-java\javase\log
+
+        // 获取名字
+        System.out.println("文件名：" + file3.getName()); // 文件名：log
+
+        // 创建File对象
+        File file4 = new File("D:\\0-JavaSE\\powernode-java\\a\\b\\c");
+        // 获取父路径
+        System.out.println("父路径：" + file4.getParent());  // 父路径：D:\0-JavaSE\powernode-java\a\b
+
+        // 判断该路径是否为绝对路径
+        System.out.println(file4.isAbsolute()? "是绝对路径" : "不是绝对路径"); // 是绝对路径
+
+        // 判断某个File是目录还是文件。
+        File file5 = new File("D:\\0-JavaSE\\powernode-java\\file");
+
+        System.out.println(file5.isDirectory() ? "是目录" : "是文件"); // 是文件
+        System.out.println(file5.isFile() ? "是文件" : "是目录"); // 是目录
+
     }
+}
 ```
 
 
 
 
 
-### File的创建方法
+
+
+### File的常用方法(3)
 
 ```java
-boolean createNewFile()  -> 创建文件
-        如果要创建的文件之前有,创建失败,返回false
-        如果要创建的文件之前没有,创建成功,返回true
-    
-boolean mkdirs() -> 创建文件夹(目录)既可以创建多级文件夹,还可以创建单级文件夹
-        如果要创建的文件夹之前有,创建失败,返回false
-        如果要创建的文件夹之前没有,创建成功,返回true
-```
+package com.powernode.javase.io;
 
-```java
-    private static void file02() throws IOException {
-        /*boolean createNewFile()  -> 创建文件
-        如果要创建的文件之前有,创建失败,返回false
-        如果要创建的文件之前没有,创建成功,返回true*/
-        File file1 = new File("E:\\Idea\\io\\1.txt");
-        System.out.println("file1.createNewFile() = " + file1.createNewFile());
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-        /*boolean mkdirs() -> 创建文件夹(目录)既可以创建多级文件夹,还可以创建单级文件夹
-        如果要创建的文件夹之前有,创建失败,返回false
-        如果要创建的文件夹之前没有,创建成功,返回true*/
-        File file2 = new File("E:\\Idea\\io\\haha\\heihei\\hehe");
-        System.out.println("file2.mkdirs() = " + file2.mkdirs());
+/**
+ * File类的常用方法
+ */
+public class FileTest03 {
+    public static void main(String[] args) {
+        // 创建一个File对象
+        File file1 = new File("D:\\0-JavaSE\\powernode-java\\file.txt");
+
+        // 判断该文件是否是隐藏文件
+        System.out.println(file1.isHidden() ? "隐藏文件" : "非隐藏文件"); // 非隐藏文件
+
+        // 获取文件的最后修改时间点
+        long l = file1.lastModified();
+        Date time = new Date(l);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
+        String str = sdf.format(time);
+        System.out.println("文件最后修改时间点：" + str); // 文件最后修改时间点：2025-11-05 15:06:55 056
+
+        // 获取文件的大小：总字节数
+        System.out.println(file1.getName() + "文件的总字节数：" + file1.length() + "字节"); // file.txt文件的总字节数：6字节
+
+        // 重命名
+        File file2 = new File("file2");
+        file1.renameTo(file2);
     }
+}
 ```
 
 
-
-
-
-### File类的删除方法
-
-```java
-boolean delete()->删除文件或者文件夹
-
-注意:
-  1.如果删除文件,不走回收站
-  2.如果删除文件夹,必须是空文件夹,而且也不走回收站    
-```
-
-```java
-    private static void file03() {
-        //boolean delete()->删除文件或者文件夹
-        //File file1 = new File("E:\\Idea\\io\\1.txt");
-        File file1 = new File("E:\\Idea\\io\\haha");
-        System.out.println("file1.delete() = " + file1.delete());
-    }
-```
-
-
-
-
-
-### File类的判断方法
-
-```java
-boolean isDirectory() -> 判断是否为文件夹 
-boolean isFile()  -> 判断是否为文件
-boolean exists()  -> 判断文件或者文件夹是否存在    
-```
-
-```java
-    private static void file04() {
-        File file = new File("E:\\Idea\\io\\1.txt");
-        // boolean isDirectory() -> 判断是否为文件夹
-        System.out.println("file.isDirectory() = " + file.isDirectory());
-       // boolean isFile()  -> 判断是否为文件
-        System.out.println("file.isFile() = " + file.isFile());
-       // boolean exists()  -> 判断文件或者文件夹是否存在
-        System.out.println("file.exists() = " + file.exists());
-    }
-```
 
 
 
@@ -3534,7 +3831,6 @@ boolean exists()  -> 判断文件或者文件夹是否存在
 ### File的遍历方法
 
 ```java
-String[] list() -> 遍历指定的文件夹,返回的是String数组 
 File[] listFiles()-> 遍历指定的文件夹,返回的是File数组 ->这个推荐使用
     
 细节:listFiles方法底层还是list方法
@@ -3542,21 +3838,143 @@ File[] listFiles()-> 遍历指定的文件夹,返回的是File数组 ->这个推
 ```
 
 ```java
-    private static void file05() {
-        File file = new File("E:\\Idea\\io\\aa");
-        //String[] list() -> 遍历指定的文件夹,返回的是String数组
-        String[] list = file.list();
-        for (String s : list) {
-            System.out.println(s);
-        }
-        //File[] listFiles()-> 遍历指定的文件夹,返回的是File数组 ->这个推荐使用
-        System.out.println("==============");
+package com.powernode.javase.io;
+
+import java.io.File;
+import java.io.FilenameFilter;
+
+/**
+ * File类的常用方法：File[] listFiles();
+ */
+public class FileTest04 {
+    public static void main(String[] args) {
+
+        File file = new File("D:\\0-JavaSE\\powernode-java");
+
+        // 获取所有的子文件，包括子目录。
         File[] files = file.listFiles();
-        for (File file1 : files) {
-            System.out.println(file1);
+
+        // 遍历数组
+        for(File f : files){
+            System.out.println(f.getName());
+            /*
+            a
+            chapter02
+            chapter04
+            file1.txt
+            file2.txt
+            file3.txt
+            file4.txt
+            javase
+            javase0
+            文件一
+            文件二
+             */
+        }
+
+        System.out.println("=====================================");
+
+        File file1 = new File("D:\\0-JavaSE\\powernode-java");
+
+        File[] files1 = file1.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                /*if (name.endsWith(".txt")) {
+                    return true;
+                }
+                return false;*/
+                return name.endsWith(".txt");
+            }
+        });
+
+        for(File f : files1){
+            System.out.println(f.getName());
+            /*
+            file1.txt
+            file2.txt
+            file3.txt
+            file4.txt
+             */
         }
     }
+}
 ```
+
+
+
+
+
+
+
+### 目录的递归拷贝(练习)
+
+```java
+package com.powernode.javase.io;
+
+import java.io.*;
+
+/**
+ * 目录拷贝。
+ */
+public class CopyDir {
+    public static void main(String[] args) {
+        // 拷贝源
+        File src = new File("D:\\0-JavaSE\\powernode-java\\chapter04"); // D:\0-JavaSE\powernode-java\chapter04\ArrayTest.java
+
+        // 拷贝目标
+        File dest = new File("D:\\0-JavaSE\\powernode-java\\a\\b\\c"); // D:\0-JavaSE\powernode-java\a\b\c\0-JavaSE\powernode-java\chapter04\ArrayTest.java
+
+        // 开始拷贝
+        copy(src, dest);
+    }
+
+    /**
+     * 拷贝目录的方法
+     *
+     * @param src  拷贝源
+     * @param dest 拷贝目标
+     */
+    private static void copy(File src, File dest) {
+        if (src.isFile()) {
+            // 是文件的时候要拷贝。
+            try(FileInputStream in = new FileInputStream(src);
+                FileOutputStream out = new FileOutputStream(dest.getAbsolutePath() + src.getAbsolutePath().substring(2))) {
+
+                // 开始拷贝
+                byte[] bytes = new byte[1024*1024];
+                int readCount = 0;
+                while ((readCount = in.read(bytes)) != -1) {
+                    out.write(bytes, 0, readCount);
+                }
+                // 刷新流
+                out.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+
+        // 假设src是一个目录
+        // 程序能够执行到此处一定是一个目录
+        // 创建目录
+        File newDir = new File(dest.getAbsolutePath() + src.getAbsolutePath().substring(2));
+        if (!newDir.exists()) {
+            newDir.mkdirs();
+        }
+
+        // 递归操作
+        File[] files = src.listFiles();
+        for (File file : files) {
+            //System.out.println(file.getAbsoluteFile());
+            copy(file, dest);
+        }
+    }
+}
+```
+
+> **测试:**
+>
+> ![File类](./IO流/img-57.jpg)
 
 
 
@@ -3634,6 +4052,437 @@ public class Demo04File {
 
 
 
+## 读取属性配置文件
+
+### 概述
+
+```java
+Properties + IO
+
+1.xxx.properties文件称为属性配置文件。
+    
+2.属性配置文件可以配置一些简单的信息，例如连接数据库的信息通常配置到属性文件中。这样可以做到在不修改java代码的前提下，切换数据库。
+    
+3.属性配置文件的格式：
+	key1=value1
+	key2=value2
+	key3=value3
+	注意：使用 # 进行注释。key不能重复，key重复则value覆盖。key和value之间用等号分割。等号两边不要有空格。
+    
+4.当然，也可以使用Java中的工具类快速获取配置信息：ResourceBundle
+	这种方式要求文件必须是xxx.properties
+	属性配置文件必须放在类路径当中
+```
+
+
+
+
+
+### 第一种方式
+
+```jdbc.properties
+#connect mysql database info
+driver=com.mysql.cj.jdbc.Driver
+url=jdbc:mysql://localhost:3306/powernode
+user=admin
+password=123456789
+```
+
+![读取属性配置文件](./IO流/img-58.jpg)
+
+```java
+package com.powernode.javase.io;
+
+import java.io.FileReader;
+import java.util.Properties;
+
+/**
+ * 使用Properties集合类 + IO流来读取属性配置文件。
+ * 将属性配置文件中的配置信息加载到内存中。
+ */
+public class LoadProperties {
+    public static void main(String[] args) throws Exception {
+        // 创建输入流对象
+        //FileReader reader = new  FileReader("chapter08/src/jdbc.properties");
+        String path = Thread.currentThread().getContextClassLoader().getResource("jdbc.properties").getPath();
+        FileReader reader = new FileReader(path);
+
+        // 创建一个Map集合（属性类对象）
+        Properties pro = new Properties();
+
+        // 加载：将jdbc.properties文件中的配置信息加载到Properties对象中。
+        pro.load(reader);
+
+        // 获取所有key
+        /*Enumeration<?> names = pro.propertyNames();
+        while (names.hasMoreElements()) {
+            String name = (String)names.nextElement();
+            String value = pro.getProperty(name);
+            System.out.println(name + "=" + value);
+        }*/
+
+        // 通过key来获取value
+        String driver = pro.getProperty("driver");
+        String url = pro.getProperty("url");
+        String user = pro.getProperty("user");
+        String password = pro.getProperty("password");
+
+        System.out.println(driver);
+        System.out.println(url);
+        System.out.println(user);
+        System.out.println(password);
+        /*
+        com.mysql.cj.jdbc.Driver
+        jdbc:mysql://localhost:3306/powernode
+        admin
+        123456789
+         */
+
+        // 关闭输入流
+        reader.close();
+    }
+}
+```
+
+
+
+
+
+### 第二种方式
+
+```jdbc.properties
+//当然，也可以使用Java中的工具类快速获取配置信息：ResourceBundle
+	//这种方式要求文件必须是xxx.properties
+	//属性配置文件必须放在类路径当中
+#connect mysql database info
+driver=com.mysql.cj.jdbc.Driver
+url=jdbc:mysql://192.168.137.154:3306/powernode
+user=admin
+password=11111
+```
+
+![读取属性配置文件](./IO流/img-59.jpg)
+
+```java
+package com.powernode.javase.io;
+
+import java.util.ResourceBundle;
+
+/**
+ * 使用JDK中提供的资源绑定器来绑定属性配置文件。
+ */
+public class BundleProperties {
+    public static void main(String[] args) {
+        // 获取资源绑定器对象
+        // 使用这个工具要求文件也必须是一个属性配置文件。xxx.properties
+        ResourceBundle bundle = ResourceBundle.getBundle("com.powernode.javase.io.jdbc");
+        //ResourceBundle bundle = ResourceBundle.getBundle("com/powernode/javase/io/jdbc");
+
+        // 这个获取的是类的根路径下的jdbc.properties文件。
+        //ResourceBundle bundle = ResourceBundle.getBundle("jdbc");
+        // 这个代码的意思是从类的根路径下找db.properties文件。
+        //ResourceBundle bundle = ResourceBundle.getBundle("db");
+
+        // 以下两行都是错误的：资源找不到。
+        //ResourceBundle bundle = ResourceBundle.getBundle("com.powernode.javase.io.db.properties");
+        //ResourceBundle bundle = ResourceBundle.getBundle("com/powernode/javase/io/db.properties");
+
+        // 通过key获取value
+        String driver = bundle.getString("driver");
+        String url = bundle.getString("url");
+        String user = bundle.getString("user");
+        String password = bundle.getString("password");
+
+        System.out.println(driver);
+        System.out.println(url);
+        System.out.println(user);
+        System.out.println(password);
+        /*
+        com.mysql.cj.jdbc.Driver
+        jdbc:mysql://192.168.137.154:3306/powernode
+        admin
+        11111
+         */
+    }
+}
+```
+
+
+
+
+
+
+
+## 装饰器设计模式(Decorator Pattern)
+
+
+
+### 概述
+
+```java
+1.思考：如何扩展一个类的功能？继承确实也可以扩展对象的功能，但是接口下的实现类很多，每一个子类都需要提供一个子类。就需要编写大量的子类来重写父类的方法。会导致子类数量至少翻倍，会导致类爆炸问题。
+    
+2.装饰器设计模式是GoF23种设计模式之一，属于结构型设计模式。（结构型设计模式通常处理对象和类之间的关系，使程序员能够更好地组织代码并更好地利用现有代码。）
+    
+3.IO流中使用了大量的装饰器设计模式。
+    
+4.装饰器设计模式作用：装饰器模式可以做到在不修改原有代码的基础之上，完成功能扩展，符合OCP原则。并且避免了使用继承带来的类爆炸问题。
+    
+5.装饰器设计模式中涉及到的角色包括：
+	抽象的装饰者
+	具体的装饰者1、具体的装饰者2
+	被装饰者
+	装饰者和被装饰者的公共接口/公共抽象类
+```
+
+![装饰器设计模式(Decorator Pattern)](./IO流/img-60.jpg)
+
+
+
+### 优化前
+
+```java
+使用子类对父类的方法进行扩展。
+ 	这种功能扩展方式，虽然符合OCP。没有修改之前的原代码。
+ 	但是这种继承导致的问题有两个：
+       第一个：代码耦合度高。
+       第二个：类爆炸问题。
+```
+
+```java
+package com.powernode.javase.io.decorator;
+
+/**
+ * 可飞翔的
+ */
+public interface Flyable {
+    /**
+     * 飞翔
+     */
+    void fly();
+}
+```
+
+```java
+package com.powernode.javase.io.decorator;
+
+public class Cat implements Flyable {
+    @Override
+    public void fly() {
+        System.out.println("Cat fly");
+    }
+}
+```
+
+```java
+package com.powernode.javase.io.decorator;
+
+public class Bird implements Flyable {
+    @Override
+    public void fly() {
+        System.out.println("Bird fly");
+    }
+}
+```
+
+```java
+package com.powernode.javase.io.decorator;
+
+public class CatSub extends Cat{
+    @Override
+    public void fly() {
+        long begin = System.currentTimeMillis();
+        super.fly();
+        long end = System.currentTimeMillis();
+        System.out.println("耗时"+(end - begin)+"毫秒");
+    }
+}
+```
+
+```java
+package com.powernode.javase.io.decorator;
+
+/**
+ * 采用继承的方式，写了一个子类，对父类的行为进行功能扩展。
+ */
+public class BirdSub extends Bird{
+    @Override
+    public void fly() {
+        long begin = System.currentTimeMillis();
+        super.fly();
+        long end = System.currentTimeMillis();
+        System.out.println("耗时"+(end - begin)+"毫秒");
+    }
+}
+```
+
+```java
+package com.powernode.javase.io.decorator;
+
+public class Test {
+    public static void main(String[] args) {
+        //Flyable flyable1 = new Cat();
+        Flyable flyable1 = new CatSub();
+        flyable1.fly();
+
+        //Flyable flyable2 = new Bird();
+        Flyable flyable2 = new BirdSub();
+        flyable2.fly();
+    }
+}
+```
+
+> **测试:**
+>
+> ![装饰器设计模式(Decorator Pattern)](./IO流/img-61.jpg)
+
+
+
+
+
+
+
+### 优化后
+
+```java
+0. 装饰器设计模式的主要目标：在松耦合的前提下，能够完成功能的扩展。
+    
+1. 在装饰器设计模式中有两个非常重要的角色：装饰者，被装饰者。
+    
+2. 装饰器设计模式当中要求：装饰者 与 被装饰者 应实现同一个接口/同一些接口，继承同一个抽象类....
+    
+3. 为什么装饰者 与 被装饰者 要实现同一个接口呢？
+	因为实现了同一个接口之后，对于客户端程序来说，使用装饰者的时候就向在使用被装饰者一样。
+    
+4. 装饰者含有被装饰者的引用。(A has a B。尽量使用has a【耦合度低一些】。不要使用is a。)
+```
+
+![装饰器设计模式(Decorator Pattern)](./IO流/img-62.jpg)
+
+```java
+package com.powernode.javase.io.decorator1;
+
+public interface Flyable {
+    void fly();
+}
+```
+
+```java
+package com.powernode.javase.io.decorator1;
+
+// 被装饰者
+public class Cat implements Flyable {
+    @Override
+    public void fly() {
+        System.out.println("Cat fly!");
+    }
+}
+```
+
+```java
+package com.powernode.javase.io.decorator1;
+
+// 被装饰者
+public class Bird implements Flyable {
+    @Override
+    public void fly() {
+        System.out.println("Bird fly!");
+    }
+}
+```
+
+```java
+package com.powernode.javase.io.decorator1;
+
+/**
+ * 所有的装饰者应该有一个共同的父类。这个父类通常是一个抽象类。
+ * 所有装饰者的头领。
+ */
+public abstract class FlyableDecorator implements Flyable {
+    private Flyable flyable;
+
+    public FlyableDecorator(Flyable flyable) {
+        this.flyable = flyable;
+    }
+
+    @Override
+    public void fly() {
+        flyable.fly();
+    }
+}
+```
+
+```java
+package com.powernode.javase.io.decorator1;
+
+// 装饰者
+public class TimerDecorator extends FlyableDecorator {
+
+    // 有一个被装饰者的引用。
+    // 这个引用的类型最好是抽象的。不是具体的。
+    // 因为Cat和Bird都实现了接口Flyable。
+    // 因此这里的被装饰者引用，它的类型是 Flyable
+    //private Flyable flyable;
+    public TimerDecorator(Flyable flyable) {
+        super(flyable);
+    }
+
+    @Override
+    public void fly() {
+        // 这里可以添加代码（前增强）
+        long begin = System.currentTimeMillis();
+        super.fly();
+        // 这里可以添加代码（后增强）
+        long end = System.currentTimeMillis();
+        System.out.println("耗时"+(end - begin)+"毫秒");
+    }
+}
+```
+
+```java
+package com.powernode.javase.io.decorator1;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+// 装饰者
+public class LogDecorator extends FlyableDecorator {
+
+    public LogDecorator(Flyable flyable) {
+        super(flyable);
+    }
+
+    @Override
+    public void fly() {
+        Date now = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
+        System.out.println(sdf.format(now) + ": 起飞前的准备");
+
+        super.fly();
+
+        now = new Date();
+        System.out.println(sdf.format(now) + ": 安全降落");
+    }
+}
+```
+
+```java
+package com.powernode.javase.io.decorator1;
+
+public class Test {
+    public static void main(String[] args) {
+        //Flyable flyable1 = new Cat();
+        Flyable flyable1 = new TimerDecorator(new Cat());
+        //Flyable flyable1 = new LogDecorator(new Cat());
+        flyable1.fly();
+
+        //Flyable flyable2 = new Bird();
+        Flyable flyable2 = new TimerDecorator(new Bird());
+        //Flyable flyable2 = new LogDecorator(new Cat());
+        flyable2.fly();
+    }
+}
+```
 
 
 
@@ -3643,6 +4492,167 @@ public class Demo04File {
 
 
 
+## 压缩和解压缩流
+
+
+
+### 概述
+
+* 在现实生活中，如果在网络中我们要传输的数据太大，此时我们就可以先压缩再传输。
+
+![压缩](./IO流/img-65.svg)
+
+* 同理，如果我们接收到一个压缩包，还需要解压（解压缩）才能使用。
+
+![解压缩（解压）](./IO流/img-66.svg)
+
+
+
+### IO 体系
+
+* `解压缩流`主要是读取压缩包中的内容，所以它属于`读`，即：输入流。
+* `压缩流`主要是将文件中的数据写到压缩包中，属于它属于`写`，即：输出流。
+
+```mermaid
+classDiagram
+    IO 流体系 <|-- 字节流 
+    字节流 <|-- InputStream 
+    字节流 <|-- OutputStream 
+    InputStream <|-- GZIPInputStream
+    note for GZIPInputStream "解压缩流"
+    OutputStream <|-- GZIPOutputStream
+    note for GZIPOutputStream "压缩流"
+    class InputStream{
+        <<Abstract>>
+    }
+    class OutputStream{
+        <<Abstract>>
+    }
+```
+
+
+
+
+
+### GZIPOutputStream（压缩）
+
+```java
+1.GZIPOutputStream（压缩）
+使用GZIPOutputStream可以将文件制作为压缩文件，压缩文件的格式为 .gz 格式。
+    
+2.核心代码：
+	FileInputStream fis = new FileInputStream("d:/test.txt"); // 被压缩的文件：test.txt
+	GZIPOutputStream gzos = new GZIPOutputStream(new FileOutputStream("d:/test.txt.gz")) // 压缩后的文件
+	接下来就是边读边写：
+	int length;
+	while ((length = fis.read(buffer)) > 0) {
+		gzos.write(buffer, 0, length);
+	}
+	gzos.finish(); // 在压缩完所有数据之后调用finish()方法，以确保所有未压缩的数据都被刷新到输出流中，并生成必要的 Gzip 结束标记，标志着压缩数据的结束。
+
+3.注意（补充）：实际上所有的输出流中，只有带有缓冲区的流才需要手动刷新，节点流是不需要手动刷新的，节点流在关闭的时候会自动刷新。
+```
+
+```java
+package com.powernode.javase.io;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.zip.GZIPOutputStream;
+
+/**
+ * java.util.zip.GZIPOutputStream：专门进行文件压缩的。（生成的文件格式是: xxx.gz）
+ */
+public class GZIPOutputStreamTest {
+    public static void main(String[] args) throws Exception {
+
+        // 创建文件字节输入流（读某个文件，这个文件将来就是被压缩的。）
+        FileInputStream in = new FileInputStream("D:\\0-JavaSE\\powernode-java\\test.txt");
+
+        // 创建一个GZIP压缩流对象
+        GZIPOutputStream gzip = new GZIPOutputStream(new FileOutputStream("D:\\0-JavaSE\\powernode-java\\test.txt.gz"));
+
+        // 开始压缩（一边读一边写）
+        byte[] bytes = new byte[1024];
+        int readCount = 0;
+        while ((readCount = in.read(bytes)) != -1) {
+            gzip.write(bytes, 0, readCount);
+        }
+
+
+        // 非常重要的代码需要调用
+        // 刷新并且最终生成压缩文件。
+        gzip.finish();
+
+        // 关闭流
+        in.close();
+        gzip.close();
+    }
+}
+```
+
+> **测试:**
+>
+> ![压缩和解压缩流](./IO流/img-63.jpg)
+
+
+
+
+
+
+
+### GZIPInputStream（解压缩）
+
+```java
+1.GZIPInputStream（解压缩）
+使用GZIPInputStream可以将 .gz 格式的压缩文件解压。
+    
+2.核心代码：
+	GZIPInputStream gzip = new GZIPInputStream(new 			FileInputStream("d:/test.txt.gz"));
+	FileOutputStream out = new FileOutputStream("d:/test.txt");
+	byte[] bytes = new byte[1024];
+	int readCount = 0;
+	while((readCount = gzip.read(bytes)) != -1){
+		out.write(bytes, 0, readCount);
+	}
+```
+
+```java
+package com.powernode.javase.io;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.zip.GZIPInputStream;
+
+/**
+ * java.util.zip.GZIPInputStream：负责解压缩的。解压缩的文件扩展名：xxx.gz
+ */
+public class GZIPInputStreamTest {
+    public  static void main(String[] args) throws Exception {
+        // 创建GZIP解压缩流对象
+        GZIPInputStream gzip = new GZIPInputStream(new FileInputStream("D:\\0-JavaSE\\powernode-java\\test.txt.gz"));
+
+        // 创建文件字节输出流
+        FileOutputStream out = new FileOutputStream("D:\\0-JavaSE\\powernode-java\\test.txt");
+
+        // 一边读一边写
+        byte[] bytes = new byte[1024];
+        int readCount = 0;
+        while ((readCount = gzip.read(bytes)) != -1) {
+            out.write(bytes, 0, readCount);
+        }
+
+        // 关闭流
+        gzip.close();
+        // 节点流关闭的时候会自动刷新，包装流是需要手动刷新的。（补充的知识点。）
+        out.close();
+    }
+}
+```
+
+> **测试:**
+>
+> ![压缩和解压缩流](./IO流/img-64.jpg)
 
 
 
@@ -3652,6 +4662,126 @@ public class Demo04File {
 
 
 
+## 字节数组流(内存流)
+
+### 概述
+
+```java
+1.ByteArrayInputStream和ByteArrayOutputStream都是内存操作流，不需要打开和关闭文件等操作。这些流是非常常用的，可以将它们看作开发中的常用工具，能够方便地读写字节数组、图像数据等内存中的数据。
+    
+2.ByteArrayInputStream和ByteArrayOutputStream都是节点流。
+    
+3.ByteArrayOutputStream，将数据写入到内存中的字节数组当中。
+    
+4.ByteArrayInputStream，读取内存中某个字节数组中的数据。
+```
+
+![字节数组流(内存流)](./IO流/img-67.jpg)
+
+
+
+### ByteArrayOutputStream
+
+![字节数组流(内存流)](./IO流/img-70.jpg)
+
+```java
+package com.powernode.javase.io;
+
+import java.io.ByteArrayOutputStream;
+
+/**
+ * java.io.ByteArrayOutputStream：向内存中的字节数组写数据。
+ */
+public class ByteArrayOutputStreamTest01 {
+    public static void main(String[] args) {
+
+        // ByteArrayOutputStream的基本用法。
+        ByteArrayOutputStream baos = new ByteArrayOutputStream(); //节点流
+
+        // 开始写
+        baos.write(1);
+        baos.write(2);
+        baos.write(3);
+
+        // 怎么获取内存中的哪个byte[]数组呢？
+        byte[] byteArray = baos.toByteArray();
+        for(byte b : byteArray){
+            System.out.println(b);
+            /*
+            1
+            2
+            3
+             */
+        }
+    }
+}
+```
+
+
+
+
+
+### ByteArrayInputStream和ByteArrayOutputStream结合使用
+
+![字节数组流(内存流)](./IO流/img-68.jpg)
+
+![字节数组流(内存流)](./IO流/img-69.jpg)
+
+```java
+package com.powernode.javase.io;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.Date;
+
+/**
+ * 了解了装饰器设计模式之后，我们就知道了，包装流和节点流是可以随意组合的。
+ * ObjectOutputStream（包装流）和ByteArrayOutputStream（节点流）进行组合。
+ */
+public class ByteArrayOutputStreamTest02 {
+    public static void main(String[] args) throws Exception {
+
+        // 节点流
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        // 包装流
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+
+        // 开始写
+        oos.writeInt(100);
+        oos.writeBoolean(false);
+        oos.writeDouble(3.14);
+        oos.writeUTF("动力节点");
+        oos.writeObject(new Date());
+
+        // 使用了包装流就需要手动刷新一下。
+        oos.flush();
+
+        // 获取内存中的大byte数组
+        byte[] byteArray = baos.toByteArray();
+        /*for(byte b : byteArray){
+            System.out.println(b);
+        }*/
+
+
+        // 使用ByteArrayInputStream将上面这个byte数组恢复。
+        // 读的过程，读内存中的大byte数组。
+        // 节点流
+        ByteArrayInputStream bais = new ByteArrayInputStream(byteArray);
+        // 包装流
+        ObjectInputStream ois = new ObjectInputStream(bais);
+
+        // 开始读
+        System.out.println(ois.readInt()); // 100
+        System.out.println(ois.readBoolean()); // false
+        System.out.println(ois.readDouble()); // 3.14
+        System.out.println(ois.readUTF()); // 动力节点
+        System.out.println(ois.readObject()); // Wed Nov 05 19:56:00 CST 2025
+    }
+}
+```
 
 
 
@@ -3659,18 +4789,169 @@ public class Demo04File {
 
 
 
+## 对象克隆
 
+### 对象的深克隆
 
+```java
+1.除了我们之前所讲的深克隆方式（之前的深克隆是重写clone()方法）。使用字节数组流也可以完成对象的深克隆。
 
+2.原理是：将要克隆的Java对象写到内存中的字节数组中，再从内存中的字节数组中读取对象，读取到的对象就是一个深克隆。
 
+3.目前为止，对象拷贝方式：
 
+	3.1.调用Object的clone方法，默认是浅克隆，需要深克隆的话，就需要重写clone方法。
 
+	3.2.可以通过序列化和反序列化完成对象的克隆。
 
+	3.3.也可以通过ByteArrayInputStream和ByteArrayOutputStream完成深克隆。
+```
 
+![对象的深克隆](./IO流/img-71.jpg)
 
+```java
+package com.powernode.javase.io.clone;
 
+import java.io.Serial;
+import java.io.Serializable;
 
+public class User implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 5814035595699736480L;
 
+    private String name;
+    private int age;
+    private Address addr;
 
+    public User() {
+    }
 
+    public User(String name, int age, Address addr) {
+        this.name = name;
+        this.age = age;
+        this.addr = addr;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public Address getAddr() {
+        return addr;
+    }
+
+    public void setAddr(Address addr) {
+        this.addr = addr;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                ", addr=" + addr +
+                '}';
+    }
+}
+```
+
+```java
+package com.powernode.javase.io.clone;
+
+import java.io.Serial;
+import java.io.Serializable;
+
+public class Address implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -7874768952114783060L;
+
+    private String city;
+    private String street;
+
+    public Address() {
+    }
+
+    public Address(String city, String street) {
+        this.city = city;
+        this.street = street;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "city='" + city + '\'' +
+                ", street='" + street + '\'' +
+                '}';
+    }
+}
+```
+
+```java
+package com.powernode.javase.io.clone;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
+/**
+ * 使用ByteArrayOutputStream和ByteArrayInputStream直接复制的对象就是一个深克隆。
+ */
+public class DeepCloneTest {
+    public static void main(String[] args) throws Exception {
+        // 准备对象
+        Address addr = new Address("北京","朝阳");
+        User user = new User("zhangsan",20,addr);
+
+        // 将Java对象写到一个byte数组中。
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(bos);
+
+        oos.writeObject(user);
+
+        oos.flush();
+
+        // 从byte数组中读取数据恢复java对象
+        ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
+        ObjectInputStream ois = new ObjectInputStream(bis);
+
+        // 这就是哪个经过深拷贝之后的新对象
+        User user2 = (User)ois.readObject();
+
+        user2.getAddr().setCity("南京");
+
+        System.out.println(user); // User{name='zhangsan', age=20, addr=Address{city='北京', street='朝阳'}}
+        System.out.println(user2); // User{name='zhangsan', age=20, addr=Address{city='南京', street='朝阳'}}
+    }
+}
+```
