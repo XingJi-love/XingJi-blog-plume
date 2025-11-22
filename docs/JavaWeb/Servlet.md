@@ -18,143 +18,252 @@ cover: /JavaWeb.jpg
 
 + 无需在程序运行时通过代码运行生成的资源,在程序运行之前就写好的资源. 例如:html css js img ,音频文件和视频文件
 
+**静态资源获取流程：**
+
+![静态资源获取流程](./Servlet/img-1.jpg)
+
 > 动态资源 
 
 + 需要在程序运行时通过代码运行生成的资源,在程序运行之前无法确定的数据,运行时动态生成,例如Servlet,Thymeleaf ... ...
 + 动态资源指的不是视图上的动画效果或者是简单的人机交互效果
 
+**动态资源获取流程：**
+
+![动态资源获取流程](./Servlet/img-2.jpg)
+
 > 生活举例
 
 + 去蛋糕店买蛋糕
-    + 直接买柜台上已经做好的  : 静态资源
-    + 和柜员说要求后现场制作  : 动态资源
+    + **直接买柜台上已经做好的  : 静态资源**
+    + **和柜员说要求后现场制作  : 动态资源**
 
 ### Servlet简介
 
-> Servlet  (server applet) 是运行在服务端(tomcat)的Java小程序，是sun公司提供一套定义动态资源规范; 从代码层面上来讲Servlet就是一个接口
+> **Servlet  (server applet) 是`运行在服务端(tomcat)的Java小程序`，是sun公司提供一套定义动态资源规范; 从代码层面上来讲`Servlet就是一个接口`**
 
 + 用来接收、处理客户端请求、响应给浏览器的动态资源。在整个Web应用中，Servlet主要负责接收处理请求、协同调度功能以及响应数据。我们可以把Servlet称为Web应用中的**控制器**
 
 <img src="./images/1681544428055.png" alt="1681544428055" style="zoom:50%;" />
 
-+ 不是所有的JAVA类都能用于处理客户端请求,能处理客户端请求并做出响应的一套技术标准就是Servlet
++ **不是所有的JAVA类都能用于处理客户端请求,`能处理客户端请求并做出响应的一套技术标准就是Servlet`**
 + Servlet是运行在服务端的,所以 Servlet必须在WEB项目中开发且在Tomcat这样的服务容器中运行
-> 请求响应与HttpServletRequest和HttpServletResponse之间的对应关系
+> **`请求响应`与`HttpServletRequest`和`HttpServletResponse`之间的`对应关系`**
 
 ![1681699577344](images/1681699577344.png)
+
+> **Servlet的运行流程:**
+>
+> ![Servlet的运行流程](./Servlet/img-3.jpg)
+>
+> 1.**tomcat接收到请求后，会将请求报文的信息转换一个HttpServletRequest对象，该对象中包含了请求中的所有信息(请求行、请求头、请求体)**
+>
+> 2.**tomcat同时创建一个HttpServletResponse对象，该对象用于承装要响应的报文(请求行、请求头、请求体)**
+>
+> 3.**tomcat根据请求中的资源路径找到对应的servlet，将servlet实例化，调用service方法，同时将HttpServletRequest和HttpServletResponse对象传入**
+
+
+
+
 
 ## Servlet开发流程
 
 ### 目标
 
 > 校验注册时,用户名是否被占用. 通过客户端向一个Servlet发送请求,携带username,如果用户名是'atguigu',则向客户端响应 NO,如果是其他,响应YES
+>
+> ![Servlet开发流程](./Servlet/img-4.jpg)
 
 ### 开发过程
 
-> 步骤1 开发一个web类型的module 
+> **步骤1: 开发一个web类型的module** 
 
 + 过程参照之前
 
-> 步骤2 开发一个UserServlet
+> **步骤2: 开发一个UserServlet**
+
+```java
+1.servlet开发流程：
+	1.创建javaweb项目，同时将tomcat添加为当前项目的依赖
+	2.重写service方法
+	3.在service方法中，定义业务处理代码
+	4.在web.xml中，配置Servlet 对应的请求映射路径
+   
+2.servlet-api.jar 导入问题
+    servlet-api	编码的时候，在服务器的环境中，由服务软件(Tomcat)提供，因此，我们的JAVAWEB项目中，打包/构建的时候，是无需携带servlet-api的jar包
+    
+3.Content-Type响应头的问题
+    MIME类型响应头	媒体类型，文件类型，响应的数据类型
+    MIME类型用于告诉客户端响应的数据是什么类型的数据，客户端以此类型决定用什么方式解析响应体
+```
+
+![Servlet开发流程](./Servlet/img-6.jpg)
 
 ```java title="Java"
-public class UserServlet  extends HttpServlet {
+public class UserServlet extends HttpServlet {
+    // 重写service方法
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // 获取请求中的参数
-        String username = req.getParameter("username");
-        if("atguigu".equals(username)){
-            //通过响应对象响应信息
-            resp.getWriter().write("NO");
-        }else{
-            resp.getWriter().write("YES");
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // 1.从request对象中获取请求中的如何信息(username参数)
+        String username = request.getParameter("username");
+        /*
+        getParameter方法：根据参数名获取参数值 无论参数是在url?后，还是在请求体中
+         */
+
+        // 2.处理业务的代码
+        String info = "<h1>YES<h1>";
+        if ("atguigu".equals(username)) {
+            info = "<h1>NO<h1>";
         }
 
+        // 3.将要响应的数据放入response
+        // 应该设置Content-Type响应头
+        //response.setHeader("Content-Type", "text/html");
+        response.setContentType("text/html");
+
+        PrintWriter writer = response.getWriter();
+        writer.write(info);
     }
 }
 ```
 
-+ 自定义一个类,要继承HttpServlet类
-+ 重写service方法,该方法主要就是用于处理用户请求的服务方法
-+ HttpServletRequest 代表请求对象,是有请求报文经过tomcat转换而来的,通过该对象可以获取请求中的信息
-+ HttpServletResponse 代表响应对象,该对象会被tomcat转换为响应的报文,通过该对象可以设置响应中的信息
-+ Servlet对象的生命周期(创建,初始化,处理服务,销毁)是由tomcat管理的,无需我们自己new
-+ HttpServletRequest HttpServletResponse 两个对象也是有tomcat负责转换,在调用service方法时传入给我们用的
+> + **自定义一个类,要`继承HttpServlet类`**
+> + **`重写service方法`,该方法主要就是`用于处理用户请求的服务方法`**
+> + **`HttpServletRequest` 代表`请求对象`,是有请求报文经过tomcat转换而来的,通过该对象`可以获取请求中的信息`**
+> + **`HttpServletResponse` 代表`响应对象`,该对象会被tomcat转换为响应的报文,通过该对象`可以设置响应中的信息`**
+> + **`Servlet对象`的`生命周期(创建,初始化,处理服务,销毁)`是由tomcat管理的,无需我们自己new**
+> + **`HttpServletRequest HttpServletResponse`两个对象也是有`tomcat负责转换`,在`调用service方法`时传入给我们用的**
 
-> 步骤3 在web.xml为UseServlet配置请求的映射路径
+
+
+> **步骤3: 在`web.xml`为`UseServlet`配置`请求的映射路径`**
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
-         version="5.0">
-
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+    <!--
+    1.配置Servlet类，并起一个别名
+        servlet-class  告诉Tomcat对应的要实例化的Servlet类
+        servlet-name 用于关联请求的映射路径
+    -->
     <servlet>
         <!--给UserServlet起一个别名-->
         <servlet-name>userServlet</servlet-name>
-        <servlet-class>com.atguigu.servlet.UserServlet</servlet-class>
+        <servlet-class>fun.xingji.servlet.UserServlet</servlet-class>
     </servlet>
-
 
     <servlet-mapping>
         <!--关联别名和映射路径-->
         <servlet-name>userServlet</servlet-name>
         <!--可以为一个Servlet匹配多个不同的映射路径,但是不同的Servlet不能使用相同的url-pattern-->
         <url-pattern>/userServlet</url-pattern>
-       <!-- <url-pattern>/userServlet2</url-pattern>-->
-        <!--
-            /        表示通配所有资源,不包括jsp文件
-            /*       表示通配所有资源,包括jsp文件
-            /a/*     匹配所有以a前缀的映射路径
-            *.action 匹配所有以action为后缀的映射路径
-        -->
-       <!-- <url-pattern>/*</url-pattern>-->
     </servlet-mapping>
+    
+    
+    <!--
+    一个servlet-name 可以同时对应多个url-pattern
+    一个servlet标签可以同时对应多个servlet-mapping标签
+
+    url-pattern:
+            1.精准匹配
+                /servlet1        表示通配所有资源,不包括jsp文件
+
+            2.模糊匹配
+                *作为通配符, *在哪里，哪里就是模糊的
+                /        表示通配所有资源,不包括jsp文件
+                /*       表示通配所有资源,包括jsp文件
+                /a/*     匹配所有以a前缀的映射路径(匹配前缀，后缀模糊)
+                *.action 匹配所有以action为后缀的映射路径
+    -->
+    <servlet>
+        <servlet-name>servlet1</servlet-name>
+        <servlet-class>fun.xingji.servlet.Servlet1</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>servlet1</servlet-name>
+        <!--精准匹配-->
+        <!--<url-pattern>/servlet1</url-pattern>-->
+        <!--<url-pattern>/a/*</url-pattern>-->
+        <url-pattern>*.action</url-pattern>
+    </servlet-mapping>
+
+
+    <!--<servlet-mapping>
+        <servlet-name>servlet1</servlet-name>
+        <url-pattern>/s1</url-pattern>
+        <url-pattern>/xx1</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>servlet1</servlet-name>
+        <url-pattern>/a</url-pattern>
+        <url-pattern>/b</url-pattern>
+    </servlet-mapping>-->
 
 </web-app>
 ```
 
-+ Servlet并不是文件系统中实际存在的文件或者目录,所以为了能够请求到该资源,我们需要为其配置映射路径
-+ servlet的请求映射路径配置在web.xml中
-+ servlet-name作为servlet的别名,可以自己随意定义,见名知意就好
-+ url-pattern标签用于定义Servlet的请求映射路径
-+ 一个servlet可以对应多个不同的url-pattern
-+ 多个servlet不能使用相同的url-pattern
-+ url-pattern中可以使用一些通配写法
-    + /        表示通配所有资源,不包括jsp文件
-    + /*      表示通配所有资源,包括jsp文件
-    + /a/*     匹配所有以a前缀的映射路径
-    + *.action 匹配所有以action为后缀的映射路径
+> + **Servlet并不是文件系统中实际存在的文件或者目录,所以为了能够请求到该资源,我们需要为其配置映射路径**
+> + **`servlet的请求映射`路径`配置在web.xml中`**
+> + **`servlet-name`作为`servlet的别名`,可以自己随意定义,见名知意就好**
+> + **`url-pattern`标签用于`定义Servlet的请求映射路径`**
+> + **`一个servlet`可以对应`多个不同的url-pattern`**
+> + **`多个servlet`不能使用`相同的url-pattern`**
+> + **url-pattern中可以使用一些通配写法**
+>   + **`/`       表示`通配所有资源,不包括jsp文件`**
+>   + **`/*`      表示`通配所有资源,包括jsp文件`**
+>   + **`/a/*`     匹配`所有以a前缀的映射路径`**
+>   + **`*.action` 匹配`所有以action为后缀的映射路径`**
 
-> 步骤4 开发一个form表单,向servlet发送一个get请求并携带username参数
+
+
+> **步骤4: 发一个form表单,向servlet发送一个get请求并携带username参数**    
 
 ```html title="HTML"
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-    <form action="userServlet">
-        请输入用户名:<input type="text" name="username" /> <br>
-        <input type="submit" value="校验">
-    </form>
+<!--
+http://127.0.0.1:8080/demo02/userServlet
+
+get请求格式: http://127.0.0.1:8080/demo02/userServlet?username=zhangsan
+
+post请求格式: http://127.0.0.1:8080/demo02/userServlet
+
+请求体：
+    username=zhangsan
+-->
+<form method="get" action="userServlet">
+    用户名:<input type="text" name="username"><br>
+    <input type="submit" value="校验">
+</form>
 </body>
 </html>
 ```
 
-> 启动项目,访问index.html ,提交表单测试
+> **启动项目,访问index.html ,提交表单测试**
 
-+ 使用debug模式运行测试
++ **运行测试**
+
+> **当method="get"时:**
+
+![Servlet开发流程](./Servlet/img-5.jpg)
 
 <img src="./images/1681547333799.png" alt="1681547333799"  />
 
 
-> 映射关系图
+> **映射关系图**
 
 ![1681550398774](images/1681550398774.png)
+
+![Servlet开发流程](./Servlet/img-7.jpg)
 
 
 
@@ -166,7 +275,7 @@ public class UserServlet  extends HttpServlet {
 
 +  [Java EE - Technologies (oracle.com)](https://www.oracle.com/java/technologies/javaee/javaeetechnologies.html#javaee8) 
 
-+ @WebServlet注解的源码阅读
++ **@WebServlet注解的源码阅读**
 
 ```java title="Java"
 
@@ -265,29 +374,26 @@ public @interface WebServlet {
 
 ### @WebServlet注解使用
 
-> 使用@WebServlet注解替换Servlet配置
+> **使用`@WebServlet注解`替换`Servlet配置`**
 
 ```java title="Java"
-@WebServlet(
-        name = "userServlet",
-        //value = "/user",
-        urlPatterns = {"/userServlet1","/userServlet2","/userServlet"},
-        initParams = {@WebInitParam(name = "encoding",value = "UTF-8")},
-        loadOnStartup = 6
-)
-public class UserServlet  extends HttpServlet {
+package fun.xingji.servlet;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+
+@WebServlet("/s1")
+public class Servlet1 extends HttpServlet {
+
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String encoding = getServletConfig().getInitParameter("encoding");
-        System.out.println(encoding);
-        // 获取请求中的参数
-        String username = req.getParameter("username");
-        if("atguigu".equals(username)){
-            //通过响应对象响应信息
-            resp.getWriter().write("NO");
-        }else{
-            resp.getWriter().write("YES");
-        }
+
+        System.out.println("Servlet1执行了");
     }
 }
 ```
@@ -317,6 +423,8 @@ public class UserServlet  extends HttpServlet {
 | 初始化   | init()                                                   | 构造完毕后             | 1        |
 | 处理服务 | service(HttpServletRequest req,HttpServletResponse resp) | 每次请求               | 多次     |
 | 销毁     | destory()                                                | 容器关闭               | 1        |
+
+
 
 ### 生命周期测试
 
@@ -379,6 +487,8 @@ public class ServletLifeCycle  extends HttpServlet {
 
 略
 
+
+
 ### 生命周期总结
 
 1. 通过生命周期测试我们发现Servlet对象在容器中是单例的
@@ -386,6 +496,8 @@ public class ServletLifeCycle  extends HttpServlet {
 3. 多个线程可能会使用相同的Servlet对象,所以在Servlet中,我们不要轻易定义一些容易经常发生修改的成员变量
 4. load-on-startup中定义的正整数表示实例化顺序,如果数字重复了,容器会自行解决实例化顺序问题,但是应该避免重复
 5. Tomcat容器中,已经定义了一些随系统启动实例化的servlet,我们自定义的servlet的load-on-startup尽量不要占用数字1-5
+
+
 
 
 
