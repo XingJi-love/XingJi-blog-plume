@@ -406,74 +406,104 @@ public class Servlet1 extends HttpServlet {
 
 ### 生命周期简介
 
-> 什么是Servlet的生命周期
+> **什么是Servlet的生命周期**
 
--   应用程序中的对象不仅在空间上有层次结构的关系，在时间上也会因为处于程序运行过程中的不同阶段而表现出不同状态和不同行为——这就是对象的生命周期。
--   简单的叙述生命周期，就是对象在容器中从开始创建到销毁的过程。
+-   **应用程序中的对象不仅在空间上有层次结构的关系，在时间上也会因为处于程序运行过程中的不同阶段而表现出不同状态和不同行为——这就是对象的生命周期。**
+-   **简单的叙述生命周期，就是`对象在容器中`从`开始创建`到`销毁`的过程。**
 
-> Servlet容器
+> **Servlet容器**
 
 + Servlet对象是Servlet容器创建的，生命周期方法都是由容器(目前我们使用的是Tomcat)调用的。这一点和我们之前所编写的代码有很大不同。在今后的学习中我们会看到，越来越多的对象交给容器或框架来创建，越来越多的方法由容器或框架来调用，开发人员要尽可能多的将精力放在业务逻辑的实现上。
 
-> Servlet主要的生命周期执行特点
+> **Servlet主要的生命周期执行特点:**
+
+```java
+已连接到服务器
+[2025-11-23 06:13:48,349] 工件 demo02-servlet01:Web exploded: 正在部署工件，请稍候…
+/*========================*/    
+构造器
+初始化
+服务
+服务
+服务
+/*========================*/  
+23-Nov-2025 18:13:57.811 信息 [Catalina-utility-2] org.apache.catalina.startup.HostConfig.deployDirectory 把web 应用程序部署到目录 [D:\0-ProgrammingSoftware\Tomcat\apache-tomcat-11.0.9\webapps\manager]
+23-Nov-2025 18:14:22.252 信息 [main] org.apache.coyote.AbstractProtocol.stop 正在停止ProtocolHandler ["http-nio-8080"]
+/*========================*/     
+destroy
+/*========================*/     
+23-Nov-2025 18:14:22.256 信息 [main] org.apache.coyote.AbstractProtocol.destroy 正在销毁协议处理器 ["http-nio-8080"]
+已与服务器断开连接
+```
 
 | 生命周期 | 对应方法                                                 | 执行时机               | 执行次数 |
 | -------- | -------------------------------------------------------- | ---------------------- | -------- |
 | 构造对象 | 构造器                                                   | 第一次请求或者容器启动 | 1        |
-| 初始化   | init()                                                   | 构造完毕后             | 1        |
+| 初始化   | init()                                                   | 构造完毕               | 1        |
 | 处理服务 | service(HttpServletRequest req,HttpServletResponse resp) | 每次请求               | 多次     |
-| 销毁     | destory()                                                | 容器关闭               | 1        |
+| 销毁     | destory()                                                | 关闭服务               | 1        |
 
 
 
 ### 生命周期测试
 
-> 开发servlet代码
+> **开发servlet代码**
 
 ```java title="Java"
-package com.atguigu.servlet;
+package fun.xingji.servlet;
+
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-public class ServletLifeCycle  extends HttpServlet {
-    public ServletLifeCycle(){
+/**
+ * 1.实例化                构造器         第一次请求或者容器启动
+ *
+ * 2.初始化                init          构造完毕
+ *
+ * 3.接收请求，处理请求 服务  service       每次请求
+ *
+ * 4.销毁                  destroy       关闭服务
+ */
+@WebServlet(value = "/servletLifeCycle", loadOnStartup = 6)
+public class ServletLifeCycle extends HttpServlet {
+
+    public ServletLifeCycle() {
         System.out.println("构造器");
     }
 
     @Override
     public void init() throws ServletException {
-        System.out.println("初始化方法");
+        System.out.println("初始化");
     }
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("service方法");
+        System.out.println("服务");
     }
 
     @Override
     public void destroy() {
-        System.out.println("销毁方法");
+        System.out.println("destroy");
     }
 }
-
 ```
 
-> 配置Servlet
+> **配置Servlet**
 
 ```xml
-  
-    <servlet>
+  <servlet>
         <servlet-name>servletLifeCycle</servlet-name>
-        <servlet-class>com.atguigu.servlet.ServletLifeCycle</servlet-class>
+        <servlet-class>fun.xingji.servlet.ServletLifeCycle</servlet-class>
         <!--load-on-startup
-            如果配置的是正整数则表示容器在启动时就要实例化Servlet,
-            数字表示的是实例化的顺序
+            默认值是-1  含义是tomcat启动时不会实例化该servlet
+            其他正整数   15    如果配置的是正整数则表示容器在启动时就要实例化Servlet,数字表示的是实例化的顺序  
         -->
-        <load-on-startup>1</load-on-startup>
+        <load-on-startup>6</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>servletLifeCycle</servlet-name>
@@ -483,19 +513,76 @@ public class ServletLifeCycle  extends HttpServlet {
 
 
 
-+ 请求Servlet测试
++ **请求Servlet测试:**
 
-略
+```java
+/*========================*/ 
+已连接到服务器
+/*========================*/ 
+[2025-11-24 01:09:31,030] 工件 demo02-servlet01:Web exploded: 正在部署工件，请稍候…
+/*========================*/ 
+构造器
+初始化
+/*========================*/ 
+[2025-11-24 01:09:31,796] 工件 demo02-servlet01:Web exploded: 工件已成功部署
+[2025-11-24 01:09:31,796] 工件 demo02-servlet01:Web exploded: 部署已花费 766 毫秒
+24-Nov-2025 01:09:40.536 信息 [Catalina-utility-2] org.apache.catalina.startup.HostConfig.deployDirectory 把web 应用程序部署到目录 [D:\0-ProgrammingSoftware\Tomcat\apache-tomcat-11.0.9\webapps\manager]
+24-Nov-2025 01:09:40.817 信息 [Catalina-utility-2] org.apache.catalina.startup.HostConfig.deployDirectory Web应用程序目录[D:\0-ProgrammingSoftware\Tomcat\apache-tomcat-11.0.9\webapps\manager]的部署已在[281]毫秒内完成
+/*========================*/ 
+服务
+服务
+服务
+服务
+/*========================*/ 
+D:\0-ProgrammingSoftware\Tomcat\apache-tomcat-11.0.9\bin\catalina.bat stop
+Using CATALINA_BASE:   "C:\Users\LenovoHZB\AppData\Local\JetBrains\IntelliJIdea2025.2\tomcat\4b4c5744-54bb-4f91-a348-181859a03259"
+Using CATALINA_HOME:   "D:\0-ProgrammingSoftware\Tomcat\apache-tomcat-11.0.9"
+Using CATALINA_TMPDIR: "D:\0-ProgrammingSoftware\Tomcat\apache-tomcat-11.0.9\temp"
+Using JRE_HOME:        "D:\0-ProgrammingSoftware\Java\jdk-17"
+Using CLASSPATH:       "D:\0-ProgrammingSoftware\Tomcat\apache-tomcat-11.0.9\bin\bootstrap.jar;D:\0-ProgrammingSoftware\Tomcat\apache-tomcat-11.0.9\bin\tomcat-juli.jar"
+Using CATALINA_OPTS:   ""
+24-Nov-2025 01:10:00.354 信息 [main] org.apache.catalina.core.StandardServer.await 通过关闭端口接收到有效的关闭命令。正在停止服务器实例。
+24-Nov-2025 01:10:00.354 信息 [main] org.apache.coyote.AbstractProtocol.pause 暂停ProtocolHandler["http-nio-8080"]
+24-Nov-2025 01:10:01.042 信息 [main] org.apache.catalina.core.StandardService.stopInternal 正在停止服务[Catalina]
+24-Nov-2025 01:10:01.056 信息 [main] org.apache.coyote.AbstractProtocol.stop 正在停止ProtocolHandler ["http-nio-8080"]
+/*========================*/ 
+destroy
+/*========================*/ 
+24-Nov-2025 01:10:01.074 信息 [main] org.apache.coyote.AbstractProtocol.destroy 正在销毁协议处理器 ["http-nio-8080"]
+/*========================*/ 
+已与服务器断开连接
+/*========================*/ 
+```
+
+
+
+
+
+### default-servlet的作用
+
+```java
+Servlet在Tomcat中是单例的
+Servlet的成员变量在多个多线程之中是共享的
+不建议在service方法中修改成员变量     在并发请求时，会引发线程安全问题
+    
+default-servlet  用于加载静态资源的servlet,默认随服务启动，默认启动序号为1
+```
+
+![Servlet开发流程](./Servlet/img-8.jpg)
+
+![Servlet开发流程](./Servlet/img-9.jpg)
+
+
 
 
 
 ### 生命周期总结
 
-1. 通过生命周期测试我们发现Servlet对象在容器中是单例的
-2. 容器是可以处理并发的用户请求的,每个请求在容器中都会开启一个线程
-3. 多个线程可能会使用相同的Servlet对象,所以在Servlet中,我们不要轻易定义一些容易经常发生修改的成员变量
-4. load-on-startup中定义的正整数表示实例化顺序,如果数字重复了,容器会自行解决实例化顺序问题,但是应该避免重复
-5. Tomcat容器中,已经定义了一些随系统启动实例化的servlet,我们自定义的servlet的load-on-startup尽量不要占用数字1-5
+1. **通过生命周期测试我们发现Servlet对象在容器中是单例的**
+2. **容器是可以处理并发的用户请求的,每个请求在容器中都会开启一个线程**
+3. **多个线程可能会使用相同的Servlet对象,所以在Servlet中,我们不要轻易定义一些容易经常发生修改的成员变量**
+4. **load-on-startup中定义的正整数表示实例化顺序,如果数字重复了,容器会自行解决实例化顺序问题,但是应该避免重复**
+5. **Tomcat容器中,已经定义了一些随系统启动实例化的servlet,我们自定义的servlet的load-on-startup尽量不要占用数字1-5**
 
 
 
