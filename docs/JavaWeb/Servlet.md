@@ -594,96 +594,244 @@ default-servlet  用于加载静态资源的servlet,默认随服务启动，默�
 
 > 源码及功能解释
 
-+ 通过idea查看: 此处略
++ 通过idea查看: 
+
+![Servlet继承结构](./Servlet/img-10.jpg)
 
 > 接口及方法说明
 
-+ Servlet 规范接口,所有的Servlet必须实现 
-    + public void init(ServletConfig config) throws ServletException;   
-        + 初始化方法,容器在构造servlet对象后,自动调用的方法,容器负责实例化一个ServletConfig对象,并在调用该方法时传入
-        + ServletConfig对象可以为Servlet 提供初始化参数
-    + public ServletConfig getServletConfig();
-        + 获取ServletConfig对象的方法,后续可以通过该对象获取Servlet初始化参数
-    + public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException;
-        + 处理请求并做出响应的服务方法,每次请求产生时由容器调用
-        + 容器创建一个ServletRequest对象和ServletResponse对象,容器在调用service方法时,传入这两个对象
-    + public String getServletInfo();
-        + 获取ServletInfo信息的方法
-    + public void destroy();
-        + Servlet实例在销毁之前调用的方法
++ **Servlet 规范接口,所有的Servlet必须实现**
+
+```java
+public void init(ServletConfig config) throws ServletException;   
+	初始化方法,容器在构造servlet对象后,自动调用的方法,容器负责实例化一个ServletConfig对象,并在调用该方法时传入
+	ServletConfig对象可以为Servlet 提供初始化参数
+
+public ServletConfig getServletConfig();
+	获取ServletConfig对象的方法,后续可以通过该对象获取Servlet初始化参数
+
+public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException;
+	处理请求并做出响应的服务方法,每次请求产生时由容器调用容器创建一个ServletRequest对象和ServletResponse对象,容器在调用service方法时,传入这两个对象
+      
+public String getServletInfo();
+	获取ServletInfo信息的方法
+      
+public void destroy();
+	Servlet实例在销毁之前调用的方法
+```
+
+```java
+1.Servlet继承结构：
+ 	 顶级的servlet接口
+	 public interface Servlet {
+   		// 初始化方法，构造完毕后，由Tomcat自动调用完成初始化功能的方法
+   		void init(ServletConfig var1) throws ServletException;
+
+    	// 获取ServletConfig对象的方法
+    	ServletConfig getServletConfig();
+
+  		// 接收用户请求，用于响应信息的方法
+   		void service(ServletRequest var1, ServletResponse var2) throws ServletException, IOException;
+
+   		// 返回Servlet字符串形式描述信息的方法
+    	String getServletInfo();
+
+     	// Servlet在回收前，由Tomcat调用的销毁方法，通常用于资源的释放工作
+    	void destroy();
+}
+```
+
+
+
+
 
 ### GenericServlet 抽象类
 
-> 源码
-
-+ 通过idea查看: 此处略
-
 > 源码解释
 
-+ GenericServlet 抽象类是对Servlet接口一些固定功能的粗糙实现,以及对service方法的再次抽象声明,并定义了一些其他相关功能方法
-    + private transient ServletConfig config; 
-        + 初始化配置对象作为属性
-    + public GenericServlet() { } 
-        + 构造器,为了满足继承而准备
-    + public void destroy() { } 
-        + 销毁方法的平庸实现
-    + public String getInitParameter(String name) 
-        + 获取初始参数的快捷方法
-    + public EnumerationString getInitParameterNames() 
-        + 返回所有初始化参数名的方法
-    + public ServletConfig getServletConfig()
-        +  获取初始Servlet初始配置对象ServletConfig的方法
-    + public ServletContext getServletContext()
-        +  获取上下文对象ServletContext的方法
-    + public String getServletInfo() 
-        + 获取Servlet信息的平庸实现
-    + public void init(ServletConfig config) throws ServletException() 
-        + 初始化方法的实现,并在此调用了init的重载方法
-    + public void init() throws ServletException 
-        + 重载init方法,为了让我们自己定义初始化功能的方法
-    + public void log(String msg) 
-    + public void log(String message, Throwable t)
-        +  打印日志的方法及重载
-    + public abstract void service(ServletRequest req, ServletResponse res) throws ServletException, IOException; 
-        + 服务方法再次声明
-    + public String getServletName() 
-        + 获取ServletName的方法
++ **`GenericServlet 抽象类`是对`Servlet接口`一些`固定功能的粗糙实现`,以及对`service方法的再次抽象声明`,并定义了一些`其他相关功能方法`**
+
+```java
+private transient ServletConfig config; 
+	初始化配置对象作为属性
+        
+public GenericServlet() { } 
+	构造器,为了满足继承而准备
+        
+public void destroy() { } 
+	销毁方法的平庸实现
+      
+public String getInitParameter(String name) 
+	获取初始参数的快捷方法
+      
+public EnumerationString getInitParameterNames() 
+	返回所有初始化参数名的方法
+      
+public ServletConfig getServletConfig()
+	获取初始Servlet初始配置对象ServletConfig的方法
+      
+public ServletContext getServletContext()
+	获取上下文对象ServletContext的方法
+      
+public String getServletInfo() 
+	获取Servlet信息的平庸实现
+      
+public void init(ServletConfig config) throws ServletException() 
+	初始化方法的实现,并在此调用了init的重载方法
+      
+public void init() throws ServletException 
+	重载init方法,为了让我们自己定义初始化功能的方法
+      
+public void log(String msg) 
+public void log(String message, Throwable t)
+	打印日志的方法及重载
+      
+public abstract void service(ServletRequest req, ServletResponse res) throws ServletException, IOException; 
+	服务方法再次声明
+      
+public String getServletName() 
+	获取ServletName的方法
+```
+
+```java
+2.抽象的类	GenericServlet
+public abstract class GenericServlet implements Servlet{
+    private transient ServletConfig config;
+
+    // 将抽象方法重写为普通方法，在方法内部没有如何实现代码
+    public void destroy() {
+    }
+    
+    // 重载的初始化方法，被调用的重写init方法
+    public void init() throws ServletException {
+    }
+
+    // Tomcat在调用init方法时，会读取配置信息进入一个ServletConfig对象并将该对象传入init方法
+    public void init(ServletConfig config) throws ServletException {
+        // 将config对象存储为当前属性
+        this.config = config;
+        // 调用重载的无参的init
+        this.init();
+    }
+
+    // 返回ServletConfig方法
+    public ServletConfig getServletConfig() {
+        return this.config;
+    }
+
+    // 再次抽象声明service方法
+    public abstract void service(ServletRequest var1, ServletResponse var2) throws ServletException, IOException;
+}
+```
+
+
+
+
 
 ### HttpServlet 抽象类
 
-> 源码
-
-+ 通过idea查看: 此处略
-
 > 解释
 
-+ abstract class HttpServlet extends GenericServlet  HttpServlet抽象类,除了基本的实现以外,增加了更多的基础功能
-    + private static final String METHOD_DELETE = "DELETE";
-    + private static final String METHOD_HEAD = "HEAD";
-    + private static final String METHOD_GET = "GET";
-    + private static final String METHOD_OPTIONS = "OPTIONS";
-    + private static final String METHOD_POST = "POST";
-    + private static final String METHOD_PUT = "PUT";
-    + private static final String METHOD_TRACE = "TRACE";
-        + 上述属性用于定义常见请求方式名常量值
-    + public HttpServlet() {}
-        + 构造器,用于处理继承
-    + public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException
-        + 对服务方法的实现
-        + 在该方法中,将请求和响应对象转换成对应HTTP协议的HttpServletRequest HttpServletResponse对象
-        + 调用重载的service方法
-    + public void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
-        + 重载的service方法,被重写的service方法所调用
-        + 在该方法中,通过请求方式判断,调用具体的do***方法完成请求的处理
-    + protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-    + protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-    + protected void doHead(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-    + protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-    + protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-    + protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-    + protected void doTrace(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-        + 对应不同请求方式的处理方法
-        + 除了doOptions和doTrace方法,其他的do*** 方法都在故意响应错误信息
++ **abstract class HttpServlet extends GenericServlet  HttpServlet抽象类,除了基本的实现以外,`增加了更多的基础功能`**
+
+```java
+private static final String METHOD_DELETE = "DELETE";
+private static final String METHOD_HEAD = "HEAD";
+private static final String METHOD_GET = "GET";
+private static final String METHOD_OPTIONS = "OPTIONS";
+private static final String METHOD_POST = "POST";
+private static final String METHOD_PUT = "PUT";
+private static final String METHOD_TRACE = "TRACE";
+	上述属性用于定义常见请求方式名常量值
+    
+public HttpServlet() {}
+	构造器,用于处理继承
+    
+public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException
+	对服务方法的实现
+	在该方法中,将请求和响应对象转换成对应HTTP协议的HttpServletRequest 		        HttpServletResponse对象
+     调用重载的service方法
+    
+public void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+	重载的service方法,被重写的service方法所调用
+	在该方法中,通过请求方式判断,调用具体的do***方法完成请求的处理
+    
+protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+protected void doHead(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+protected void doTrace(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+	对应不同请求方式的处理方法
+	除了doOptions和doTrace方法,其他的do*** 方法都在故意响应错误信息
+```
+
+```java
+3.HttpServlet 抽象类	侧重service方法的处理
+public abstract class HttpServlet extends GenericServlet {
+    // 参数的父转子	调用重载的service方法
+    public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
+            // 参数的父转子
+            request = (HttpServletRequest)req;
+            response = (HttpServletResponse)res;
+            // 调用重载的service方法
+        	this.service(request, response);
+    }
+    
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // 获取请求的方式
+        switch (req.getMethod()) { // GET POST PUT DELETE OPTIONS...
+                
+            // 根据请求方式，调用对应的do...方法
+            case "GET":
+                this.doGet(req, resp);
+                break;
+            case "HEAD":
+                this.doHead(req, resp);
+                break;
+            case "POST":
+                this.doPost(req, resp);
+                break;
+            case "PUT":
+                this.doPut(req, resp);
+                break;
+            case "DELETE":
+                this.doDelete(req, resp);
+                break;
+            case "OPTIONS":
+                this.doOptions(req, resp);
+                break;
+            case "TRACE":
+                this.doTrace(req, resp);
+                break;
+            case "PATCH":
+                this.doPatch(req, resp);
+                break;
+            default:
+                resp.sendError(501, errMsg);
+        }
+    }
+    
+    // 故意响应405
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        "http.method_get_not_supported"
+        // 故意响应405请求方式不允许的信息
+        resp.sendError(405, msg);
+    }
+    
+    // 故意响应405
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        "http.method_get_not_supported"
+        // 故意响应405请求方式不允许的信息
+        resp.sendError(405, msg);
+    }
+}
+```
+
+
+
+
 
 ### 自定义Servlet
 
@@ -691,9 +839,42 @@ default-servlet  用于加载静态资源的servlet,默认随服务启动，默�
 
 ![1682299663047](images/1682299663047.png)
 
-+ 自定义Servlet中,必须要对处理请求的方法进行重写
-    + 要么重写service方法
-    + 要么重写doGet/doPost方法
++ **自定义Servlet中,`必须要对处理请求的方法进行重写`**
+  
+    + **要么`重写service方法`**
+    + **要么`重写doGet/doPost方法`**
+    
+    > **不重写service方法的结果:**
+    >
+    > ![Servlet继承结构](./Servlet/img-11.jpg)
+    >
+    > ![Servlet继承结构](./Servlet/img-12.jpg)
+
+```java
+1.部分程序员推荐在servlet中重写do***方法处理请求， 理由:service方法中可能做了一些处理，如果我们直接重写service的话，父类中的service方法处理的功能则失效
+    
+2.目前直接重写service也没有什么问题
+    
+3.后续使用SpringMVC框架后，我们则无需继承HttpServlet,处理请求的方法也无需是 do*** service
+    
+4.如果doGet和doPost方法中,我们定义的代码一样，可以让一个方法直接调用另一个方法
+总结:
+	继承HttpServlet后，要么重写service方法，要么重写	doGet/doPost
+```
+
+```java
+4.自定义的Servlet
+class Servlet1 extends HttpServlet{
+    public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
+        // 接收用户请求信息
+        
+        // 做出响应
+        
+    }
+} 
+```
+
+
 
 
 
@@ -708,8 +889,10 @@ default-servlet  用于加载静态资源的servlet,默认随服务启动，默�
 
 <img src="./images/1682302307081.png" alt="1682302307081"  />
 
+![Servlet继承结构](./Servlet/img-14.jpg)
 
-> ServletConfig是一个接口,定义了如下API
+
+> **ServletConfig是一个接口,定义了如下API**
 
 ```java title="Java"
 package jakarta.servlet;
@@ -722,6 +905,8 @@ public interface ServletConfig {
 }
 ```
 
+![Servlet继承结构](./Servlet/img-13.jpg)
+
 | 方法名                  | 作用                                                         |
 | ----------------------- | ------------------------------------------------------------ |
 | getServletName()        | 获取\<servlet-name>HelloServlet\</servlet-name>定义的Servlet名称 |
@@ -733,104 +918,159 @@ public interface ServletConfig {
 
 + 定义Servlet
 
+>  **定义servlet1:**
+
 ```java title="Java"
-public class ServletA extends HttpServlet {
+package fun.xingji.servlet;
+
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebInitParam;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.util.Enumeration;
+
+@WebServlet(
+        urlPatterns = "/servlet1",
+        initParams = {@WebInitParam(name = "keya",value = "valuea"),@WebInitParam(name = "keyb",value = "valueb")}
+)
+public class Servlet1 extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ServletConfig servletConfig = this.getServletConfig();
-        // 根据参数名获取单个参数
-        String value = servletConfig.getInitParameter("param1");
-        System.out.println("param1:"+value);
-        // 获取所有参数名
-        Enumeration<String> parameterNames = servletConfig.getInitParameterNames();
-        // 迭代并获取参数名
-        while (parameterNames.hasMoreElements()) {
-            String paramaterName = parameterNames.nextElement();
-            System.out.println(paramaterName+":"+servletConfig.getInitParameter(paramaterName));
-        }
-    }
-}
+        // 获取初始配置信息即可
+        ServletConfig servletConfig = getServletConfig();
 
+        // 根据参数名获取参数值
+        String keya = servletConfig.getInitParameter("keya");
+        System.out.println("keya:" + keya);
 
+        // 获取所有的初始参数的名字
+        // hasMoreElements 判断有没有下一个参数，如果有返回true 如果没有返回false
+        // nextElement  1.取出下一个元素   2.向下移动游标
+        Enumeration<String> initParameterNames = servletConfig.getInitParameterNames();
 
-public class ServletB extends HttpServlet {
-    @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ServletConfig servletConfig = this.getServletConfig();
-        // 根据参数名获取单个参数
-        String value = servletConfig.getInitParameter("param1");
-        System.out.println("param1:"+value);
-        // 获取所有参数名
-        Enumeration<String> parameterNames = servletConfig.getInitParameterNames();
-        // 迭代并获取参数名
-        while (parameterNames.hasMoreElements()) {
-            String paramaterName = parameterNames.nextElement();
-            System.out.println(paramaterName+":"+servletConfig.getInitParameter(paramaterName));
+        while (initParameterNames.hasMoreElements()) {
+            String pname = initParameterNames.nextElement();
+            System.out.println(pname + "=" + getInitParameter(pname));
         }
     }
 }
 ```
 
-+ 配置Servlet
+>  **定义servlet2:**
+
+```java
+package fun.xingji.servlet;
+
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebInitParam;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.util.Enumeration;
+
+@WebServlet(
+        urlPatterns = "/servlet2",
+        initParams = {@WebInitParam(name = "keya",value = "value2a"),@WebInitParam(name = "keyb",value = "value2b")}
+)
+public class Servlet2 extends HttpServlet {
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // 获取初始配置信息即可
+        ServletConfig servletConfig = getServletConfig();
+
+        // 根据参数名获取参数值
+        String keya = servletConfig.getInitParameter("keya");
+        System.out.println("keya:" + keya);
+
+        // 获取所有的初始参数的名字
+        // hasMoreElements 判断有没有下一个参数，如果有返回true 如果没有返回false
+        // nextElement  1.取出下一个元素   2.向下移动游标
+        Enumeration<String> initParameterNames = servletConfig.getInitParameterNames();
+
+        while (initParameterNames.hasMoreElements()) {
+            String pname = initParameterNames.nextElement();
+            System.out.println(pname + "=" + getInitParameter(pname));
+        }
+    }
+}
+```
+
++ **配置Servlet**
 
 ```xml
-  <servlet>
-       <servlet-name>ServletA</servlet-name>
-       <servlet-class>com.atguigu.servlet.ServletA</servlet-class>
-       <!--配置ServletA的初始参数-->
-       <init-param>
-           <param-name>param1</param-name>
-           <param-value>value1</param-value>
-       </init-param>
-       <init-param>
-           <param-name>param2</param-name>
-           <param-value>value2</param-value>
-       </init-param>
-   </servlet>
-
-    <servlet>
-        <servlet-name>ServletB</servlet-name>
-        <servlet-class>com.atguigu.servlet.ServletB</servlet-class>
-        <!--配置ServletB的初始参数-->
+<servlet>
+        <servlet-name>servlet1</servlet-name>
+        <servlet-class>fun.xingji.servlet.Servlet1</servlet-class>
+        <!--配置servlet1的初始参数-->
         <init-param>
-            <param-name>param3</param-name>
-            <param-value>value3</param-value>
+            <param-name>keya</param-name>
+            <param-value>valuea</param-value>
         </init-param>
         <init-param>
-            <param-name>param4</param-name>
-            <param-value>value4</param-value>
+            <param-name>keyb</param-name>
+            <param-value>valueb</param-value>
         </init-param>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>ServletA</servlet-name>
-        <url-pattern>/servletA</url-pattern>
+        <servlet-name>servlet1</servlet-name>
+        <url-pattern>/servlet1</url-pattern>
     </servlet-mapping>
 
+
+    <servlet>
+        <servlet-name>servlet2</servlet-name>
+        <servlet-class>fun.xingji.servlet.Servlet2</servlet-class>
+        <!--配置servlet2的初始参数-->
+        <init-param>
+            <param-name>keya</param-name>
+            <param-value>value2a</param-value>
+        </init-param>
+        <init-param>
+            <param-name>keyb</param-name>
+            <param-value>value2b</param-value>
+        </init-param>
+    </servlet>
+
     <servlet-mapping>
-        <servlet-name>ServletB</servlet-name>
-        <url-pattern>/servletB</url-pattern>
+        <servlet-name>servlet2</servlet-name>
+        <url-pattern>/servlet2</url-pattern>
     </servlet-mapping>
 ```
 
-+ 请求Servlet测试
++ **请求Servlet测试**
 
-略
+![Servlet继承结构](./Servlet/img-15.jpg)
+
+
+
+
 
 ### ServletContext的使用
 
 > ServletContext是什么
 
-+ ServletContext对象有称呼为上下文对象,或者叫应用域对象(后面统一讲解域对象)
-+ 容器会为每个app创建一个独立的唯一的ServletContext对象
-+ ServletContext对象为所有的Servlet所共享
-+ ServletContext可以为所有的Servlet提供初始配置参数
++ **ServletContext对象有称呼为`上下文对象`,或者叫应用域对象(后面统一讲解域对象)**
++ **容器会为每个app创建一个独立的唯一的ServletContext对象**
++ **ServletContext对象为所有的Servlet所共享**
++ **ServletContext可以为所有的Servlet提供初始配置参数**
 
 ![1682303205351](images/1682303205351.png)
 
-> ServletContext怎么用
+> **ServletContext怎么用**
 
-+ 配置ServletContext参数
++ **配置`ServletContext参数`**
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -840,24 +1080,30 @@ public class ServletB extends HttpServlet {
          version="5.0">
 
     <context-param>
-        <param-name>paramA</param-name>
-        <param-value>valueA</param-value>
+        <param-name>encoding</param-name>
+        <param-value>UTF-8</param-value>
     </context-param>
+
     <context-param>
-        <param-name>paramB</param-name>
-        <param-value>valueB</param-value>
+        <param-name>username</param-name>
+        <param-value>zhangsan</param-value>
     </context-param>
+    
 </web-app>
 ```
 
 + 在Servlet中获取ServletContext并获取参数
 
+>  **定义servlet1:**
+
 ```java title="Java"
-package com.atguigu.servlet;
+package fun.xingji.servlet;
 
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebInitParam;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -865,28 +1111,141 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Enumeration;
 
-public class ServletA extends HttpServlet {
+@WebServlet(
+        urlPatterns = "/servlet1",
+        initParams = {@WebInitParam(name = "keya",value = "valuea"),@WebInitParam(name = "keyb",value = "valueb")}
+)
+public class Servlet1 extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-       
-        // 从ServletContext中获取为所有的Servlet准备的参数
-        ServletContext servletContext = this.getServletContext();
-        String valueA = servletContext.getInitParameter("paramA");
-        System.out.println("paramA:"+valueA);
-        // 获取所有参数名
-        Enumeration<String> initParameterNames = servletContext.getInitParameterNames();
-        // 迭代并获取参数名
+
+        System.out.println("---------------ServletConfig获取参数---------------");
+
+        // 获取初始配置信息即可
+        ServletConfig servletConfig = getServletConfig();
+
+        // 根据参数名获取参数值
+        String keya = servletConfig.getInitParameter("keya");
+        System.out.println("keya:" + keya);
+
+        // 获取所有的初始参数的名字
+        // hasMoreElements 判断有没有下一个参数，如果有返回true 如果没有返回false
+        // nextElement  1.取出下一个元素   2.向下移动游标
+        Enumeration<String> initParameterNames = servletConfig.getInitParameterNames();
+
         while (initParameterNames.hasMoreElements()) {
-            String paramaterName = initParameterNames.nextElement();
-            System.out.println(paramaterName+":"+servletContext.getInitParameter(paramaterName));
+            String pname = initParameterNames.nextElement();
+            System.out.println(pname + "=" + getInitParameter(pname));
+        }
+
+        System.out.println("---------------ServletContext获取参数---------------");
+        // 获取ServletContext对象
+        ServletContext servletContext1 = getServletContext();
+        ServletContext servletContext2 = servletConfig.getServletContext();
+        ServletContext servletContext3 = req.getServletContext();
+        System.out.println(servletContext1 == servletContext2);
+        System.out.println(servletContext2 == servletContext3);
+        
+        // 根据参数名获取参数值
+        String encoding = servletContext1.getInitParameter("encoding");
+        System.out.println("encoding:" + encoding);
+
+        // 获取所有的初始参数的名字
+        // hasMoreElements 判断有没有下一个参数，如果有返回true 如果没有返回false
+        // nextElement  1.取出下一个元素   2.向下移动游标
+        Enumeration<String> parameterNames = servletContext1.getInitParameterNames();
+
+        while (parameterNames.hasMoreElements()) {
+            String pname = parameterNames.nextElement();
+            System.out.println(pname + "=" + getInitParameter(pname));
         }
     }
 }
 ```
 
+>  **定义servlet2:**
+
+```java
+package fun.xingji.servlet;
+
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebInitParam;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.util.Enumeration;
+
+@WebServlet(
+        urlPatterns = "/servlet2",
+        initParams = {@WebInitParam(name = "keya",value = "value2a"),@WebInitParam(name = "keyb",value = "value2b")}
+)
+public class Servlet2 extends HttpServlet {
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        System.out.println("---------------ServletConfig获取参数---------------");
+
+        // 获取初始配置信息即可
+        ServletConfig servletConfig = getServletConfig();
+
+        // 根据参数名获取参数值
+        String keya = servletConfig.getInitParameter("keya");
+        System.out.println("keya:" + keya);
+
+        // 获取所有的初始参数的名字
+        // hasMoreElements 判断有没有下一个参数，如果有返回true 如果没有返回false
+        // nextElement  1.取出下一个元素   2.向下移动游标
+        Enumeration<String> initParameterNames = servletConfig.getInitParameterNames();
+
+        while (initParameterNames.hasMoreElements()) {
+            String pname = initParameterNames.nextElement();
+            System.out.println(pname + "=" + getInitParameter(pname));
+        }
+
+        System.out.println("---------------ServletContext获取参数---------------");
+
+        // 获取ServletContext对象
+        ServletContext servletContext1 = getServletContext();
+        ServletContext servletContext2 = servletConfig.getServletContext();
+        ServletContext servletContext3 = req.getServletContext();
+        System.out.println(servletContext1 == servletContext2);
+        System.out.println(servletContext2 == servletContext3);
+
+        // 根据参数名获取参数值
+        String encoding = servletContext1.getInitParameter("encoding");
+        System.out.println("encoding:" + encoding);
+
+        // 获取所有的初始参数的名字
+        // hasMoreElements 判断有没有下一个参数，如果有返回true 如果没有返回false
+        // nextElement  1.取出下一个元素   2.向下移动游标
+        Enumeration<String> parameterNames = servletContext1.getInitParameterNames();
+
+        while (parameterNames.hasMoreElements()) {
+            String pname = parameterNames.nextElement();
+            System.out.println(pname + "=" + servletContext1.getInitParameter(pname));
+        }
+    }
+}
+```
+
++ **请求servlet测试**
+
+![Servlet继承结构](./Servlet/img-16.jpg)
+
+
+
+
+
+
+
 ### ServletContext其他重要API
 
-> 获取资源的真实路径
+> **获取资源的真实路径**
 
 ```java title="Java"
 String realPath = servletContext.getRealPath("资源在web目录中的路径");
@@ -894,7 +1253,7 @@ String realPath = servletContext.getRealPath("资源在web目录中的路径");
 
 + 例如我们的目标是需要获取项目中某个静态资源的路径，不是工程目录中的路径，而是**部署目录中的路径**；我们如果直接拷贝其在我们电脑中的完整路径的话其实是有问题的，因为如果该项目以后部署到公司服务器上的话，路径肯定是会发生改变的，所以我们需要使用代码动态获取资源的真实路径.  只要使用了servletContext动态获取资源的真实路径，**那么无论项目的部署路径发生什么变化，都会动态获取项目运行时候的实际路径**，所以就不会发生由于写死真实路径而导致项目部署位置改变引发的路径错误问题
 
-> 获取项目的上下文路径
+> **获取项目的上下文路径**
 
 ```java title="Java"
 String contextPath = servletContext.getContextPath();
@@ -902,11 +1261,50 @@ String contextPath = servletContext.getContextPath();
 
 + 项目的部署名称,也叫项目的上下文路径,在部署进入tomcat时所使用的路径,该路径是可能发生变化的,通过该API动态获取项目真实的上下文路径,可以**帮助我们解决一些后端页面渲染技术或者请求转发和响应重定向中的路径问题**
 
+> **以上两种API的示例；**
+
+```java
+package fun.xingji.servlet;
+
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+
+@WebServlet("/servlet3")
+public class Servlet3 extends HttpServlet {
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        ServletContext servletContext = getServletContext();
+
+        // 获得一个指向项目部署路径位置下的某个文件/目录的磁盘真实路径的API
+        String path = servletContext.getRealPath("upload");
+        System.out.println(path); // D:\0-JavaWeb\atguigu-javaweb\web-all\out\artifacts\demo03_servletConfig_servletContext_Web_exploded\upload
+
+
+        // 获的项目部署的上下文路径 项目的访问路径
+        // 后续我们学习在项目中使用相对和绝对路径找目标资源
+        // 获取项目上下文路径 项目的访问路径
+        String contextPath = servletContext.getContextPath();
+        System.out.println(contextPath); // /demo03(项目访问路径)
+    }
+}
+```
+
+
+
 >  域对象的相关API
 
-+ 域对象: 一些用于存储数据和传递数据的对象,传递数据不同的范围,我们称之为不同的域,不同的域对象代表不同的域,共享数据的范围也不同
-+ ServletContext代表应用,所以ServletContext域也叫作应用域,是webapp中最大的域,可以在本应用内实现数据的共享和传递
-+ webapp中的三大域对象,分别是应用域,会话域,请求域
+>  + **域对象: 一些用于`存储数据和传递数据的对象`,传递数据`不同的范围`,我们称之为不同的域,`不同的域对象代表不同的域,共享数据的范围也不同`**
+>  + **`ServletContext`代表`应用,`所以`ServletContext域`也叫作`应用域`,是webapp中`最大的域`,可以在`本应用内实现数据的共享和传递`**
+>  + **webapp中的`三大域对象`,分别是`应用域,会话域,请求域`**
+>
+>  ![Servlet继承结构](./Servlet/img-17.jpg)
+
 + `后续我们会将三大域对象统一进行讲解和演示`,三大域对象都具有的API如下
 
 | API                                         | 功能解释            |
@@ -914,6 +1312,12 @@ String contextPath = servletContext.getContextPath();
 | void setAttribute(String key,Object value); | 向域中存储/修改数据 |
 | Object getAttribute(String key);            | 获得域中的数据      |
 | void removeAttribute(String key);           | 移除域中的数据      |
+
+
+
+
+
+
 
 ## HttpServletRequest
 
@@ -970,6 +1374,12 @@ String contextPath = servletContext.getContextPath();
 | Cookie[] getCookies();                       | 获取请求中的所有cookie      |
 | HttpSession getSession();                    | 获取Session对象             |
 | void setCharacterEncoding(String encoding) ; | 设置请求体字符集            |
+
+
+
+
+
+
 
 ## HttpServletResponse
 
@@ -1037,6 +1447,8 @@ String contextPath = servletContext.getContextPath();
 
 
 
+
+
 ## 请求转发和响应重定向
 
 ### 概述
@@ -1049,6 +1461,10 @@ String contextPath = servletContext.getContextPath();
 
 + 请求转发生活举例: 张三找李四借钱,李四没有,李四找王五,让王五借给张三
 + 响应重定向生活举例:张三找李四借钱,李四没有,李四让张三去找王五,张三自己再去找王五借钱
+
+
+
+
 
 ### 请求转发
 
@@ -1128,6 +1544,10 @@ public class ServletB extends HttpServlet {
 ```http title="http"
 http://localhost:8080/web03_war_exploded/servletA?username=atguigu
 ```
+
+
+
+
 
 ### 响应重定向
 
