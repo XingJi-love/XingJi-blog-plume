@@ -1307,13 +1307,24 @@ public class Servlet3 extends HttpServlet {
 
 + `后续我们会将三大域对象统一进行讲解和演示`,三大域对象都具有的API如下
 
-| API                                         | 功能解释            |
-| ------------------------------------------- | ------------------- |
-| void setAttribute(String key,Object value); | 向域中存储/修改数据 |
-| Object getAttribute(String key);            | 获得域中的数据      |
-| void removeAttribute(String key);           | 移除域中的数据      |
+| API                                              | 功能解释                |
+| ------------------------------------------------ | ----------------------- |
+| **void setAttribute(String key,Object value);*** | **向域中存储/修改数据** |
+| **Object getAttribute(String key);**             | **获得域中的数据**      |
+| **void removeAttribute(String key);**            | **移除域中的数据**      |
 
+```java
+// 作为域对象一定会有的API
+// void setAttribute(String key,Object value); 向域中存储/修改数据
+servletContext1.setAttribute("ka","va");
+servletContext1.setAttribute("ka","vaa");
 
+// Object getAttribute(String key); 获得域中的数据
+servletContext1.getAttribute("ka");
+
+// void removeAttribute(String key); 移除域中的数据
+servletContext1.removeAttribute("keya");
+```
 
 
 
@@ -1323,17 +1334,21 @@ public class Servlet3 extends HttpServlet {
 
 ### HttpServletRequest简介
 
-> HttpServletRequest是什么
+> **HttpServletRequest是什么**
 
-+ HttpServletRequest是一个接口,其父接口是ServletRequest
-+ HttpServletRequest是Tomcat将请求报文转换封装而来的对象,在Tomcat调用service方法时传入
-+ HttpServletRequest代表客户端发来的请求,所有请求中的信息都可以通过该对象获得
++ **`HttpServletRequest`是`一个接口`,其`父接口`是`ServletRequest`**
++ **`HttpServletRequest`是T`omcat将请求报文转换封装而来的对象`,在Tomcat`调用service方法时传入`**
++ **`HttpServletRequest`代表`客户端发来的请求`,`所有请求中的信息`都可以通过该对象获得**
 
 ![1681699577344](images/1681699577344.png)
 
+
+
+
+
 ### HttpServletRequest常见API
 
-> HttpServletRequest怎么用
+> **HttpServletRequest怎么用**
 
 + 获取请求行信息相关(方式,请求的url,协议及版本)
 
@@ -1355,7 +1370,87 @@ public class Servlet3 extends HttpServlet {
 | EnumerationString getHeaderNames(); | 获取所有的请求头名字   |
 | String getContentType();              | 获取content-type请求头 |
 
+```java
+package fun.xingji.servlet;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.util.Enumeration;
+
+@WebServlet("/servlet4")
+public class Servlet4 extends HttpServlet {
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        
+        // 行相关 GET/POST url http/1.1
+        System.out.println(req.getMethod()); // 获取请求方式
+        System.out.println(req.getScheme()); // 获取请求协议
+        System.out.println(req.getProtocol()); // 获取请求协议及版本
+        System.out.println(req.getRequestURI()); // 获取请求的url 项目内资源路径
+        System.out.println(req.getRequestURL()); // 获取请求的url 项目内资源的完整路径
+        System.out.println(req.getLocalPort()); // 本应用容器的端口号 8080
+        System.out.println(req.getServletPath()); // 客户端发请求时使用的端口号
+        System.out.println(req.getRemotePort()); // 客户端软件的端口号
+
+
+        // 头相关 key:value key:value...
+        // 根据名字单独获取某个请求头
+        String accept = req.getHeader("Accept");
+        System.out.println("Accept:" + accept);
+
+        // 获取本次请求中所有的请求头的名字
+        Enumeration<String> headerNames = req.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String hname = headerNames.nextElement();
+            System.out.println(hname +  ":" + req.getHeader(hname));
+        }
+    }
+}
+```
+
+```java
+GET
+http
+HTTP/1.1
+/demo03/servlet4
+http://localhost:8080/demo03/servlet4
+8080
+/servlet4
+9449
+    
+// 根据名字单独获取某个请求头s
+Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+host:localhost:8080
+connection:keep-alive
+cache-control:max-age=0
+sec-ch-ua:"Chromium";v="142", "Google Chrome";v="142", "Not_A Brand";v="99"
+sec-ch-ua-mobile:?0
+sec-ch-ua-platform:"Windows"
+upgrade-insecure-requests:1
+user-agent:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+// 获取本次请求中所有的请求头的名字
+accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+sec-fetch-site:none
+sec-fetch-mode:navigate
+sec-fetch-user:?1
+sec-fetch-dest:document
+accept-encoding:gzip, deflate, br, zstd
+accept-language:zh-CN,zh;q=0.9,en;q=0.8
+cookie:Webstorm-216ce06c=8d7c2b70-498c-4c39-9e69-76df1cd6efa2; apt.uid=AP-YFGMCGUNNIFB-2-1755958056037-34875527.0.2.6b933aba-006b-4c12-b4b5-a0ddc2adfcf4; Idea-8f5e3c25=f9b33290-e36b-4184-b5ce-05e461c18d93
+```
+
+
+
+
+
 + 获得请求参数相关
+
 | API                                                     | 功能解释                             |
 | ------------------------------------------------------- | ------------------------------------ |
 | String getParameter(String parameterName);              | 根据请求参数名获取请求单个参数值     |
@@ -1375,6 +1470,111 @@ public class Servlet3 extends HttpServlet {
 | HttpSession getSession();                    | 获取Session对象             |
 | void setCharacterEncoding(String encoding) ; | 设置请求体字符集            |
 
+```java
+package fun.xingji.servlet;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletInputStream;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.Map;
+import java.util.Set;
+
+@WebServlet("/servlet5")
+public class Servlet5 extends HttpServlet {
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // ==================== 获取HTTP请求参数的多种方式 ====================
+
+        // 方式一：根据参数名获取单个参数值
+        // getParameter(String name)方法用于获取指定名称的参数值（单个值）
+        String username = req.getParameter("username");
+        System.out.println(username);
+        String userPwd = req.getParameter("userPwd");
+        System.out.println(userPwd);
+
+        // 方式二：根据参数名获取多个同名参数值（如复选框）
+        // getParameterValues(String name)方法用于获取指定名称的参数值数组（多个值）
+        String[] hobbies = req.getParameterValues("hobby");
+        System.out.println(Arrays.toString(hobbies));
+
+        // 方式三：遍历获取所有参数名和对应的值
+        // getParameterNames()方法返回所有参数名的枚举对象
+        System.out.println("===== 遍历所有请求参数 =====");
+        Enumeration<String> pnames = req.getParameterNames();
+        while (pnames.hasMoreElements()) {
+            // 获取下一个参数名
+            String pname = pnames.nextElement();
+            // 根据参数名获取参数值数组
+            String[] values = req.getParameterValues(pname);
+            // 判断参数是否有多个值
+            if (values.length > 1) {
+                // 多个值的情况（如复选框），以数组形式输出
+                System.out.println(pname + "=" + Arrays.toString(values));
+            }else  {
+                // 单个值的情况，直接输出第一个元素
+                System.out.println(pname + "=" + values[0]);
+            }
+        }
+
+        // 方式四：通过Map集合获取所有参数
+        // getParameterMap()方法返回包含所有参数的Map集合，key为参数名，value为参数值数组
+        System.out.println("===== 通过Map集合获取所有参数 =====");
+        Map<String, String[]> parameterMap = req.getParameterMap();
+        // 获取Map集合的entrySet，用于迭代
+        Set<Map.Entry<String, String[]>> entries = parameterMap.entrySet();
+        for (Map.Entry<String, String[]> entry : entries) {
+            // 获取参数名
+            String pname = entry.getKey();
+            // 获取参数值数组
+            String[] value = entry.getValue();
+            // 判断参数值是否为多个
+            if (value.length > 1) {
+                // 多个值的情况（如复选框），以数组形式输出
+                System.out.println(pname + "=" + Arrays.toString(value));
+            }else{
+                // 单个值的情况，直接输出第一个元素
+                System.out.println(pname + "=" + value[0]);
+            }
+        }
+
+        /*
+        以上API专门用于获取key=value形式的参数，无论这些参数是在url后还是在请求体中
+        // 获取一个从请求体中读取字符的字符输入流
+        BufferedReader reader = req.getReader(); // JSON串
+        // 获取一个从请求中获取二进制数据字节的输入流
+        ServletInputStream inputStream = req.getInputStream(); // 文件
+         */
+        System.out.println(req.getServletPath());
+    }
+}
+```
+
+```java
+zhangsan
+123456
+[1, 2]
+
+===== 遍历所有请求参数 =====
+username=zhangsan
+userPwd=123456
+hobby=[1, 2]
+
+===== 通过Map集合获取所有参数 =====
+username=zhangsan
+userPwd=123456
+hobby=[1, 2]
+
+/servlet5
+```
+
 
 
 
@@ -1385,23 +1585,36 @@ public class Servlet3 extends HttpServlet {
 
 ### HttpServletResponse简介
 
-> HttpServletResponse是什么
+> **HttpServletResponse是什么**
 
-+ HttpServletResponse是一个接口,其父接口是ServletResponse
-+ HttpServletResponse是Tomcat预先创建的,在Tomcat调用service方法时传入
-+ HttpServletResponse代表对客户端的响应,该对象会被转换成响应的报文发送给客户端,通过该对象我们可以设置响应信息
++ **HttpServletResponse是`一个接口`,其`父接口`是`ServletResponse`**
++ **`HttpServletResponse`是`Tomcat预先创建的`,在Tomcat`调用service方法时传入`**
++ **`HttpServletResponse`代表`对客户端的响应`,该对象会被转换成`响应的报文发送给客户端`,通过该对象我们可以`设置响应信息`**
 
 ![1681699577344](images/1681699577344.png)
 
+
+
+
+
 ### HttpServletResponse的常见API
 
-> HttpServletRequest怎么用
+> **HttpServletRequest怎么用**
 
 + 设置响应行相关
 
 | API                        | 功能解释                   |
 | -------------------------- | -------------------------- |
 | void setStatus(int  code); | 设置响应状态码             |
+
+```java
+// 设置响应行相关的API  HTTP/1.1   200/404/405/500/...
+resp.setStatus(404);
+```
+
+![HttpServletResponse的常见API](./Servlet/img-18.jpg)
+
+
 
 
 + 设置响应头相关
@@ -1411,6 +1624,20 @@ public class Servlet3 extends HttpServlet {
 | void setHeader(String headerName, String headerValue); | 设置/修改响应头键值对                            |
 | void setContentType(String contentType);               | 设置content-type响应头及响应字符集(设置MIME类型) |
 
+```java
+String info = "<h1>hello</h1>";
+// 设置响应头的相关的API
+//resp.setHeader("aaa","valuea");
+//resp.setHeader("Content-Type","text/html");
+//resp.setHeader("Content-Length","1234");
+resp.setContentType("text/html");
+resp.setContentLength(info.getBytes().length);
+```
+
+![HttpServletResponse的常见API](./Servlet/img-19.jpg)
+
+
+
 + 设置响应体相关
 
 | API                                                       | 功能解释                                                |
@@ -1418,6 +1645,22 @@ public class Servlet3 extends HttpServlet {
 | PrintWriter getWriter() throws IOException;               | 获得向响应体放入信息的字符输出流                        |
 | ServletOutputStream getOutputStream() throws IOException; | 获得向响应体放入信息的字节输出流                        |
 | void setContentLength(int length);                        | 设置响应体的字节长度,其实就是在设置content-length响应头 |
+
+```java
+String info = "<h1>hello</h1>";
+
+// 设置响应体内容API
+// 获得一个向响应体中输入文本字符输出流
+PrintWriter writer = resp.getWriter();
+writer.write(info);
+
+// 获得一个向响应体中输入二进制信息的字节输出流
+// ServletOutputStream outputStream = resp.getOutputStream();
+```
+
+![HttpServletResponse的常见API](./Servlet/img-20.jpg)
+
+
 
 + 其他API
 
@@ -1453,14 +1696,37 @@ public class Servlet3 extends HttpServlet {
 
 ### 概述
 
-> 什么是请求转发和响应重定向
+> **什么是`请求转发`和`响应重定向`**
 
-+ 请求转发和响应重定向是web应用中间接访问项目资源的两种手段,也是Servlet控制页面跳转的两种手段
++ **请求转发和响应重定向是web应用中间接访问项目资源的两种手段,也是`Servlet控制页面跳转的两种手段`**
 
-+ 请求转发通过HttpServletRequest实现,响应重定向通过HttpServletResponse实现
++ **`请求转发`通过`HttpServletRequest实现`,`响应重定向`通过`HttpServletResponse实现`**
 
-+ 请求转发生活举例: 张三找李四借钱,李四没有,李四找王五,让王五借给张三
-+ 响应重定向生活举例:张三找李四借钱,李四没有,李四让张三去找王五,张三自己再去找王五借钱
++ **请求转发生活举例: 张三找李四借钱,`李四没有`,李四`找王五`,`让王五借给张三`**
+
+```mermaid
+graph TD
+    subgraph "请求转发 (Request Forwarding)"
+        A[用户/浏览器] -->|请求| B[Servlet A]
+        B -->|转发请求| C[Servlet B]
+        C -->|响应| A
+        B -.->|用户不知道转发| C
+    end
+```
+
+
+
++ **响应重定向生活举例:张三找李四借钱,`李四没有`,李四`让张三去找王五`,`张三自己再去找王五借钱`**
+
+```mermaid
+graph TD
+    subgraph "响应重定向 (Response Redirect)"
+        D[用户/浏览器] -->|① 请求| E[Servlet A]
+        E -->|② 302响应 + Location头| D
+        D -->|③ 新请求| F[Servlet B]
+        F -->|④ 响应| D
+    end
+```
 
 
 
@@ -1468,71 +1734,98 @@ public class Servlet3 extends HttpServlet {
 
 ### 请求转发
 
-> 请求转发运行逻辑图
+> **请求转发运行逻辑图**
 
 ![1682321228643](images/1682321228643.png)
 
+![请求转发](./Servlet/img-21.jpg)
+
+```mermaid
+graph TD
+    subgraph "请求转发 (Request Forwarding)"
+        A[用户/浏览器] -->|请求| B[Servlet A]
+        B -->|转发请求| C[Servlet B]
+        C -->|响应| A
+        B -.->|用户不知道转发| C
+    end
+```
+
 > 请求转发特点(背诵)
 
-+ 请求转发通过HttpServletRequest对象获取请求转发器实现
-+ 请求转发是服务器内部的行为,对客户端是屏蔽的
-+ 客户端只发送了一次请求,客户端地址栏不变
-+ 服务端只产生了一对请求和响应对象,这一对请求和响应对象会继续传递给下一个资源
-+ 因为全程只有一个HttpServletRequset对象,所以请求参数可以传递,请求域中的数据也可以传递
-+ 请求转发可以转发给其他Servlet动态资源,也可以转发给一些静态资源以实现页面跳转
-+ 请求转发可以转发给WEB-INF下受保护的资源
-+ 请求转发不能转发到本项目以外的外部资源
++ **请求转发通过HttpServletRequest对象获取请求转发器实现**
++ **请求转发是服务器内部的行为,对客户端是屏蔽的**
++ **客户端只发送了一次请求,客户端地址栏不变**
++ **服务端只产生了一对请求和响应对象,这一对请求和响应对象会继续传递给下一个资源**
++ **因为全程只有一个HttpServletRequset对象,所以请求参数可以传递,请求域中的数据也可以传递**
++ **请求转发可以转发给其他Servlet动态资源,也可以转发给一些静态资源以实现页面跳转**
++ **请求转发可以转发给WEB-INF下受保护的资源**
++ **请求转发不能转发到本项目以外的外部资源**
 
-> 请求转发测试代码
+> **请求转发测试代码**
 
-![1682323740343](images/1682323740343.png)
+![请求转发](./Servlet/img-23.jpg)
 
+```java
+1.请求转发是通过HttpServletRequest对象实现
+    
+2.请求转发是服务器内部行为，对客户端是屏蔽的
+    
+3.客户端只产生了一对request和response对象
+    
+4.客户端的地址栏是不变的
+    
+5.请求参数是可以继续传递的
+    
+6.目标资源可以是servlet动态资源 也可以是html静态资源
+    
+7.目标资源可以是WEB-INF下受保护的资源 该方式也是WEB-INF下的资源的唯一访问方式
+    
+8.目标资源不可以是外部的资源
+```
 
-
-+ ServletA
++ **ServletA**
 
 ```java title="Java"
 @WebServlet("/servletA")
 public class ServletA extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //  获取请求转发器
-        //  转发给servlet  ok
-        RequestDispatcher  requestDispatcher = req.getRequestDispatcher("servletB");
+        System.out.println("servletA 执行了");
+
+        // 获取参数
+        String money = req.getParameter("money");
+        System.out.println("servletA获得参数:money=" + money);
+ 
+        // 获取请求转发器
+        // 请求转发给ServletB ok
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("servletB");
         //  转发给一个视图资源 ok
-        //RequestDispatcher requestDispatcher = req.getRequestDispatcher("welcome.html");
+        //RequestDispatcher requestDispatcher = req.getRequestDispatcher("a.html");
         //  转发给WEB-INF下的资源  ok
-        //RequestDispatcher requestDispatcher = req.getRequestDispatcher("WEB-INF/views/view1.html");
+        //RequestDispatcher requestDispatcher = req.getRequestDispatcher("WEB-INF/b.html");
         //  转发给外部资源   no
         //RequestDispatcher requestDispatcher = req.getRequestDispatcher("http://www.atguigu.com");
-        //  获取请求参数
-        String username = req.getParameter("username");
-        System.out.println(username);
-        //  向请求域中添加数据
-        req.setAttribute("reqKey","requestMessage");
-        //  做出转发动作
-        requestDispatcher.forward(req,resp);
+        
+        // 让请求转发器做出转发动作
+        requestDispatcher.forward(req, resp);
     }
 }
 ```
 
 
 
-+ ServletB
++ **ServletB**
 
 ```java title="Java"
 @WebServlet("/servletB")
 public class ServletB extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // 获取请求参数
-        String username = req.getParameter("username");
-        System.out.println(username);
-        // 获取请求域中的数据
-        String reqMessage = (String)req.getAttribute("reqKey");
-        System.out.println(reqMessage);
-        // 做出响应
-        resp.getWriter().write("servletB response");        
+        System.out.println("servletB 执行了");
+
+        // 获取参数
+        String money = req.getParameter("money");
+        System.out.println("servletB获得参数:money=" + money);
     }
 }
 ```
@@ -1542,8 +1835,10 @@ public class ServletB extends HttpServlet {
 + 打开浏览器,输入以下url测试
 
 ```http title="http"
-http://localhost:8080/web03_war_exploded/servletA?username=atguigu
+http://localhost:8080/demo04/servletA?money=1000
 ```
+
+![请求转发](./Servlet/img-22.jpg)
 
 
 
@@ -1551,69 +1846,96 @@ http://localhost:8080/web03_war_exploded/servletA?username=atguigu
 
 ### 响应重定向
 
-> 响应重定向运行逻辑图
+> **响应重定向运行逻辑图**
 
 ![1682322460011](images/1682322460011.png)
 
+![响应重定向](./Servlet/img-24.jpg)
+
+```mermaid
+graph TD
+    subgraph "响应重定向 (Response Redirect)"
+        D[用户/浏览器] -->|① 请求| E[Servlet A]
+        E -->|② 302响应 + Location头| D
+        D -->|③ 新请求| F[Servlet B]
+        F -->|④ 响应| D
+    end
+```
+
 > 响应重定向特点(背诵)
 
-+ 响应重定向通过HttpServletResponse对象的sendRedirect方法实现
-+ 响应重定向是服务端通过302响应码和路径,告诉客户端自己去找其他资源,是在服务端提示下的,客户端的行为
-+ 客户端至少发送了两次请求,客户端地址栏是要变化的
-+ 服务端产生了多对请求和响应对象,且请求和响应对象不会传递给下一个资源
-+ 因为全程产生了多个HttpServletRequset对象,所以请求参数不可以传递,请求域中的数据也不可以传递
-+ 重定向可以是其他Servlet动态资源,也可以是一些静态资源以实现页面跳转
-+ 重定向不可以到给WEB-INF下受保护的资源
-+ 重定向可以到本项目以外的外部资源
++ **响应重定向通过HttpServletResponse对象的sendRedirect方法实现**
++ **响应重定向是服务端通过302响应码和路径,告诉客户端自己去找其他资源,是在服务端提示下的,客户端的行为**
++ **客户端至少发送了两次请求,客户端地址栏是要变化的**
++ **服务端产生了多对请求和响应对象,且请求和响应对象不会传递给下一个资源**
++ **因为全程产生了多个HttpServletRequset对象,所以请求参数不可以传递,请求域中的数据也不可以传递**
++ **重定向可以是其他Servlet动态资源,也可以是一些静态资源以实现页面跳转**
++ **重定向不可以到给WEB-INF下受保护的资源**
++ **重定向可以到本项目以外的外部资源**
 
-> 响应重定向测试代码
+> **响应重定向测试代码**
 
-![1682323740343](images/1682323740343.png)
+![响应重定向](./Servlet/img-26.jpg)
+
+```java
+1.重定向是通过HttpServletResponse对象实现
+    
+2.响应重定向是服务端提示下的，客户端行为
+    
+3.客户端的地址栏是变化的
+    
+4.客户端至少发送了两次请求 客户端产生了多次请求
+    
+5.请求产生了多次  后端就会有多个request对象 此时请求中的参数不能继续自动传递
+    
+6.目标资源可以是视图资源
+    
+7.目标资源不可以是WEB-INF下的资源
+    
+8.目标资源可以是外部资源
+
+重点: 同样能够实现页面跳转，优先使用响应重定向
+```
 
 
 
-+ ServletA
++ **ServletA**
 
 ```java title="Java"
-
-@WebServlet("/servletA")
-public class ServletA extends HttpServlet {
+@WebServlet("/servlet1")
+public class Servlet1 extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //  获取请求参数
-        String username = req.getParameter("username");
-        System.out.println(username);
-        //  向请求域中添加数据
-        req.setAttribute("reqKey","requestMessage");
-        //  响应重定向
+        // 接收用户请求
+        System.out.println("servlet1 执行了");
+
+        // 获取参数
+        System.out.println("servlet1 got money:" + req.getParameter("money"));
+
+        // 响应重定向    1.设置响应状态码为302  2.同时设置location响应头
         // 重定向到servlet动态资源 OK
-        resp.sendRedirect("servletB");
+        resp.sendRedirect("servlet2");
         // 重定向到视图静态资源 OK
-        //resp.sendRedirect("welcome.html");
+        //resp.sendRedirect("a.html");
         // 重定向到WEB-INF下的资源 NO
-        //resp.sendRedirect("WEB-INF/views/view1");
-        // 重定向到外部资源
+        //resp.sendRedirect("WEB-INF/b.html");
+        // 重定向到外部资源 ok
         //resp.sendRedirect("http://www.atguigu.com");
     }
 }
 ```
 
-+ ServletB
++ **ServletB**
 
 ```java title="Java"
-@WebServlet("/servletB")
-public class ServletB extends HttpServlet {
+@WebServlet("/servlet2")
+public class Servlet2 extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // 获取请求参数
-        String username = req.getParameter("username");
-        System.out.println(username);
-        // 获取请求域中的数据
-        String reqMessage = (String)req.getAttribute("reqKey");
-        System.out.println(reqMessage);
-        // 做出响应
-        resp.getWriter().write("servletB response");
+        System.out.println("servlet2 执行了");
 
+        // 获取参数
+        System.out.println("servlet2 got money:" + req.getParameter("money"));
     }
 }
 ```
@@ -1621,8 +1943,12 @@ public class ServletB extends HttpServlet {
 + 打开浏览器,输入以下url测试
 
 ``` url
-http://localhost:8080/web03_war_exploded/servletA?username=atguigu
+http://localhost:8080/demo04/servlet2
 ```
+
+![响应重定向](./Servlet/img-25.jpg)
+
+
 
 
 
@@ -2215,9 +2541,11 @@ public class ServletB extends HttpServlet {
 
 
 
+
+
+
+
 ## MVC架构模式
-
-
 
 >  MVC（Model View Controller）是软件工程中的一种**`软件架构模式`**，它把软件系统分为**`模型`**、**`视图`**和**`控制器`**三个基本部分。用一种业务逻辑、数据、界面显示分离的方法组织代码，将业务逻辑聚集到一个部件里面，在改进和个性化定制界面及用户交互的同时，不需要重新编写业务逻辑。
 
@@ -2258,6 +2586,10 @@ public class ServletB extends HttpServlet {
 前后端分离的MVC
 
 ![1683363039636](images/1683363039636-1690349401673.png)
+
+
+
+
 
 ## 案例开发-日程管理-第二期
 
@@ -2307,7 +2639,6 @@ INSERT INTO `sys_user` VALUES (1, 'zhangsan', 'e10adc3949ba59abbe56e057f20f883e'
 INSERT INTO `sys_user` VALUES (2, 'lisi', 'e10adc3949ba59abbe56e057f20f883e');
 
 SET FOREIGN_KEY_CHECKS = 1;
-
 ```
 
 + 获得如下表格
@@ -2334,49 +2665,82 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 
 
+
+
 #### pojo包处理
 
->  使用lombok处理getter setter equals hashcode 构造器 
+>  **使用`lombok`处理`getter setter equals hashcode`构造器**
+>
+>  ```java
+>  1.实体类的类名和表格名称应该对应  (对应不是一致)
+>      
+>  2.实体类的属性名和表格的列名应该对应
+>      
+>  3.每个属性都必须是私有的
+>      
+>  4.每个属性都应该具备 getter setter
+>      
+>  5.必须具备无参构造器
+>      
+>  6.应该实现序列化接口( 缓存  分布式项目数据传递 可能会将对象序列化 )
+>      
+>  7.应该重写类的hashcode和equals方法
+>      
+>  8.toString是否重写都可以
+>  
+>  
+>  使用lombok帮助我们生成这些内容 getter setter  全参构造 无参构造 equals  hashcode
+>     lombok使用步骤
+>         1 检查idea是否已经安装了lombok插件
+>         2 检查是否勾选了 enable  annotation processing
+>         3 导入lombok的依赖
+>  ```
+>
+>  ![响应重定向](./Servlet/img-27.jpg) 
 
 ```java title="Java"
-//-----------------------------------------------------
-package com.atguigu.schedule.pojo;
+//实体类包(pojo)SysUser接口-----------------------------------------------------
+package fun.xingji.schedule.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.io.Serializable;
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
-public class SysUser  implements Serializable {
+
+@AllArgsConstructor // 添加了全参构造
+@NoArgsConstructor  // 添加了无参构造
+@Data //getter setter   equals  hashcode toString
+public class SysUser implements Serializable {
     private Integer uid;
     private String username;
     private String userPwd;
 }
-//------------------------------------------------------
-package com.atguigu.schedule.pojo;
+
+//实体类包(pojo)SysSchedule接口------------------------------------------------------
+package fun.xingji.schedule.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
+@AllArgsConstructor // 添加了全参构造
+@NoArgsConstructor  // 添加了无参构造
+@Data //getter setter   equals  hashcode toString
 public class SysSchedule implements Serializable {
     private Integer sid;
     private Integer uid;
     private String title;
-    private Integer completed;
+    private String completed;
 }
 //------------------------------------------------------
 ```
 
+
+
 #### dao包处理
 
-导入JDBCUtil连接池工具类并准备jdbc.properties配置文件
+>  **导入`JDBCUtil连接池工具类`并准备`jdbc.properties配置文件`**
 
 ```java title="Java"
 package com.atguigu.schedule.util;
@@ -2657,6 +3021,8 @@ public class SysScheduleDaoImpl extends BaseDao implements SysScheduleDao {
 //------------------------------------------------------------------------------
 ```
 
+
+
 #### service包处理
 
 + 接口
@@ -2754,6 +3120,8 @@ public class SysScheduleController  extends BaseController{
 //----------------------------------------------------------------------------
 ```
 
+
+
 #### 加密工具类的使用
 
 + 导入MD5Util工具类
@@ -2795,6 +3163,8 @@ public final class MD5Util {
 + 复制资源下的日程管理中的HTML到项目的web目录下即可
 
 ![1690363965192](images/1690363965192.png)
+
+
 
 ### 业务代码
 
