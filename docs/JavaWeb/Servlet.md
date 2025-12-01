@@ -2822,7 +2822,7 @@ public class JDBCUtil {
 driverClassName=com.mysql.cj.jdbc.Driver
 url=jdbc:mysql://localhost:3306/schedule_system
 username=root
-password=root
+password=1225
 initialSize=5
 maxActive=10
 maxWait=1000
@@ -3059,41 +3059,43 @@ public class SysScheduleServiceImpl implements SysScheduleService {
 
 #### controller包处理
 
-+ BaseController处理请求路径问题
++ **BaseController处理`请求路径问题`**
 
 ```java title="Java"
-package com.atguigu.schedule.controller;
+package fun.xingji.schedule.controller;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.lang.reflect.Method;
 
-public class BaseController extends HttpServlet {
+public class BaseContoller extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        
 
-        String requestURI = req.getRequestURI();
+        String requestURI = req.getRequestURI(); // /schedule/add
         String[] split = requestURI.split("/");
-        String methodName =split[split.length-1];
-        // 通过反射获取要执行的方法
-        Class clazz = this.getClass();
+        String methodName = split[split.length-1];
+        // 使用 反射 通过方法名获取下面的方法
+        Class aClass = this.getClass();
+        // 获取方法
         try {
-            Method method=clazz.getDeclaredMethod(methodName,HttpServletRequest.class,HttpServletResponse.class);
-            // 设置方法可以访问
-            method.setAccessible(true);
-            // 通过反射执行代码
-            method.invoke(this,req,resp);
+            Method declaredMethod = aClass.getDeclaredMethod(methodName, HttpServletRequest.class, HttpServletResponse.class);
+
+            //暴力 破解方法的访问修饰符的限制
+            declaredMethod.setAccessible(true);
+
+            // 执行方法
+            declaredMethod.invoke(this,req,resp);
+
         } catch (Exception e) {
             e.printStackTrace();
-           
         }
     }
 }
-
 ```
 
 
@@ -3124,12 +3126,14 @@ public class SysScheduleController  extends BaseController{
 
 #### 加密工具类的使用
 
-+ 导入MD5Util工具类
++ **导入MD5Util工具类**
 
 ```java title="Java"
-package com.atguigu.schedule.util;
+package fun.xingji.schedule.util;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
 public final class MD5Util {
     public static String encrypt(String strSrc) {
         try {
@@ -3150,8 +3154,9 @@ public final class MD5Util {
             return new String(chars);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-            throw new RuntimeException("MD5加密出错!!!")
+            throw new RuntimeException("MD5加密出错");
         }
+
     }
 }
 ```
@@ -3170,14 +3175,14 @@ public final class MD5Util {
 
 #### 注册业务处理
 
-+ controller
++ **controller**
 
 ```java title="Java" 
-package com.atguigu.schedule.controller;
+package fun.xingji.schedule.controller;
 
-import com.atguigu.schedule.pojo.SysUser;
-import com.atguigu.schedule.service.SysUserService;
-import com.atguigu.schedule.service.impl.SysUserServiceImpl;
+import fun.xingji.schedule.pojo.SysUser;
+import fun.xingji.schedule.service.SysUserService;
+import fun.xingji.schedule.service.impl.SysUserServiceImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -3186,85 +3191,109 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/user/*")
-public class SysUserController  extends BaseContoller {
+public class SysUserController extends BaseContoller {
 
-    private SysUserService userService =new SysUserServiceImpl();
+    // 解决反复调用Service层的方法
+    private SysUserService userService = new SysUserServiceImpl();
 
     /**
      * 接收用户注册请求的业务处理方法( 业务接口 不是java中的interface  )
+     *
      * @param req
      * @param resp
      * @throws ServletException
      * @throws IOException
      */
     protected void regist(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // 1 接收客户端提交的参数
+        // 1.接收客户端提交的参数
         String username = req.getParameter("username");
         String userPwd = req.getParameter("userPwd");
         // 2 调用服务层方法,完成注册功能
-            //将参数放入一个SysUser对象中,在调用regist方法时传入
-        SysUser sysUser =new SysUser(null,username,userPwd);
-        int rows =userService.regist(sysUser);
-        // 3 根据注册结果(成功  失败) 做页面跳转
-        if(rows>0){
+        //将参数放入一个SysUser对象中,在调用regist方法时传入
+        SysUser sysUser = new SysUser(null, username, userPwd);
+        int rows = userService.regist(sysUser);
+        // 3.根据注册结果(成功  失败)进行页面跳转
+        if (rows > 0) {
+            // 注册成功返回的页面
             resp.sendRedirect("/registSuccess.html");
-        }else{
+        } else {
+            // 注册失败返回的页面
             resp.sendRedirect("/registFail.html");
         }
     }
 }
-
-
 ```
 
-+ service
+
+
++ **service**
 
 ```java title="java"
-package com.atguigu.schedule.service;
+package fun.xingji.schedule.service;
 
-import com.atguigu.schedule.pojo.SysUser;
+import fun.xingji.schedule.pojo.SysUser;
 
+/**
+ * 该接口定义了以sys_user表格为核心的业务处理功能
+ */
 public interface SysUserService {
+
     /**
-     * 用户完成注册的业务方法
-     * @param registUser 用于保存注册用户名和密码的对象
-     * @return 注册成功返回>0的整数,否则返回0
+     * 注册用户的方法
+     * @param sysUser 要注册的用户名和明文密码以SysUser对象的形式接收
+     * @return 注册成功返回1 注册失败返回0
      */
-    int regist(SysUser registUser);
+    int regist(SysUser sysUser);
 }
 ```
 
-
-
 ```java title="Java"
-package com.atguigu.schedule.service.impl;
+package fun.xingji.schedule.service.impl;
 
-import com.atguigu.schedule.dao.SysUserDao;
-import com.atguigu.schedule.dao.impl.SysUserDaoImpl;
-import com.atguigu.schedule.pojo.SysUser;
-import com.atguigu.schedule.service.SysUserService;
-import com.atguigu.schedule.util.MD5Util;
+import fun.xingji.schedule.dao.SysUserDao;
+import fun.xingji.schedule.dao.impl.SysUserDaoImpl;
+import fun.xingji.schedule.pojo.SysUser;
+import fun.xingji.schedule.service.SysUserService;
+import fun.xingji.schedule.util.MD5Util;
 
-public class SysUserServiceImpl  implements SysUserService {
-    private SysUserDao  userDao =new SysUserDaoImpl();
+public class SysUserServiceImpl implements SysUserService {
+
+    // 解决反复调用Dao层的方法
+    private SysUserDao userDao =new SysUserDaoImpl();
+
     @Override
     public int regist(SysUser sysUser) {
 
-        // 将用户的明文密码转换为密文密码
+        // 将用户的明文密码转换成密文密码
+        // 1.拿取明文密码
+        /*String userPwd = sysUser.getUserPwd();
+        // 2.调用MD5加密工具类：将明文密码转换为密文密码
+        String encrypt = MD5Util.encrypt(userPwd);
+        // 3.密文密码替换原来的明文密码
+        sysUser.setUserPwd(encrypt);*/
+
+        // 将用户的明文密码转换为密文密码(合并三个步骤)
         sysUser.setUserPwd(MD5Util.encrypt(sysUser.getUserPwd()));
+
         // 调用DAO 层的方法  将sysUser信息存入数据库
         return userDao.addSysUser(sysUser);
     }
 }
 ```
 
-+ dao
+
+
++ **dao**
 
 ```java title="Java"
-package com.atguigu.schedule.dao;
+package fun.xingji.schedule.dao;
 
-import com.atguigu.schedule.pojo.SysUser;
+import fun.xingji.schedule.pojo.SysUser;
 
+/*
+Data access Object 数据访问对象
+该类用于定义针对表格的CRUD的方法
+ */
 public interface SysUserDao {
 
     /**
@@ -3274,39 +3303,83 @@ public interface SysUserDao {
      */
     int addSysUser(SysUser sysUser);
 }
-
 ```
 
-
-
 ```java title="Java"
-package com.atguigu.schedule.dao.impl;
+package fun.xingji.schedule.dao.impl;
 
-import com.atguigu.schedule.dao.BaseDao;
-import com.atguigu.schedule.dao.SysUserDao;
-import com.atguigu.schedule.pojo.SysUser;
+import fun.xingji.schedule.dao.BaseDao;
+import fun.xingji.schedule.dao.SysUserDao;
+import fun.xingji.schedule.pojo.SysUser;
+
+/**
+ * 系统用户数据访问层实现类
+ * 继承BaseDao基类，实现SysUserDao接口
+ * 负责SysUser实体类的数据库操作
+ */
 public class SysUserDaoImpl extends BaseDao implements SysUserDao {
+
+    /**
+     * 新增系统用户
+     * 向sys_user表中插入一条用户记录
+     * 
+     * @param sysUser 系统用户对象，包含用户名和密码等信息
+     * @return int 返回受影响的行数，成功插入返回1，失败返回0
+     */
     @Override
     public int addSysUser(SysUser sysUser) {
-        String sql ="insert into sys_user values(DEFAULT,?,?)";
-        return baseUpdate(sql,sysUser.getUsername(),sysUser.getUserPwd());
+        // SQL插入语句，id使用默认值(DEFAULT)，插入用户名和密码
+        String sql = "insert into sys_user values(DEFAULT,?,?)";
+        
+        // 调用基类的更新方法执行SQL语句，参数为SQL语句和用户对象的用户名、密码
+        return baseUpdate(sql, sysUser.getUsername(), sysUser.getUserPwd());
     }
 }
 ```
 
 
 
+##### 注册业务测试
+
+> **注册已存在用户**
+
+![注册业务测试](./Servlet/img-35.jpg)
+
+![注册业务测试](./Servlet/img-36.jpg)
+
+![注册业务测试](./Servlet/img-37.jpg)
+
+![注册业务测试](./Servlet/img-38.jpg)
+
+
+
+> **注册未存在用户**
+
+![注册业务测试](./Servlet/img-35.jpg)
+
+![注册业务测试](./Servlet/img-36.jpg)
+
+![注册业务测试](./Servlet/img-39.jpg)
+
+![注册业务测试](./Servlet/img-40.jpg)
+
+![注册业务测试](./Servlet/img-41.jpg)
+
+
+
+
+
 #### 登录业务处理
 
-+ controller
++ **controller**
 
 ```java title="Java" 
-package com.atguigu.schedule.controller;
+package fun.xingji.schedule.controller;
 
-import com.atguigu.schedule.pojo.SysUser;
-import com.atguigu.schedule.service.SysUserService;
-import com.atguigu.schedule.service.impl.SysUserServiceImpl;
-import com.atguigu.schedule.util.MD5Util;
+import fun.xingji.schedule.pojo.SysUser;
+import fun.xingji.schedule.service.SysUserService;
+import fun.xingji.schedule.service.impl.SysUserServiceImpl;
+import fun.xingji.schedule.util.MD5Util;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -3315,9 +3388,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/user/*")
-public class SysUserController  extends BaseContoller {
+public class SysUserController extends BaseContoller {
 
-    private SysUserService userService =new SysUserServiceImpl();
+    // 解决反复调用Service层的方法
+    private SysUserService userService = new SysUserServiceImpl();
+
     /**
      * 接收用登录请求,完成的登录业务接口
      * @param req
@@ -3326,36 +3401,43 @@ public class SysUserController  extends BaseContoller {
      * @throws IOException
      */
     protected void login(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //1 接收用户名和密码
+        // 1.接收用户名和密码
         String username = req.getParameter("username");
         String userPwd = req.getParameter("userPwd");
-        //2 调用服务层方法,根据用户名查询用户信息
-        SysUser loginUser =userService.findByUsername(username);
-        if(null == loginUser){
+
+        // 2.调用服务层方法,根据用户名查询用户信息
+        SysUser loginUser = userService.findByUsername(username);
+
+        // 3.判断用户名是否匹配
+        if (loginUser == null) {
             // 跳转到用户名有误提示页
             resp.sendRedirect("/loginUsernameError.html");
-        }else if(! MD5Util.encrypt(userPwd).equals(loginUser.getUserPwd())){
-            //3 判断密码是否匹配
+        }else if (!MD5Util.encrypt(userPwd).equals(loginUser.getUserPwd())) {
+            // 4.判断密码是否匹配
             // 跳转到密码有误提示页
             resp.sendRedirect("/loginUserPwdError.html");
-        }else{
-            //4 跳转到首页
+        }else  {
+            // 5.跳转到首页
             resp.sendRedirect("/showSchedule.html");
         }
-
     }
 }
 ```
 
-+ service
+
+
++ **service**
 
 ```java title="java"
-package com.atguigu.schedule.service;
+package fun.xingji.schedule.service;
 
-import com.atguigu.schedule.pojo.SysUser;
+import fun.xingji.schedule.pojo.SysUser;
 
+/**
+ * 该接口定义了以sys_user表格为核心的业务处理功能
+ */
 public interface SysUserService {
-        /**
+    /**
      * 根据用户名获得完整用户信息的方法
      * @param username 要查询的用户名
      * @return 如果找到了返回SysUser对象,找不到返回null
@@ -3365,37 +3447,43 @@ public interface SysUserService {
 ```
 
 ```java title="Java"
+package fun.xingji.schedule.service.impl;
 
-package com.atguigu.schedule.service.impl;
-
-import com.atguigu.schedule.dao.SysUserDao;
-import com.atguigu.schedule.dao.impl.SysUserDaoImpl;
-import com.atguigu.schedule.pojo.SysUser;
-import com.atguigu.schedule.service.SysUserService;
-import com.atguigu.schedule.util.MD5Util;
+import fun.xingji.schedule.dao.SysUserDao;
+import fun.xingji.schedule.dao.impl.SysUserDaoImpl;
+import fun.xingji.schedule.pojo.SysUser;
+import fun.xingji.schedule.service.SysUserService;
+import fun.xingji.schedule.util.MD5Util;
 
 public class SysUserServiceImpl implements SysUserService {
+    
+    // 解决反复调用Dao层的方法
     private SysUserDao userDao =new SysUserDaoImpl();
 
     @Override
     public SysUser findByUsername(String username) {
         // 调用服务层方法,继续查询
-
         return userDao.findByUsername(username);
     }
 }
-
 ```
 
-+ dao
+
+
++ **dao**
 
 ```java title="Java"
-package com.atguigu.schedule.dao;
+package fun.xingji.schedule.dao;
 
-import com.atguigu.schedule.pojo.SysUser;
+import fun.xingji.schedule.pojo.SysUser;
 
+/*
+Data access Object 数据访问对象
+该类用于定义针对表格的CRUD的方法
+ */
 public interface SysUserDao {
-        /**
+
+    /**
      * 根据用户名获得完整用户信息的方法
      * @param username 要查询的用户名
      * @return 如果找到了返回SysUser对象,找不到返回null
@@ -3405,19 +3493,75 @@ public interface SysUserDao {
 ```
 
 ```java title="Java" 
+package fun.xingji.schedule.dao.impl;
 
-import com.atguigu.schedule.dao.BaseDao;
-import com.atguigu.schedule.dao.SysUserDao;
-import com.atguigu.schedule.pojo.SysUser;
+import fun.xingji.schedule.dao.BaseDao;
+import fun.xingji.schedule.dao.SysUserDao;
+import fun.xingji.schedule.pojo.SysUser;
 
 import java.util.List;
 
+/**
+ * 系统用户数据访问层实现类
+ * 继承BaseDao基类，实现SysUserDao接口
+ */
 public class SysUserDaoImpl extends BaseDao implements SysUserDao {
+
+    /**
+     * 根据用户名查询用户信息
+     * 
+     * @param username 用户名
+     * @return 如果找到对应用户则返回SysUser对象，否则返回null
+     * 
+     * 方法说明：
+     * 1. 构造SQL查询语句，将数据库字段user_pwd映射为Java对象的userPwd属性
+     * 2. 调用基类的baseQuery方法执行查询
+     * 3. 判断查询结果集，如果非空则返回第一个用户对象
+     */
     @Override
     public SysUser findByUsername(String username) {
-        String sql ="select uid,username, user_pwd userPwd from sys_user where username = ?";
-        List<SysUser> userList = baseQuery(SysUser.class, sql, username);
-        return  null != userList&& userList.size()>0? userList.get(0):null;
+        // 查询SQL，使用别名将数据库字段user_pwd映射到Java实体类的userPwd属性
+        String sql = "select uid,username,user_pwd userPwd from sys_user where username = ?";
+        
+        // 调用基类方法执行查询，参数化查询防止SQL注入
+        List<SysUser> sysUserList = baseQuery(SysUser.class, sql, username);
+        
+        // 判断查询结果：如果列表非空且有数据，返回第一个用户；否则返回null
+        return sysUserList != null && sysUserList.size() > 0 ? sysUserList.get(0) : null;
     }
 }
 ```
+
+
+
+##### 登录业务测试
+
+> **登录提示用户名错误**
+
+![登录业务测试](./Servlet/img-42.jpg)
+
+![登录业务测试](./Servlet/img-43.jpg)
+
+![登录业务测试](./Servlet/img-44.jpg)
+
+
+
+
+
+> **登录提示密码错误**
+
+![登录业务测试](./Servlet/img-42.jpg)
+
+![登录业务测试](./Servlet/img-45.jpg)
+
+![登录业务测试](./Servlet/img-46.jpg)
+
+
+
+> **用户名和密码都正确成功登录**
+
+![登录业务测试](./Servlet/img-42.jpg)
+
+![登录业务测试](./Servlet/img-47.jpg)
+
+![登录业务测试](./Servlet/img-48.jpg)
