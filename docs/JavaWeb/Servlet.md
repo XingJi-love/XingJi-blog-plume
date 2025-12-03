@@ -2577,15 +2577,133 @@ public class ServletB extends HttpServlet {
 
 
 
-非前后端分离的MVC
++ **非前后端分离的MVC**
 
 ![1690349913931](images/1690349913931.png)
 
+```mermaid
+graph TB
+    subgraph "服务器 Server"
+        subgraph "应用 app"
+            subgraph "V层 View"
+                V1[.html文件]
+                V2[.css文件]
+                V3[.js文件]
+                V4[img等静态资源]
+            end
+            
+            subgraph "C层 Controller"
+                C[controller包]
+            end
+            
+            subgraph "M层 Model"
+                M1[service包]
+                M2[dao包]
+                M3[pojo包]
+            end
+        end
+    end
+    
+    User[用户/浏览器] -->|HTTP请求| C
+    C -->|调用| M1
+    M1 -->|调用| M2
+    M2 -->|操作| Database[(数据库)]
+    M2 -->|返回数据| M1
+    M1 -->|返回数据| C
+    C -->|选择视图| V1
+    V1 -->|应用样式| V2
+    V1 -->|添加交互| V3
+    C -->|返回完整页面| User
+    
+    %% 样式
+    classDef view fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef controller fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef model fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
+    classDef user fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef server fill:#f5f5f5,stroke:#616161,stroke-width:2px
+    
+    class V1,V2,V3,V4 view
+    class C controller
+    class M1,M2,M3 model
+    class User user
+    class Server server
+```
 
 
-前后端分离的MVC
+
+
+
++ **前后端分离的MVC**
 
 ![1683363039636](images/1683363039636-1690349401673.png)
+
+```mermaid
+graph TB
+    subgraph "前端服务器 Frontend Server"
+        subgraph "前端应用 Frontend App"
+            subgraph "View 视图层"
+                V1[HTML/CSS/JS]
+                V2[前端框架组件]
+            end
+            
+            subgraph "Controller 控制层"
+                C1[前端路由]
+                C2[状态管理]
+                C3[事件处理]
+            end
+        end
+    end
+    
+    subgraph "后端服务器 Backend Server"
+        subgraph "后端应用 Backend App"
+            subgraph "C层 Controller"
+                BC[controller包<br/>RESTful API]
+            end
+            
+            subgraph "M层 Model"
+                BM1[service包<br/>业务逻辑]
+                BM2[dao包<br/>数据访问]
+                BM3[pojo包<br/>实体类]
+            end
+        end
+    end
+    
+    User[用户/浏览器] -->|访问SPA| Frontend
+    Frontend -->|加载静态资源| User
+    
+    C1 -->|用户交互| V1
+    V1 -->|数据更新| C2
+    C3 -->|API调用| BC
+    
+    BC -->|调用| BM1
+    BM1 -->|调用| BM2
+    BM2 -->|操作| Database[(数据库)]
+    BM2 -->|返回数据| BM1
+    BM1 -->|返回数据| BC
+    BC -->|JSON响应| C3
+    C3 -->|更新状态| C2
+    C2 -->|更新视图| V1
+    V1 -->|渲染更新| User
+    
+    %% 样式
+    classDef frontendView fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef frontendController fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef backendController fill:#fff8e1,stroke:#ff8f00,stroke-width:2px
+    classDef backendModel fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
+    classDef user fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef frontendServer fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
+    classDef backendServer fill:#fce4ec,stroke:#c2185b,stroke-width:2px
+    
+    class V1,V2 frontendView
+    class C1,C2,C3 frontendController
+    class BC backendController
+    class BM1,BM2,BM3 backendModel
+    class User user
+    class FrontendServer frontendServer
+    class BackendServer backendServer
+```
+
+
 
 
 
@@ -2731,7 +2849,7 @@ public class SysSchedule implements Serializable {
     private Integer sid;
     private Integer uid;
     private String title;
-    private String completed;
+    private Integer completed;
 }
 //------------------------------------------------------
 ```
@@ -2743,8 +2861,7 @@ public class SysSchedule implements Serializable {
 >  **导入`JDBCUtil连接池工具类`并准备`jdbc.properties配置文件`**
 
 ```java title="Java"
-package com.atguigu.schedule.util;
-
+package fun.xingji.schedule.util;
 
 import com.alibaba.druid.pool.DruidDataSourceFactory;
 
@@ -2815,7 +2932,6 @@ public class JDBCUtil {
         }
     }
 }
-
 ```
 
 ```properties title="properties"
@@ -2831,10 +2947,9 @@ maxWait=1000
 + 创建BaseDao对象并复制如下代码
 
 ```java title="Java"
-package com.atguigu.schedule.dao;
+package fun.xingji.schedule.dao;
 
-
-import com.atguigu.schedule.util.JDBCUtil;
+import fun.xingji.schedule.util.JDBCUtil;
 
 import java.lang.reflect.Field;
 import java.sql.*;
@@ -2985,18 +3100,17 @@ public class BaseDao {
         return rows;
     }
 }
-
 ```
 
 + dao层所有接口
 
 ```java title="Java"
 //---------------------------------------------------
-package com.atguigu.schedule.dao;
+package fun.xingji.schedule.dao;
 public interface SysUserDao {
 }
 //---------------------------------------------------
-package com.atguigu.schedule.dao;
+package fun.xingji.schedule.dao;
 public interface SysScheduleDao {
 }
 //---------------------------------------------------
@@ -3006,16 +3120,16 @@ public interface SysScheduleDao {
 
 ```java title="Java"
 //------------------------------------------------------------------------------
-package com.atguigu.schedule.dao.impl;
-import com.atguigu.schedule.dao.BaseDao;
-import com.atguigu.schedule.dao.SysUserDao;
+package fun.xingji.schedule.dao.impl;
+import fun.xingji.schedule.dao.BaseDao;
+import fun.xingji.schedule.dao.SysUserDao;
 public class SysUserDaoImpl extends BaseDao implements SysUserDao {
 }
 
 //------------------------------------------------------------------------------
-package com.atguigu.schedule.dao.impl;
-import com.atguigu.schedule.dao.BaseDao;
-import com.atguigu.schedule.dao.SysScheduleDao;
+package fun.xingji.schedule.dao.impl;
+import fun.xingji.schedule.dao.BaseDao;
+import fun.xingji.schedule.dao.SysScheduleDao;
 public class SysScheduleDaoImpl extends BaseDao implements SysScheduleDao {
 }
 //------------------------------------------------------------------------------
@@ -3029,11 +3143,11 @@ public class SysScheduleDaoImpl extends BaseDao implements SysScheduleDao {
 
 ```java title="Java"
 //------------------------------------------------------------------------------
-package com.atguigu.schedule.service;
+package fun.xingji.schedule.service;
 public interface SysUserService {
 }
 //------------------------------------------------------------------------------
-package com.atguigu.schedule.service;
+package fun.xingji.schedule.service;
 public interface SysScheduleService {
 }
 //------------------------------------------------------------------------------
@@ -3043,13 +3157,13 @@ public interface SysScheduleService {
 
 ```java title="java"
 //------------------------------------------------------------------------------
-package com.atguigu.schedule.service.impl;
-import com.atguigu.schedule.service.SysUserService;
+package fun.xingji.schedule.service.impl;
+import fun.xingji.schedule.service.SysUserService;
 public class SysUserServiceImpl implements SysUserService {
 }
 //------------------------------------------------------------------------------
-package com.atguigu.schedule.service.impl;
-import com.atguigu.schedule.service.SysScheduleService;
+package fun.xingji.schedule.service.impl;
+import fun.xingji.schedule.service.SysScheduleService;
 public class SysScheduleServiceImpl implements SysScheduleService {
 }
 //------------------------------------------------------------------------------
@@ -3104,7 +3218,7 @@ public class BaseContoller extends HttpServlet {
 
 ```  java
 //----------------------------------------------------------------------------
-package com.atguigu.schedule.controller;
+package fun.xingji.schedule.controller;
 
 import jakarta.servlet.annotation.WebServlet;
 
@@ -3112,7 +3226,7 @@ import jakarta.servlet.annotation.WebServlet;
 public class UserController extends BaseController{
 }
 //----------------------------------------------------------------------------
-package com.atguigu.schedule.controller;
+package fun.xingji.schedule.controller;
 
 import jakarta.servlet.annotation.WebServlet;
 
