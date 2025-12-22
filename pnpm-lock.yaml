@@ -42,8 +42,8 @@ importers:
         specifier: ^11.12.2
         version: 11.12.2
       mpegts.js:
-        specifier: ^1.8.0
-        version: 1.8.0
+        specifier: ^1.7.3
+        version: 1.7.3
       swiper:
         specifier: ^11.2.10
         version: 11.2.10
@@ -74,7 +74,7 @@ importers:
         version: 2.0.0-rc.26(@vuepress/bundler-vite@2.0.0-rc.26(@types/node@25.0.3)(sass-embedded@1.97.1)(sass@1.97.1)(typescript@5.9.3)(yaml@2.8.2))(typescript@5.9.3)(vue@3.5.26(typescript@5.9.3))
       vuepress-theme-plume:
         specifier: 1.0.0-rc.183
-        version: 1.0.0-rc.183(@algolia/client-search@5.46.1)(@iconify/json@2.2.417)(@types/markdown-it@14.1.2)(artplayer@5.3.0)(chart.js@4.5.1)(dashjs@5.1.0)(echarts@5.6.0)(flowchart.ts@3.0.1)(hls.js@1.6.15)(markdown-it@14.1.0)(markmap-lib@0.18.12(markmap-common@0.18.9))(markmap-toolbar@0.18.12(markmap-common@0.18.9))(markmap-view@0.18.12(markmap-common@0.18.9))(mermaid@11.12.2)(mpegts.js@1.8.0)(qrcode@1.5.4)(react@19.2.3)(sass-embedded@1.97.1)(sass@1.97.1)(search-insights@2.17.3)(swiper@11.2.10)(twikoo@1.6.44)(typescript@5.9.3)(vuepress@2.0.0-rc.26(@vuepress/bundler-vite@2.0.0-rc.26(@types/node@25.0.3)(sass-embedded@1.97.1)(sass@1.97.1)(typescript@5.9.3)(yaml@2.8.2))(typescript@5.9.3)(vue@3.5.26(typescript@5.9.3)))
+        version: 1.0.0-rc.183(@algolia/client-search@5.46.1)(@iconify/json@2.2.417)(@types/markdown-it@14.1.2)(artplayer@5.3.0)(chart.js@4.5.1)(dashjs@5.1.0)(echarts@5.6.0)(flowchart.ts@3.0.1)(hls.js@1.6.15)(markdown-it@14.1.0)(markmap-lib@0.18.12(markmap-common@0.18.9))(markmap-toolbar@0.18.12(markmap-common@0.18.9))(markmap-view@0.18.12(markmap-common@0.18.9))(mermaid@11.12.2)(mpegts.js@1.7.3)(qrcode@1.5.4)(react@19.2.3)(sass-embedded@1.97.1)(sass@1.97.1)(search-insights@2.17.3)(swiper@11.2.10)(twikoo@1.6.44)(typescript@5.9.3)(vuepress@2.0.0-rc.26(@vuepress/bundler-vite@2.0.0-rc.26(@types/node@25.0.3)(sass-embedded@1.97.1)(sass@1.97.1)(typescript@5.9.3)(yaml@2.8.2))(typescript@5.9.3)(vue@3.5.26(typescript@5.9.3)))
 
 packages:
 
@@ -2588,8 +2588,8 @@ packages:
   mlly@1.8.0:
     resolution: {integrity: sha512-l8D9ODSRWLe2KHJSifWGwBqpTZXIXTeo8mlKjY+E2HAakaTeNpqAyBZ8GSqLzHgw4XmHmC8whvpjJNMbFZN7/g==}
 
-  mpegts.js@1.8.0:
-    resolution: {integrity: sha512-ZtujqtmTjWgcDDkoOnLvrOKUTO/MKgLHM432zGDI8oPaJ0S+ebPxg1nEpDpLw6I7KmV/GZgUIrfbWi3qqEircg==}
+  mpegts.js@1.7.3:
+    resolution: {integrity: sha512-kqZ1C1IsbAQN72cK8vMrzKeM7hwrwSBbFAwVAc7PPweOeoZxCANrc7fAVDKMfYUzxdNkMTnec9tVmlxmKZB0TQ==}
 
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
@@ -3407,9 +3407,8 @@ packages:
   webpack-virtual-modules@0.6.2:
     resolution: {integrity: sha512-66/V2i5hQanC51vBQKPH4aI8NMAcBW59FVBs+rC7eGHupMyfn34q7rZIE+ETlJ+XTevqfUhVVBgSUNSW2flEUQ==}
 
-  webworkify-webpack@https://codeload.github.com/xqq/webworkify-webpack/tar.gz/24d1e719b4a6cac37a518b2bb10fe124527ef4ef:
-    resolution: {tarball: https://codeload.github.com/xqq/webworkify-webpack/tar.gz/24d1e719b4a6cac37a518b2bb10fe124527ef4ef}
-    version: 2.1.5
+  webworkify-webpack@2.1.5:
+    resolution: {integrity: sha512-2akF8FIyUvbiBBdD+RoHpoTbHMQF2HwjcxfDvgztAX5YwbZNyrtfUMgvfgFVsgDhDPVTlkbb5vyasqDHfIDPQw==}
 
   whatwg-encoding@2.0.0:
     resolution: {integrity: sha512-p41ogyeMUrw3jWclHWTQg1k05DSVXPLcVxRTYsXUk+ZooOCZLcoYgPZ/HL/D/N+uQPOtcp1me1WhBEaX02mhWg==}
@@ -6209,10 +6208,10 @@ snapshots:
       pkg-types: 1.3.1
       ufo: 1.6.1
 
-  mpegts.js@1.8.0:
+  mpegts.js@1.7.3:
     dependencies:
       es6-promise: 4.2.8
-      webworkify-webpack: https://codeload.github.com/xqq/webworkify-webpack/tar.gz/24d1e719b4a6cac37a518b2bb10fe124527ef4ef
+      webworkify-webpack: 2.1.5
 
   ms@2.1.3: {}
 
@@ -6901,7 +6900,7 @@ snapshots:
     optionalDependencies:
       typescript: 5.9.3
 
-  vuepress-plugin-md-power@1.0.0-rc.183(@types/markdown-it@14.1.2)(artplayer@5.3.0)(dashjs@5.1.0)(esbuild@0.27.2)(hls.js@1.6.15)(markdown-it@14.1.0)(mpegts.js@1.8.0)(sass-embedded@1.97.1)(sass@1.97.1)(typescript@5.9.3)(vuepress@2.0.0-rc.26(@vuepress/bundler-vite@2.0.0-rc.26(@types/node@25.0.3)(sass-embedded@1.97.1)(sass@1.97.1)(typescript@5.9.3)(yaml@2.8.2))(typescript@5.9.3)(vue@3.5.26(typescript@5.9.3))):
+  vuepress-plugin-md-power@1.0.0-rc.183(@types/markdown-it@14.1.2)(artplayer@5.3.0)(dashjs@5.1.0)(esbuild@0.27.2)(hls.js@1.6.15)(markdown-it@14.1.0)(mpegts.js@1.7.3)(sass-embedded@1.97.1)(sass@1.97.1)(typescript@5.9.3)(vuepress@2.0.0-rc.26(@vuepress/bundler-vite@2.0.0-rc.26(@types/node@25.0.3)(sass-embedded@1.97.1)(sass@1.97.1)(typescript@5.9.3)(yaml@2.8.2))(typescript@5.9.3)(vue@3.5.26(typescript@5.9.3))):
     dependencies:
       '@mdit/plugin-attrs': 0.24.1(markdown-it@14.1.0)
       '@mdit/plugin-footnote': 0.22.3(markdown-it@14.1.0)
@@ -6932,7 +6931,7 @@ snapshots:
       dashjs: 5.1.0
       hls.js: 1.6.15
       markdown-it: 14.1.0
-      mpegts.js: 1.8.0
+      mpegts.js: 1.7.3
       sass: 1.97.1
       sass-embedded: 1.97.1
     transitivePeerDependencies:
@@ -6941,7 +6940,7 @@ snapshots:
 
   vuepress-plugin-umami@0.0.4: {}
 
-  vuepress-theme-plume@1.0.0-rc.183(@algolia/client-search@5.46.1)(@iconify/json@2.2.417)(@types/markdown-it@14.1.2)(artplayer@5.3.0)(chart.js@4.5.1)(dashjs@5.1.0)(echarts@5.6.0)(flowchart.ts@3.0.1)(hls.js@1.6.15)(markdown-it@14.1.0)(markmap-lib@0.18.12(markmap-common@0.18.9))(markmap-toolbar@0.18.12(markmap-common@0.18.9))(markmap-view@0.18.12(markmap-common@0.18.9))(mermaid@11.12.2)(mpegts.js@1.8.0)(qrcode@1.5.4)(react@19.2.3)(sass-embedded@1.97.1)(sass@1.97.1)(search-insights@2.17.3)(swiper@11.2.10)(twikoo@1.6.44)(typescript@5.9.3)(vuepress@2.0.0-rc.26(@vuepress/bundler-vite@2.0.0-rc.26(@types/node@25.0.3)(sass-embedded@1.97.1)(sass@1.97.1)(typescript@5.9.3)(yaml@2.8.2))(typescript@5.9.3)(vue@3.5.26(typescript@5.9.3))):
+  vuepress-theme-plume@1.0.0-rc.183(@algolia/client-search@5.46.1)(@iconify/json@2.2.417)(@types/markdown-it@14.1.2)(artplayer@5.3.0)(chart.js@4.5.1)(dashjs@5.1.0)(echarts@5.6.0)(flowchart.ts@3.0.1)(hls.js@1.6.15)(markdown-it@14.1.0)(markmap-lib@0.18.12(markmap-common@0.18.9))(markmap-toolbar@0.18.12(markmap-common@0.18.9))(markmap-view@0.18.12(markmap-common@0.18.9))(mermaid@11.12.2)(mpegts.js@1.7.3)(qrcode@1.5.4)(react@19.2.3)(sass-embedded@1.97.1)(sass@1.97.1)(search-insights@2.17.3)(swiper@11.2.10)(twikoo@1.6.44)(typescript@5.9.3)(vuepress@2.0.0-rc.26(@vuepress/bundler-vite@2.0.0-rc.26(@types/node@25.0.3)(sass-embedded@1.97.1)(sass@1.97.1)(typescript@5.9.3)(yaml@2.8.2))(typescript@5.9.3)(vue@3.5.26(typescript@5.9.3))):
     dependencies:
       '@iconify/utils': 3.1.0
       '@iconify/vue': 5.0.0(vue@3.5.26(typescript@5.9.3))
@@ -6983,7 +6982,7 @@ snapshots:
       picomatch: 4.0.3
       vue: 3.5.26(typescript@5.9.3)
       vuepress: 2.0.0-rc.26(@vuepress/bundler-vite@2.0.0-rc.26(@types/node@25.0.3)(sass-embedded@1.97.1)(sass@1.97.1)(typescript@5.9.3)(yaml@2.8.2))(typescript@5.9.3)(vue@3.5.26(typescript@5.9.3))
-      vuepress-plugin-md-power: 1.0.0-rc.183(@types/markdown-it@14.1.2)(artplayer@5.3.0)(dashjs@5.1.0)(esbuild@0.27.2)(hls.js@1.6.15)(markdown-it@14.1.0)(mpegts.js@1.8.0)(sass-embedded@1.97.1)(sass@1.97.1)(typescript@5.9.3)(vuepress@2.0.0-rc.26(@vuepress/bundler-vite@2.0.0-rc.26(@types/node@25.0.3)(sass-embedded@1.97.1)(sass@1.97.1)(typescript@5.9.3)(yaml@2.8.2))(typescript@5.9.3)(vue@3.5.26(typescript@5.9.3)))
+      vuepress-plugin-md-power: 1.0.0-rc.183(@types/markdown-it@14.1.2)(artplayer@5.3.0)(dashjs@5.1.0)(esbuild@0.27.2)(hls.js@1.6.15)(markdown-it@14.1.0)(mpegts.js@1.7.3)(sass-embedded@1.97.1)(sass@1.97.1)(typescript@5.9.3)(vuepress@2.0.0-rc.26(@vuepress/bundler-vite@2.0.0-rc.26(@types/node@25.0.3)(sass-embedded@1.97.1)(sass@1.97.1)(typescript@5.9.3)(yaml@2.8.2))(typescript@5.9.3)(vue@3.5.26(typescript@5.9.3)))
     optionalDependencies:
       '@iconify/json': 2.2.417
       swiper: 11.2.10
@@ -7050,7 +7049,7 @@ snapshots:
 
   webpack-virtual-modules@0.6.2: {}
 
-  webworkify-webpack@https://codeload.github.com/xqq/webworkify-webpack/tar.gz/24d1e719b4a6cac37a518b2bb10fe124527ef4ef: {}
+  webworkify-webpack@2.1.5: {}
 
   whatwg-encoding@2.0.0:
     dependencies:
