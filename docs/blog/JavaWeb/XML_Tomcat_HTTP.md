@@ -3,7 +3,7 @@ title: JavaWeb | XML_Tomcat_HTTP
 tags:
   - JavaWeb
 createTime: 2025/08/24 16:20:03
-permalink: /article/pv2nut7k/
+permalink: /blog/pv2nut7k/
 cover: /JavaWeb.jpg
 ---
 ![](./JavaWeb.jpg)

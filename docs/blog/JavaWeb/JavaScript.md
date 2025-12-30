@@ -3,7 +3,7 @@ title: JavaWeb | JavaScript
 tags:
   - JavaWeb
 createTime: 2025/08/24 16:20:02
-permalink: /article/gb6aeih2/
+permalink: /blog/gb6aeih2/
 cover: /JavaWeb.jpg
 ---
 

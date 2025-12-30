@@ -3,7 +3,7 @@ title: 组件
 tags:
   - components
 createTime: 2025/03/30 20:33:32
-permalink: /article/xn8lymxa/
+permalink: /blog/xn8lymxa/
 cover: /images/bg-1.jpg
 ---
 

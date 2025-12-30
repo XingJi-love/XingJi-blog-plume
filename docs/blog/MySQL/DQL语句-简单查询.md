@@ -3,7 +3,7 @@ title: MySQL | DQL语句-简单查询
 tags:
   - MySQL
 createTime: 2025/08/05 20:00:00
-permalink: /article/e6fzfavb/
+permalink: /blog/e6fzfavb/
 cover: /MySQL.png
 ---
 

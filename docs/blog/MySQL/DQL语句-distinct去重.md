@@ -3,7 +3,7 @@ title: MySQL | DQL语句-distinct去重
 tags:
   - MySQL
 createTime: 2025/08/06 21:00:00
-permalink: /article/uklnnsv2/
+permalink: /blog/uklnnsv2/
 cover: /MySQL.png
 ---
 

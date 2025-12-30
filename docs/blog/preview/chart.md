@@ -3,7 +3,7 @@ title: 图表
 tags:
   - chart
 createTime: 2025/03/30 00:38:05
-permalink: /article/2rtdsrxy/
+permalink: /blog/2rtdsrxy/
 cover: /images/bg-1.jpg
 ---
 

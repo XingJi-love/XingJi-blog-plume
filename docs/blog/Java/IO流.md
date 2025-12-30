@@ -3,7 +3,7 @@ title: Java | IO流
 tags:
   - Java
 createTime: 2025/07/25 20:00:00
-permalink: /article/t08z9hmj/
+permalink: /blog/t08z9hmj/
 cover: /Java.jpg
 ---
 

@@ -3,7 +3,7 @@ title: Java从入门到放弃
 tags:
   - Java
 createTime: 2025/04/16 17:00:00
-permalink: /article/i6az3724/
+permalink: /blog/i6az3724/
 cover: /Java.jpg
 copyright: false
 contributors: false

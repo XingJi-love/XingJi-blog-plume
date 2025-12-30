@@ -3,7 +3,7 @@ title: Maven | Maven快速上手
 tags:
   - Maven
 createTime: 2025/07/26 22:59:34
-permalink: /article/pzentan6/
+permalink: /blog/pzentan6/
 cover: /Maven.jpg
 ---
 

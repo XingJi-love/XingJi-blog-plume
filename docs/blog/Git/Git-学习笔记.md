@@ -4,7 +4,7 @@ tags:
   - Git
   - Github
 createTime: 2025/04/01 22:45:57
-permalink: /article/3jywe2ge/
+permalink: /blog/3jywe2ge/
 cover: /Git.jpg
 ---
 

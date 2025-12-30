@@ -3,7 +3,7 @@ title: JDBC | JDBC的新增修改删除
 tags:
   - JDBC
 createTime: 2025/08/14 15:18:01
-permalink: /article/ptri869o/
+permalink: /blog/ptri869o/
 cover: /JDBC.jpg
 ---
 

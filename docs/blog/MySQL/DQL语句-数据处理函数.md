@@ -3,7 +3,7 @@ title: MySQL | DQL语句-数据处理函数
 tags:
   - MySQL
 createTime: 2025/08/07 20:00:00
-permalink: /article/0w14fg8z/
+permalink: /blog/0w14fg8z/
 cover: /MySQL.png
 ---
 

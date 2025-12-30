@@ -3,7 +3,7 @@ title: MySQL | DQL语句-排序操作
 tags:
   - MySQL
 createTime: 2025/08/06 20:00:00
-permalink: /article/n0pzs5pz/
+permalink: /blog/n0pzs5pz/
 cover: /MySQL.png
 ---
 

@@ -3,7 +3,7 @@ title: JavaWeb | Servlet
 tags:
   - JavaWeb
 createTime: 2025/08/24 16:20:04
-permalink: /article/xx3lncph/
+permalink: /blog/xx3lncph/
 cover: /JavaWeb.jpg
 ---
 

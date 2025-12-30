@@ -3,7 +3,7 @@ title: Java | Java新特性
 tags:
   - Java
 createTime: 2025/08/02 20:00:00
-permalink: /article/o8qu1qu0/
+permalink: /blog/o8qu1qu0/
 cover: /Java.jpg
 ---
 

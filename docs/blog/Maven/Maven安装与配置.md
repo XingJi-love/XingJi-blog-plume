@@ -3,7 +3,7 @@ title: Maven | Maven安装与配置
 tags:
   - Maven
 createTime: 2025/07/26 21:00:00
-permalink: /article/vs370at9/
+permalink: /blog/vs370at9/
 cover: /Maven.jpg
 ---
 

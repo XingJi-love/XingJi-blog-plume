@@ -3,7 +3,7 @@ title: 资源嵌入
 tags:
   - embed
 createTime: 2025/03/30 17:52:54
-permalink: /article/vufmnbtm/
+permalink: /blog/vufmnbtm/
 cover: /images/bg-1.jpg
 ---
 

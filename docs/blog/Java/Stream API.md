@@ -3,7 +3,7 @@ title: Java | Stream API
 tags:
   - Java
 createTime: 2025/08/01 20:00:00
-permalink: /article/7lyev7uc/
+permalink: /blog/7lyev7uc/
 cover: /Java.jpg
 ---
 

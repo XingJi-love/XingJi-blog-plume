@@ -3,7 +3,7 @@ title: JDBC | DAO
 tags:
   - JDBC
 createTime: 2025/08/14 15:18:07
-permalink: /article/778lsrb9/
+permalink: /blog/778lsrb9/
 cover: /JDBC.jpg
 ---
 

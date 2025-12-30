@@ -4,7 +4,7 @@ tags:
   - Git
   - Github
 createTime: 2025/04/01 22:45:57
-permalink: /article/v411hvof/
+permalink: /blog/v411hvof/
 cover: /Git.jpg
 ---
 
@@ -18,11 +18,11 @@ cover: /Git.jpg
 - [Git 的奇技淫巧](https://github.com/521xueweihan/git-tips)
 - [Git Extras](https://github.com/tj/git-extras) git 命令行扩展工具
 - [配置 Git 处理行结束符](https://docs.github.com/cn/get-started/getting-started-with-git/configuring-git-to-handle-line-endings)
-- [Git 配置多个 SSH-Key](https://gitee.com/help/articles/4229)
+- [Git 配置多个 SSH-Key](https://gitee.com/help/blogs/4229)
 - 下载相关
   - [Windows 版下载镜像](https://npmmirror.com/mirrors/git-for-windows/)
   - [使用 jsdelivr 加速 Github 仓库资源](https://github.com/maomao1996/daily-notes/issues/7)
-- [commit 常用的 type](https://blog.csdn.net/calledjoker/article/details/122349859)
+- [commit 常用的 type](https://blog.csdn.net/calledjoker/blog/details/122349859)
 
 :::
 
@@ -166,7 +166,7 @@ git reset --mixed HEAD~1 # git reset --mixed commit_id
 git reset --hard HEAD~1 # git reset --hard commit_id
 ```
 
-[查看完整版 Git 命令](https://blog.csdn.net/qtiao/article/details/97783243)
+[查看完整版 Git 命令](https://blog.csdn.net/qtiao/blog/details/97783243)
 
 [三年 Git 使用心得 & 常见问题整理](https://juejin.cn/post/6844904191203213326)
 

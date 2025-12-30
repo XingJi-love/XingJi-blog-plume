@@ -3,7 +3,7 @@ title: MySQL | MySQL安装教程
 tags:
   - MySQL
 createTime: 2025/08/04 20:00:00
-permalink: /article/trjegji0/
+permalink: /blog/trjegji0/
 cover: /MySQL.png
 ---
 

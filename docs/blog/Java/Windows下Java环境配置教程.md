@@ -3,7 +3,7 @@ title: Java | Windows下Java环境配置教程
 tags: 
   - Java
 createTime: 2025/04/16 17:11:54
-permalink: /article/98fvwljo/
+permalink: /blog/98fvwljo/
 cover: /Java.jpg
 ---
 

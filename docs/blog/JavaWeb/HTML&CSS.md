@@ -3,7 +3,7 @@ title: JavaWeb | HTML&CSS
 tags:
   - JavaWeb
 createTime: 2025/08/24 16:20:01
-permalink: /article/wrg4fd30/
+permalink: /blog/wrg4fd30/
 cover: /JavaWeb.jpg
 ---
 ![](./JavaWeb.jpg)

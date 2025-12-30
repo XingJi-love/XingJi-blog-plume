@@ -3,7 +3,7 @@ title: MySQL | 基本命令
 tags:
   - MySQL
 createTime: 2025/08/04 22:00:00
-permalink: /article/bx3i7v0d/
+permalink: /blog/bx3i7v0d/
 cover: /MySQL.png
 ---
 

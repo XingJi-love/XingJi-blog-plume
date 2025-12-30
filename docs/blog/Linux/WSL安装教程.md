@@ -5,7 +5,7 @@ tags:
   - WSL
 categories:
 createTime: 2025/04/01 22:45:58
-permalink: /article/8gwjgg4y/
+permalink: /blog/8gwjgg4y/
 cover: /Linux.png
 ---
 

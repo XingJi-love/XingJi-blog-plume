@@ -3,7 +3,7 @@ title: Java | Lambda表达式
 tags:
   - Java
 createTime: 2025/07/31 20:00:00
-permalink: /article/jribrdg9/
+permalink: /blog/jribrdg9/
 cover: /Java.jpg
 ---
 

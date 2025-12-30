@@ -3,7 +3,7 @@ title: Markdown语法
 tags:
   - markdown
 createTime: 2025/03/28 23:12:11
-permalink: /article/lv7hy5n7/
+permalink: /blog/lv7hy5n7/
 cover: /images/bg-1.jpg
 ---
 

@@ -3,7 +3,7 @@ title: JDBC | JDBC概述
 tags:
   - JDBC
 createTime: 2025/08/14 15:18:00
-permalink: /article/z6814hv0/
+permalink: /blog/z6814hv0/
 cover: /JDBC.jpg
 ---
 

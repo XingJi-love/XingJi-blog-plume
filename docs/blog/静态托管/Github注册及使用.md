@@ -3,7 +3,7 @@ title: Github | 注册及使用
 tags:
   - Github
 createTime: 2025/04/01 22:45:57
-permalink: /article/hog11dxj/
+permalink: /blog/hog11dxj/
 cover: /Github.jpg
 copyright:
   creation: reprint

@@ -4,7 +4,7 @@ tags:
   - MySQL
   - Navicat
 createTime: 2025/08/04 21:00:00
-permalink: /article/ax2pv4e5/
+permalink: /blog/ax2pv4e5/
 cover: /MySQL.png
 ---
 
@@ -74,5 +74,5 @@ cover: /MySQL.png
 ![Navicat安装教程](./Navicat安装教程/Navicat安装-11.png)
 
 ::: tip 提示
-这是一个收费软件，需要注册，注册码可以在网上搜索。可以看看这篇CSDN的文章[Navicat破解](https://blog.csdn.net/qq_36324341/article/details/140777029)
+这是一个收费软件，需要注册，注册码可以在网上搜索。可以看看这篇CSDN的文章[Navicat破解](https://blog.csdn.net/qq_36324341/blog/details/140777029)
 :::
